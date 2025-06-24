@@ -9,6 +9,18 @@ import httpx
 import json
 from config import Config
 
+# Import purpose-specific routers
+from forward_problems.routes import router as forward_problems_router
+from inverse_problems.routes import router as inverse_problems_router
+from efficiency.routes import router as efficiency_router
+from sparse_data.routes import router as sparse_data_router
+from generalization.routes import router as generalization_router
+from data_assimilation.routes import router as data_assimilation_router
+from control_optimization.routes import router as control_optimization_router
+from multiphysics.routes import router as multiphysics_router
+from scientific_discovery.routes import router as scientific_discovery_router
+from uncertainty.routes import router as uncertainty_router
+
 # Create FastAPI app for frontend
 app = FastAPI(
     title="Physics-Informed Neural Network Frontend",
@@ -34,6 +46,18 @@ templates = Jinja2Templates(directory="templates")
 # Configuration
 config = Config()
 
+# Include all purpose-specific routers
+app.include_router(forward_problems_router)
+app.include_router(inverse_problems_router)
+app.include_router(efficiency_router)
+app.include_router(sparse_data_router)
+app.include_router(generalization_router)
+app.include_router(data_assimilation_router)
+app.include_router(control_optimization_router)
+app.include_router(multiphysics_router)
+app.include_router(scientific_discovery_router)
+app.include_router(uncertainty_router)
+
 # Main routes
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request):
@@ -45,89 +69,6 @@ async def dashboard(request: Request):
             "equations": config.SUPPORTED_EQUATIONS,
             "config": config,  # Pass entire config to access PINN_PURPOSES
             "title": "PINN Dashboard"
-        }
-    )
-
-# Purpose-based routes (10 main PINN applications)
-@app.get("/purpose/{purpose_key}", response_class=HTMLResponse)
-async def purpose_page(request: Request, purpose_key: str):
-    """Individual PINN purpose/application page"""
-    if purpose_key not in config.PINN_PURPOSES:
-        raise HTTPException(status_code=404, detail="PINN purpose not found")
-    
-    purpose_info = config.PINN_PURPOSES[purpose_key]
-    
-    # Get equations that support this purpose
-    supported_equations = {}
-    for eq_key, eq_info in config.SUPPORTED_EQUATIONS.items():
-        if purpose_key in eq_info.get('purposes', []):
-            supported_equations[eq_key] = eq_info
-    
-    return templates.TemplateResponse(
-        f"{purpose_info['folder']}/index.html",
-        {
-            "request": request,
-            "purpose": purpose_info,
-            "purpose_key": purpose_key,
-            "supported_equations": supported_equations,
-            "config": config,
-            "title": f"{purpose_info['name']} - PINN Applications"
-        }
-    )
-
-@app.get("/purpose/{purpose_key}/simulation/{eq_type}", response_class=HTMLResponse)
-async def purpose_simulation_page(request: Request, purpose_key: str, eq_type: str):
-    """Simulation page for specific purpose and equation"""
-    if purpose_key not in config.PINN_PURPOSES:
-        raise HTTPException(status_code=404, detail="PINN purpose not found")
-    
-    if eq_type not in config.SUPPORTED_EQUATIONS:
-        raise HTTPException(status_code=404, detail="Equation not found")
-    
-    purpose_info = config.PINN_PURPOSES[purpose_key]
-    equation_info = config.SUPPORTED_EQUATIONS[eq_type]
-    default_params = config.DEFAULT_PARAMETERS.get(eq_type, {})
-    
-    # Verify that this equation supports the given purpose
-    if purpose_key not in equation_info.get('purposes', []):
-        raise HTTPException(status_code=400, detail="Equation does not support this PINN purpose")
-    
-    return templates.TemplateResponse(
-        f"{purpose_info['folder']}/simulation.html",
-        {
-            "request": request,
-            "purpose": purpose_info,
-            "purpose_key": purpose_key,
-            "equation": equation_info,
-            "eq_type": eq_type,
-            "default_params": default_params,
-            "config": config,
-            "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
-        }
-    )
-
-@app.get("/purpose/{purpose_key}/results/{eq_type}", response_class=HTMLResponse)
-async def purpose_results_page(request: Request, purpose_key: str, eq_type: str):
-    """Results page for specific purpose and equation"""
-    if purpose_key not in config.PINN_PURPOSES:
-        raise HTTPException(status_code=404, detail="PINN purpose not found")
-    
-    if eq_type not in config.SUPPORTED_EQUATIONS:
-        raise HTTPException(status_code=404, detail="Equation not found")
-    
-    purpose_info = config.PINN_PURPOSES[purpose_key]
-    equation_info = config.SUPPORTED_EQUATIONS[eq_type]
-    
-    return templates.TemplateResponse(
-        f"{purpose_info['folder']}/results.html",
-        {
-            "request": request,
-            "purpose": purpose_info,
-            "purpose_key": purpose_key,
-            "equation": equation_info,
-            "eq_type": eq_type,
-            "config": config,
-            "title": f"Results - {equation_info['name']} - {purpose_info['name']}"
         }
     )
 
