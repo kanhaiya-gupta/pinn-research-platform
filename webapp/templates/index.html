@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Header Section -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="main-title">
+                <i class="fas fa-brain"></i>
+                Physics-Informed Neural Networks
+            </h1>
+            <p class="subtitle">
+                Revolutionizing scientific computing through AI-powered physics simulation
+            </p>
+        </div>
+    </div>
+
+    <!-- PINN Purposes Overview -->
+    <div class="purposes-section">
+        <h2 class="section-title">
+            <i class="fas fa-compass"></i>
+            PINN Applications & Purposes
+        </h2>
+        <div class="purposes-grid">
+            {% for purpose_key, purpose_info in config.PINN_PURPOSES.items() %}
+            <div class="purpose-card" data-purpose="{{ purpose_key }}">
+                <div class="purpose-header" style="border-left: 4px solid {{ purpose_info.color }}">
+                    <div class="purpose-icon">
+                        <i class="{{ purpose_info.icon }}"></i>
+                    </div>
+                    <div class="purpose-title">
+                        <h3>{{ purpose_info.name }}</h3>
+                    </div>
+                </div>
+                <div class="purpose-body">
+                    <p class="purpose-description">{{ purpose_info.description }}</p>
+                    <div class="purpose-examples">
+                        <strong>Examples:</strong>
+                        <ul>
+                            {% for example in purpose_info.examples %}
+                            <li>{{ example }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="purpose-actions">
+                        <a href="/purpose/{{ purpose_key }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-right"></i>
+                            Explore {{ purpose_info.name }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-section">
+        <h2 class="section-title">
+            <i class="fas fa-chart-bar"></i>
+            Platform Overview
+        </h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ equations|length }}</h3>
+                        <p>Equations Supported</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ config.PINN_PURPOSES|length }}</h3>
+                        <p>PINN Applications</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Real-time</h3>
+                        <p>Training & Inference</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Interactive</h3>
+                        <p>Visualization</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Research Areas -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Areas & Impact
+        </h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="research-card">
+                    <h4><i class="fas fa-rocket"></i> Scientific Discovery</h4>
+                    <p>Discover new physical laws and constitutive relations from experimental data using PINNs as a tool for scientific exploration.</p>
+                    <ul>
+                        <li>New constitutive laws discovery</li>
+                        <li>Hidden dynamics identification</li>
+                        <li>Physical validation of theories</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="research-card">
+                    <h4><i class="fas fa-industry"></i> Engineering Applications</h4>
+                    <p>Transform engineering design and optimization through physics-informed AI that respects fundamental physical constraints.</p>
+                    <ul>
+                        <li>Optimal control systems</li>
+                        <li>Design optimization</li>
+                        <li>Real-time simulation</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="research-card">
+                    <h4><i class="fas fa-cloud"></i> Climate & Weather</h4>
+                    <p>Improve climate modeling and weather forecasting by combining observational data with physical laws.</p>
+                    <ul>
+                        <li>Weather prediction</li>
+                        <li>Ocean modeling</li>
+                        <li>Climate change analysis</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="research-card">
+                    <h4><i class="fas fa-heartbeat"></i> Biomedical Engineering</h4>
+                    <p>Model complex biological systems and medical processes with physics-informed neural networks.</p>
+                    <ul>
+                        <li>Blood flow modeling</li>
+                        <li>Drug delivery systems</li>
+                        <li>Tissue mechanics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Start Guide -->
+    <div class="quick-start-section">
+        <h2 class="section-title">
+            <i class="fas fa-rocket"></i>
+            Getting Started
+        </h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4>Choose Application</h4>
+                    <p>Select from forward problems, inverse problems, optimization, or scientific discovery</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4>Select Equation</h4>
+                    <p>Pick the differential equation that models your physical system</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4>Configure Parameters</h4>
+                    <p>Set equation parameters and training configuration</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4>Train & Analyze</h4>
+                    <p>Train the PINN model and analyze results with interactive visualizations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/main.js"></script>
+{% endblock %} 

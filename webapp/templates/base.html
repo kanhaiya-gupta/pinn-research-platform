@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Physics-Informed Neural Networks{% endblock %}</title>
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.4 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link href="/static/css/main.css" rel="stylesheet">
+    
+    <!-- Additional CSS for this template -->
+    <style>
+        :root {
+            --primary-color: #5d4037;
+            --primary-dark: #3e2723;
+            --primary-light: #8d6e63;
+            --secondary-color: #6d4c41;
+            --accent-color: #795548;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --background-light: #fafafa;
+            --background-white: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 8px rgba(0,0,0,0.12);
+            --shadow-heavy: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--background-light);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            box-shadow: var(--shadow-medium);
+            padding: 0.75rem 0;
+            border-bottom: none;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand i {
+            font-size: 1.8rem;
+            color: #d7ccc8;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .navbar-nav .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white !important;
+        }
+
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: calc(100vh - 80px);
+            padding: 2rem 0;
+        }
+
+        .container-fluid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Cards and Components */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            background: var(--background-white);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            border: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid var(--text-secondary);
+            color: var(--text-secondary);
+            background: transparent;
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        /* Forms */
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 131, 143, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        /* Code blocks */
+        code, pre {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 0.25rem 0.5rem;
+        }
+
+        pre {
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 8px;
+            border: none;
+            padding: 1rem 1.5rem;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: var(--primary-dark);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #f1f8e9 0%, #c5e1a5 100%);
+            color: #33691e;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffcc02 100%);
+            color: var(--warning-color);
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            color: var(--error-color);
+        }
+
+        /* Tables */
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border-color: var(--border-color);
+        }
+
+        /* Modal */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            border: none;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container-fluid {
+                padding: 0 1rem;
+            }
+            
+            .main-content {
+                padding: 1rem 0;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Breadcrumbs */
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb-item {
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-secondary);
+            margin: 0 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-brain"></i>
+                PINN Research Platform
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-flask"></i> Applications
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/purpose/forward_problems">
+                                <i class="fas fa-arrow-right"></i> Forward Problems
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/inverse_problems">
+                                <i class="fas fa-search"></i> Inverse Problems
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/efficiency">
+                                <i class="fas fa-tachometer-alt"></i> Simulation Efficiency
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/sparse_data">
+                                <i class="fas fa-database"></i> Sparse Data Learning
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/generalization">
+                                <i class="fas fa-expand-arrows-alt"></i> Generalization Study
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/purpose/data_assimilation">
+                                <i class="fas fa-sync"></i> Data Assimilation
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/control_optimization">
+                                <i class="fas fa-cogs"></i> Control & Optimization
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/multiphysics">
+                                <i class="fas fa-layer-group"></i> Multiphysics
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/scientific_discovery">
+                                <i class="fas fa-microscope"></i> Scientific Discovery
+                            </a></li>
+                            <li><a class="dropdown-item" href="/purpose/uncertainty">
+                                <i class="fas fa-chart-area"></i> Uncertainty Analysis
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8000/docs" target="_blank">
+                            <i class="fas fa-code"></i> API Docs
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#helpModal">
+                            <i class="fas fa-question-circle"></i> Help
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <p>&copy; 2024 Physics-Informed Neural Networks Research Platform</p>
+                <p>A comprehensive platform for exploring PINN applications in scientific computing</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helpModalLabel">
+                        <i class="fas fa-question-circle"></i>
+                        PINN Platform Help
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6><i class="fas fa-brain"></i> What are Physics-Informed Neural Networks?</h6>
+                    <p>PINNs are neural networks that incorporate physical laws and constraints into their training process, making them particularly effective for solving differential equations and scientific computing problems.</p>
+                    
+                    <h6><i class="fas fa-route"></i> How to use this platform:</h6>
+                    <ol>
+                        <li>Choose a PINN application from the Applications menu</li>
+                        <li>Select a differential equation to work with</li>
+                        <li>Configure the simulation parameters</li>
+                        <li>Run the training process</li>
+                        <li>Analyze and visualize the results</li>
+                    </ol>
+                    
+                    <h6><i class="fas fa-flask"></i> Available Applications:</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li><strong>Forward Problems:</strong> Solve differential equations</li>
+                                <li><strong>Inverse Problems:</strong> Parameter identification</li>
+                                <li><strong>Simulation Efficiency:</strong> Optimize computational performance</li>
+                                <li><strong>Sparse Data Learning:</strong> Learn from limited data</li>
+                                <li><strong>Generalization Study:</strong> Test model robustness</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li><strong>Data Assimilation:</strong> Integrate observations</li>
+                                <li><strong>Control & Optimization:</strong> Optimal control problems</li>
+                                <li><strong>Multiphysics:</strong> Coupled physical systems</li>
+                                <li><strong>Scientific Discovery:</strong> Discover new physics</li>
+                                <li><strong>Uncertainty Analysis:</strong> Quantify uncertainties</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h6><i class="fas fa-calculator"></i> Supported Equations:</h6>
+                    <ul>
+                        <li><strong>Heat Equation:</strong> Parabolic PDE for heat conduction</li>
+                        <li><strong>Wave Equation:</strong> Hyperbolic PDE for wave propagation</li>
+                        <li><strong>Burgers Equation:</strong> Nonlinear PDE for fluid dynamics</li>
+                        <li><strong>Simple Harmonic Motion:</strong> ODE for oscillatory motion</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="http://localhost:8000/docs" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-code"></i> View API Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">
+                        <i class="fas fa-info-circle"></i>
+                        About PINN Research Platform
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6><i class="fas fa-rocket"></i> Platform Overview</h6>
+                    <p>This platform provides a comprehensive environment for exploring Physics-Informed Neural Networks (PINNs) across various scientific computing applications. It combines modern web technologies with advanced machine learning techniques to solve complex differential equations.</p>
+                    
+                    <h6><i class="fas fa-cogs"></i> Technical Stack</h6>
+                    <ul>
+                        <li><strong>Backend:</strong> FastAPI with Python</li>
+                        <li><strong>Frontend:</strong> Modern HTML5, CSS3, JavaScript</li>
+                        <li><strong>Machine Learning:</strong> PyTorch for PINN implementation</li>
+                        <li><strong>Visualization:</strong> Plotly.js for interactive charts</li>
+                        <li><strong>Styling:</strong> Bootstrap 5 with custom design system</li>
+                    </ul>
+                    
+                    <h6><i class="fas fa-graduation-cap"></i> Research Applications</h6>
+                    <p>The platform supports cutting-edge research in scientific machine learning, enabling researchers to explore PINN applications in fluid dynamics, heat transfer, wave propagation, and many other physical phenomena.</p>
+                    
+                    <h6><i class="fas fa-users"></i> Target Users</h6>
+                    <ul>
+                        <li>Researchers in scientific computing</li>
+                        <li>Machine learning practitioners</li>
+                        <li>Students learning about PINNs</li>
+                        <li>Engineers solving physical problems</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="https://github.com" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> View Source Code
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    
+    <!-- Global JavaScript -->
+    <script>
+        // Add active class to current nav item
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Add active class to dropdown items
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                    const dropdown = item.closest('.dropdown');
+                    if (dropdown) {
+                        const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                        dropdownToggle.classList.add('active');
+                    }
+                }
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

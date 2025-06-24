@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Scientific Discovery in PINNs focuses on discovering new physical laws, uncovering hidden patterns, and identifying governing equations from data. This approach enables data-driven discovery of physical principles and can lead to new scientific insights and theoretical breakthroughs.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Equation Discovery:</strong> Discover governing equations from data</li>
+                    <li><strong>Pattern Recognition:</strong> Identify hidden physical patterns</li>
+                    <li><strong>Model Selection:</strong> Determine the most appropriate physical models</li>
+                    <li><strong>Hypothesis Testing:</strong> Test scientific hypotheses with data</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Scientific Discovery
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                            Start Scientific Discovery
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-dna"></i> Biological Systems</h4>
+                <p>Discover governing equations for biological processes and cellular dynamics.</p>
+                <ul>
+                    <li>Gene regulatory networks</li>
+                    <li>Protein folding dynamics</li>
+                    <li>Neural network modeling</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-atom"></i> Quantum Systems</h4>
+                <p>Uncover new quantum mechanical principles and wave function dynamics.</p>
+                <ul>
+                    <li>Quantum state evolution</li>
+                    <li>Entanglement dynamics</li>
+                    <li>Quantum phase transitions</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-chart-line"></i> Complex Systems</h4>
+                <p>Identify emergent behaviors and collective phenomena in complex systems.</p>
+                <ul>
+                    <li>Phase transitions</li>
+                    <li>Collective behavior</li>
+                    <li>Emergent patterns</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-flask"></i> Chemical Reactions</h4>
+                <p>Discover reaction mechanisms and kinetic laws from experimental data.</p>
+                <ul>
+                    <li>Reaction kinetics</li>
+                    <li>Catalytic mechanisms</li>
+                    <li>Chemical pathways</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Scientific Discovery -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Scientific Discovery
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h4>Data-Driven Discovery</h4>
+                <p>Discover physical laws directly from observational data without prior assumptions.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h4>Interpretable Models</h4>
+                <p>Discover interpretable mathematical expressions for physical phenomena.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>Differentiable Discovery</h4>
+                <p>End-to-end differentiable framework enables efficient discovery of governing equations.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Uncertainty Quantification</h4>
+                <p>Provide uncertainty estimates for discovered physical laws and parameters.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-search"></i>
+                Start Scientific Discovery
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

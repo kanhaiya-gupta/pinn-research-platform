@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <!-- Header -->
+    <div class="results-header">
+        <div class="breadcrumb">
+            <a href="/" class="breadcrumb-item">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/purpose/{{ purpose_key }}" class="breadcrumb-item">{{ purpose.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_type }}" class="breadcrumb-item">{{ equation.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">Results</span>
+        </div>
+        
+        <div class="results-title">
+            <h1><i class="{{ equation.icon }}" style="color: {{ equation.color }};"></i> {{ equation.name }}</h1>
+            <p class="results-subtitle">Inverse Problem Results - {{ purpose.name }}</p>
+        </div>
+    </div>
+
+    <!-- Results Summary -->
+    <div class="results-summary">
+        <div class="summary-card">
+            <h3><i class="fas fa-chart-line"></i> Training Summary</h3>
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Final Loss:</span>
+                    <span id="final-loss" class="stat-value">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Training Time:</span>
+                    <span id="training-time" class="stat-value">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Convergence:</span>
+                    <span id="convergence-status" class="stat-value">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Visualization -->
+    <div class="results-visualization">
+        <div class="visualization-grid">
+            <!-- Loss History -->
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-line"></i> Loss History</h3>
+                <div id="loss-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>Training loss evolution showing physics loss, data loss, and total loss over epochs.</p>
+                </div>
+            </div>
+
+            <!-- Parameter Estimation -->
+            <div class="chart-card">
+                <h3><i class="fas fa-search"></i> Parameter Estimation</h3>
+                <div id="parameter-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>Estimated parameters compared with true values and uncertainty bounds.</p>
+                </div>
+            </div>
+
+            <!-- Data Fitting -->
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-area"></i> Data Fitting</h3>
+                <div id="fitting-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>PINN solution fitting to observational data points.</p>
+                </div>
+            </div>
+
+            <!-- Uncertainty Analysis -->
+            <div class="chart-card">
+                <h3><i class="fas fa-exclamation-triangle"></i> Uncertainty Analysis</h3>
+                <div id="uncertainty-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>Uncertainty quantification for parameter estimates and predictions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metrics Table -->
+    <div class="metrics-section">
+        <h2><i class="fas fa-calculator"></i> Performance Metrics</h2>
+        <div class="metrics-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Parameter Error</td>
+                        <td id="parameter-error">-</td>
+                        <td>Relative error in estimated parameters</td>
+                    </tr>
+                    <tr>
+                        <td>Data Fitting Error</td>
+                        <td id="fitting-error">-</td>
+                        <td>Root mean square error in data fitting</td>
+                    </tr>
+                    <tr>
+                        <td>Physics Residual</td>
+                        <td id="physics-residual">-</td>
+                        <td>Residual of the governing equation</td>
+                    </tr>
+                    <tr>
+                        <td>Training Time</td>
+                        <td id="training-time-metric">-</td>
+                        <td>Total time taken for training completion</td>
+                    </tr>
+                    <tr>
+                        <td>Convergence Rate</td>
+                        <td id="convergence-rate">-</td>
+                        <td>Rate of loss reduction during training</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Inverse Problem Analysis -->
+    <div class="analysis-section">
+        <h2><i class="fas fa-microscope"></i> Inverse Problem Analysis</h2>
+        <div class="analysis-content">
+            <div class="analysis-card">
+                <h4><i class="fas fa-search"></i> Parameter Identification</h4>
+                <p>The PINN successfully identified the unknown parameters from observational data. The estimated parameters show good agreement with the true values within acceptable uncertainty bounds.</p>
+                <ul>
+                    <li>Accurate parameter estimation</li>
+                    <li>Uncertainty quantification</li>
+                    <li>Robust to measurement noise</li>
+                </ul>
+            </div>
+            
+            <div class="analysis-card">
+                <h4><i class="fas fa-chart-line"></i> Data Assimilation</h4>
+                <p>The model effectively assimilated observational data with physical constraints, providing a unified framework for inverse problem solution.</p>
+                <ul>
+                    <li>Physics-constrained learning</li>
+                    <li>Data-driven parameter inference</li>
+                    <li>Regularization through physics</li>
+                </ul>
+            </div>
+            
+            <div class="analysis-card">
+                <h4><i class="fas fa-shield-alt"></i> Robustness Analysis</h4>
+                <p>The inverse problem solution demonstrates robustness to measurement noise and data sparsity, making it suitable for real-world applications.</p>
+                <ul>
+                    <li>Noise-resistant estimation</li>
+                    <li>Sparse data handling</li>
+                    <li>Generalization capability</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="results-actions">
+        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_type }}" class="btn btn-primary">
+            <i class="fas fa-redo"></i>
+            Run New Simulation
+        </a>
+        <button type="button" class="btn btn-outline-primary" onclick="downloadResults()">
+            <i class="fas fa-download"></i>
+            Download Results
+        </button>
+        <a href="/purpose/{{ purpose_key }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Back to {{ purpose.name }}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/equation-detail.js"></script>
+<script>
+    // Purpose-specific results configuration
+    const purposeKey = "{{ purpose_key }}";
+    const purposeName = "{{ purpose.name }}";
+    const equationType = "{{ eq_type }}";
+    
+    // Load results for this specific purpose and equation
+    loadResults(purposeKey, equationType);
+</script>
+{% endblock %} 

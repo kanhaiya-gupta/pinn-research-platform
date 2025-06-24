@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Uncertainty Quantification in PINNs focuses on quantifying and propagating uncertainties through physical systems. This approach provides probabilistic predictions and confidence intervals, enabling better decision-making in the presence of data noise, model uncertainty, and parameter variability.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Probabilistic Predictions:</strong> Provide uncertainty estimates with predictions</li>
+                    <li><strong>Parameter Uncertainty:</strong> Quantify uncertainty in model parameters</li>
+                    <li><strong>Data Uncertainty:</strong> Handle noisy and sparse experimental data</li>
+                    <li><strong>Model Uncertainty:</strong> Account for model structure uncertainty</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Uncertainty Quantification
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-chart-area"></i>
+                            Start Uncertainty Analysis
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-shield-alt"></i> Risk Assessment</h4>
+                <p>Quantify risks in engineering systems and provide confidence intervals for safety analysis.</p>
+                <ul>
+                    <li>Structural reliability</li>
+                    <li>Safety margins</li>
+                    <li>Failure probability</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-chart-line"></i> Sensitivity Analysis</h4>
+                <p>Identify critical parameters and their impact on system behavior and predictions.</p>
+                <ul>
+                    <li>Parameter sensitivity</li>
+                    <li>Input uncertainty</li>
+                    <li>Model robustness</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-database"></i> Data-Driven UQ</h4>
+                <p>Quantify uncertainties in data-driven models and experimental measurements.</p>
+                <ul>
+                    <li>Measurement uncertainty</li>
+                    <li>Experimental error</li>
+                    <li>Data quality assessment</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-cogs"></i> Decision Support</h4>
+                <p>Provide uncertainty-aware predictions for decision-making in complex systems.</p>
+                <ul>
+                    <li>Optimization under uncertainty</li>
+                    <li>Robust design</li>
+                    <li>Policy making</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Uncertainty Quantification -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Uncertainty Quantification
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-area"></i>
+                </div>
+                <h4>Probabilistic Framework</h4>
+                <p>Natural probabilistic framework for uncertainty quantification and propagation.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>Differentiable UQ</h4>
+                <p>End-to-end differentiable framework enables efficient uncertainty propagation.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h4>Physics-Informed Uncertainty</h4>
+                <p>Physical constraints improve uncertainty estimates and reduce epistemic uncertainty.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h4>Computational Efficiency</h4>
+                <p>Efficient uncertainty quantification compared to traditional Monte Carlo methods.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-chart-area"></i>
+                Start Uncertainty Analysis
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

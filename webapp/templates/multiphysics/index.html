@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Multiphysics in PINNs addresses complex systems involving multiple physical phenomena that interact with each other. This approach enables the solution of coupled systems where different physics (fluid dynamics, heat transfer, electromagnetics, etc.) influence each other simultaneously.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Coupled Systems:</strong> Handle multiple interacting physical phenomena</li>
+                    <li><strong>Unified Framework:</strong> Solve all physics in a single neural network</li>
+                    <li><strong>Interface Conditions:</strong> Enforce coupling conditions between different physics</li>
+                    <li><strong>Complex Interactions:</strong> Model nonlinear interactions between different phenomena</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Multiphysics
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-layer-group"></i>
+                            Start Multiphysics Simulation
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-thermometer-half"></i> Fluid-Thermal Coupling</h4>
+                <p>Model systems where fluid flow and heat transfer interact, such as heat exchangers and cooling systems.</p>
+                <ul>
+                    <li>Convective heat transfer</li>
+                    <li>Thermal boundary layers</li>
+                    <li>Buoyancy-driven flows</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-bolt"></i> Fluid-Electromagnetic</h4>
+                <p>Study magnetohydrodynamics (MHD) and electrohydrodynamics (EHD) phenomena.</p>
+                <ul>
+                    <li>MHD flows</li>
+                    <li>Plasma dynamics</li>
+                    <li>Electrokinetic flows</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-atom"></i> Chemical-Transport</h4>
+                <p>Model reactive flows and transport phenomena in chemical and biological systems.</p>
+                <ul>
+                    <li>Reactive transport</li>
+                    <li>Biochemical reactions</li>
+                    <li>Catalytic processes</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-cube"></i> Structural-Fluid</h4>
+                <p>Analyze fluid-structure interaction problems in engineering applications.</p>
+                <ul>
+                    <li>Aeroelasticity</li>
+                    <li>Hydroelasticity</li>
+                    <li>Vibration analysis</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Multiphysics -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Multiphysics
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <h4>Unified Framework</h4>
+                <p>Solve all coupled physics in a single neural network without domain decomposition.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h4>Automatic Coupling</h4>
+                <p>Physics coupling is automatically handled through the unified loss function.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>Differentiable Interface</h4>
+                <p>Interface conditions between different physics are naturally differentiable.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Scalable Complexity</h4>
+                <p>Easily add new physics without changing the overall framework structure.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-layer-group"></i>
+                Start Multiphysics Simulation
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

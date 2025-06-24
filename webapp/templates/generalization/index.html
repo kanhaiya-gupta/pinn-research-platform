@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Generalization in PINNs focuses on improving model performance across different parameter regimes, geometries, and boundary conditions. Physics-informed neural networks can generalize better than traditional neural networks by incorporating fundamental physical laws as inductive biases.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Parameter Generalization:</strong> Extend to unseen parameter values</li>
+                    <li><strong>Geometric Generalization:</strong> Adapt to different domain shapes</li>
+                    <li><strong>Boundary Condition Generalization:</strong> Handle varying boundary conditions</li>
+                    <li><strong>Physics-Guided Extrapolation:</strong> Predict beyond training data using physical laws</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Generalization
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                            Start Generalization Study
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-sliders-h"></i> Parameter Space Exploration</h4>
+                <p>Explore wide parameter ranges and generalize to unseen parameter combinations using physics constraints.</p>
+                <ul>
+                    <li>Multi-parameter optimization</li>
+                    <li>Parameter sensitivity analysis</li>
+                    <li>Design space exploration</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-shapes"></i> Geometric Generalization</h4>
+                <p>Extend solutions to different domain shapes and geometries beyond training examples.</p>
+                <ul>
+                    <li>Shape optimization</li>
+                    <li>Geometry transfer learning</li>
+                    <li>Adaptive mesh generation</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-border-all"></i> Boundary Condition Adaptation</h4>
+                <p>Generalize to different boundary conditions and initial conditions not seen during training.</p>
+                <ul>
+                    <li>BC interpolation</li>
+                    <li>Conditional generation</li>
+                    <li>Robust prediction</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-chart-line"></i> Extrapolation</h4>
+                <p>Predict beyond the training data range using physical laws as extrapolation guides.</p>
+                <ul>
+                    <li>Time extrapolation</li>
+                    <li>Parameter extrapolation</li>
+                    <li>Physics-guided prediction</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Generalization -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Generalization
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </div>
+                <h4>Physics-Guided Extrapolation</h4>
+                <p>Physical laws provide natural guidance for extrapolation beyond training data ranges.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Robust Generalization</h4>
+                <p>Physics constraints improve generalization by providing inductive biases based on fundamental laws.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h4>Transfer Learning</h4>
+                <p>Pre-trained physics-informed models can transfer knowledge across related problems.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Uncertainty Quantification</h4>
+                <p>Better uncertainty estimates in extrapolation regions due to physics constraints.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-expand-arrows-alt"></i>
+                Start Generalization Study
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

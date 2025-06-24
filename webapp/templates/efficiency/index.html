@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Simulation efficiency in PINNs focuses on providing faster, differentiable, and real-time alternatives to traditional numerical solvers. PINNs can significantly accelerate computational physics simulations while maintaining accuracy and providing additional benefits like automatic differentiation.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Computational Speed:</strong> Faster solutions compared to traditional methods</li>
+                    <li><strong>Differentiable Physics:</strong> Automatic differentiation for optimization</li>
+                    <li><strong>Real-time Simulation:</strong> Instant predictions once trained</li>
+                    <li><strong>Surrogate Modeling:</strong> Fast surrogate models for complex systems</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Efficient Simulation
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Start Efficient Simulation
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-rocket"></i> Real-time Control Systems</h4>
+                <p>Use PINNs for real-time control and optimization of physical systems with fast response requirements.</p>
+                <ul>
+                    <li>Robotic control</li>
+                    <li>Process optimization</li>
+                    <li>Real-time decision making</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-cogs"></i> Design Optimization</h4>
+                <p>Accelerate design optimization by using PINNs as fast surrogate models for expensive simulations.</p>
+                <ul>
+                    <li>Aerodynamic design</li>
+                    <li>Structural optimization</li>
+                    <li>Parameter space exploration</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-chart-line"></i> Uncertainty Quantification</h4>
+                <p>Efficiently propagate uncertainties through complex physical systems using differentiable PINNs.</p>
+                <ul>
+                    <li>Monte Carlo acceleration</li>
+                    <li>Sensitivity analysis</li>
+                    <li>Risk assessment</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-sync"></i> Multi-scale Modeling</h4>
+                <p>Bridge different spatial and temporal scales efficiently using PINNs as fast surrogate models.</p>
+                <ul>
+                    <li>Scale coupling</li>
+                    <li>Homogenization</li>
+                    <li>Multi-resolution analysis</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Efficiency -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Simulation Efficiency
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h4>Speed Improvement</h4>
+                <p>PINNs can provide 10-1000x speedup compared to traditional numerical methods for many problems.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h4>Mesh-Free Computation</h4>
+                <p>No need for complex mesh generation, enabling faster setup and computation on complex geometries.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>Differentiable Physics</h4>
+                <p>Automatic differentiation enables efficient gradient-based optimization and sensitivity analysis.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Real-time Capability</h4>
+                <p>Once trained, PINNs provide instant predictions, enabling real-time applications and control.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-tachometer-alt"></i>
+                Start Efficient Simulation
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

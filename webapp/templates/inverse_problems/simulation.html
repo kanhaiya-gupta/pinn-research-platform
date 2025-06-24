@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="simulation-container">
+    <!-- Header -->
+    <div class="simulation-header">
+        <div class="breadcrumb">
+            <a href="/" class="breadcrumb-item">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/purpose/{{ purpose_key }}" class="breadcrumb-item">{{ purpose.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">{{ equation.name }}</span>
+        </div>
+        
+        <div class="simulation-title">
+            <h1><i class="{{ equation.icon }}" style="color: {{ equation.color }};"></i> {{ equation.name }}</h1>
+            <p class="simulation-subtitle">Inverse Problem Simulation - {{ purpose.name }}</p>
+        </div>
+    </div>
+
+    <!-- Equation Info -->
+    <div class="equation-info-section">
+        <div class="equation-formula">
+            <h3>Governing Equation:</h3>
+            <div class="formula-display">{{ equation.formula }}</div>
+        </div>
+        <div class="equation-description">
+            <p>{{ equation.description }}</p>
+        </div>
+    </div>
+
+    <!-- Configuration Form -->
+    <div class="configuration-section">
+        <h2><i class="fas fa-cogs"></i> Simulation Configuration</h2>
+        
+        <form id="simulation-form" class="simulation-form">
+            <!-- Neural Network Configuration -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-brain"></i>
+                    Neural Network Architecture
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hidden_layers">Hidden Layers</label>
+                        <input type="number" id="hidden_layers" name="hidden_layers" 
+                               value="{{ default_params.hidden_layers|default(4) }}" 
+                               min="2" max="10" required>
+                        <small class="form-text">Number of hidden layers</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="neurons_per_layer">Neurons per Layer</label>
+                        <input type="number" id="neurons_per_layer" name="neurons_per_layer" 
+                               value="{{ default_params.neurons_per_layer|default(20) }}" 
+                               min="10" max="100" required>
+                        <small class="form-text">Neurons in each hidden layer</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Configuration -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    Training Parameters
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="learning_rate">Learning Rate</label>
+                        <input type="number" id="learning_rate" name="learning_rate" 
+                               value="{{ default_params.learning_rate|default(0.001) }}" 
+                               step="0.0001" min="0.0001" max="0.1" required>
+                        <small class="form-text">Gradient descent step size</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="epochs">Training Epochs</label>
+                        <input type="number" id="epochs" name="epochs" 
+                               value="{{ default_params.epochs|default(10000) }}" 
+                               min="1000" max="100000" required>
+                        <small class="form-text">Number of training iterations</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Configuration -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-database"></i>
+                    Observational Data Configuration
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="data_points">Number of Data Points</label>
+                        <input type="number" id="data_points" name="data_points" 
+                               value="{{ default_params.data_points|default(100) }}" 
+                               min="10" max="1000" required>
+                        <small class="form-text">Number of observational data points</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="noise_level">Noise Level</label>
+                        <input type="number" id="noise_level" name="noise_level" 
+                               value="{{ default_params.noise_level|default(0.01) }}" 
+                               step="0.001" min="0.0" max="0.1" required>
+                        <small class="form-text">Measurement noise level (0-0.1)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equation-specific parameters -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-calculator"></i>
+                    {{ equation.name }} Parameters
+                </h3>
+                
+                {% if eq_type == "heat" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="thermal_diffusivity">Thermal Diffusivity (α)</label>
+                        <input type="number" id="thermal_diffusivity" name="thermal_diffusivity" 
+                               value="{{ default_params.thermal_diffusivity|default(0.1) }}" 
+                               step="0.01" min="0.01" max="1.0" required>
+                        <small class="form-text">Thermal diffusivity coefficient</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="domain_size">Domain Size (L)</label>
+                        <input type="number" id="domain_size" name="domain_size" 
+                               value="{{ default_params.domain_size|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Length of the spatial domain</small>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if eq_type == "wave" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="wave_speed">Wave Speed (c)</label>
+                        <input type="number" id="wave_speed" name="wave_speed" 
+                               value="{{ default_params.wave_speed|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Wave propagation speed</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="domain_size">Domain Size (L)</label>
+                        <input type="number" id="domain_size" name="domain_size" 
+                               value="{{ default_params.domain_size|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Length of the spatial domain</small>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if eq_type == "burgers" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="viscosity">Viscosity (ν)</label>
+                        <input type="number" id="viscosity" name="viscosity" 
+                               value="{{ default_params.viscosity|default(0.01) }}" 
+                               step="0.001" min="0.001" max="0.1" required>
+                        <small class="form-text">Viscosity coefficient</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="domain_size">Domain Size (L)</label>
+                        <input type="number" id="domain_size" name="domain_size" 
+                               value="{{ default_params.domain_size|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Length of the spatial domain</small>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if eq_type == "shm" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="frequency">Natural Frequency (ω)</label>
+                        <input type="number" id="frequency" name="frequency" 
+                               value="{{ default_params.frequency|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Natural frequency of oscillation</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amplitude">Initial Amplitude (A)</label>
+                        <input type="number" id="amplitude" name="amplitude" 
+                               value="{{ default_params.amplitude|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Initial amplitude of oscillation</small>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-search"></i>
+                    Start Inverse Problem Training
+                </button>
+                <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
+                    <i class="fas fa-undo"></i>
+                    Reset to Defaults
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Training Progress -->
+    <div id="training-progress" class="training-progress-section" style="display: none;">
+        <h2><i class="fas fa-chart-line"></i> Training Progress</h2>
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progress-percentage">0%</span>
+                <span id="progress-epochs">Epoch 0 / 0</span>
+            </div>
+        </div>
+        <div class="loss-display">
+            <div class="loss-item">
+                <span class="loss-label">Physics Loss:</span>
+                <span id="physics-loss" class="loss-value">-</span>
+            </div>
+            <div class="loss-item">
+                <span class="loss-label">Data Loss:</span>
+                <span id="data-loss" class="loss-value">-</span>
+            </div>
+            <div class="loss-item">
+                <span class="loss-label">Total Loss:</span>
+                <span id="total-loss" class="loss-value">-</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Preview -->
+    <div id="results-preview" class="results-preview-section" style="display: none;">
+        <h2><i class="fas fa-chart-area"></i> Results Preview</h2>
+        <div class="results-grid">
+            <div class="result-card">
+                <h4>Loss History</h4>
+                <div id="loss-chart" class="chart-container"></div>
+            </div>
+            <div class="result-card">
+                <h4>Parameter Estimation</h4>
+                <div id="parameter-chart" class="chart-container"></div>
+            </div>
+        </div>
+        <div class="results-actions">
+            <a href="/purpose/{{ purpose_key }}/results/{{ eq_type }}" class="btn btn-primary">
+                <i class="fas fa-chart-bar"></i>
+                View Detailed Results
+            </a>
+            <button type="button" class="btn btn-outline-primary" onclick="downloadResults()">
+                <i class="fas fa-download"></i>
+                Download Results
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/simulation.js"></script>
+<script>
+    // Purpose-specific simulation configuration
+    const purposeKey = "{{ purpose_key }}";
+    const purposeName = "{{ purpose.name }}";
+    const equationType = "{{ eq_type }}";
+    
+    // Initialize simulation with purpose context
+    initializeSimulation(purposeKey, purposeName, equationType);
+</script>
+{% endblock %} 

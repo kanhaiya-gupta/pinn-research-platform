@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Control & Optimization in PINNs leverages the differentiable nature of physics-informed neural networks to solve optimal control problems and design optimization tasks. The end-to-end differentiability enables efficient gradient-based optimization for complex physical systems.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Differentiable Control:</strong> End-to-end differentiable control policies</li>
+                    <li><strong>Optimal Design:</strong> Gradient-based design optimization</li>
+                    <li><strong>Real-time Control:</strong> Fast control computation once trained</li>
+                    <li><strong>Multi-objective Optimization:</strong> Handle multiple competing objectives</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Control & Optimization
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-cogs"></i>
+                            Start Control & Optimization
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-robot"></i> Robotic Control</h4>
+                <p>Design optimal control policies for robotic systems using differentiable physics models.</p>
+                <ul>
+                    <li>Trajectory optimization</li>
+                    <li>Motion planning</li>
+                    <li>Force control</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-industry"></i> Process Control</h4>
+                <p>Optimize industrial processes using physics-informed control strategies.</p>
+                <ul>
+                    <li>Temperature control</li>
+                    <li>Flow rate optimization</li>
+                    <li>Quality control</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-car"></i> Vehicle Control</h4>
+                <p>Design optimal control strategies for autonomous vehicles and transportation systems.</p>
+                <ul>
+                    <li>Path planning</li>
+                    <li>Energy optimization</li>
+                    <li>Safety control</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-leaf"></i> Environmental Control</h4>
+                <p>Optimize environmental systems for sustainability and efficiency.</p>
+                <ul>
+                    <li>Climate control</li>
+                    <li>Resource optimization</li>
+                    <li>Emission reduction</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Control & Optimization -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Control & Optimization
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>End-to-End Differentiability</h4>
+                <p>Entire control pipeline is differentiable, enabling efficient gradient-based optimization.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h4>Real-time Control</h4>
+                <p>Once trained, PINNs provide instant control actions for real-time applications.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Multi-objective Optimization</h4>
+                <p>Handle multiple competing objectives in a unified differentiable framework.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Robust Control</h4>
+                <p>Physics constraints improve control robustness and generalization to unseen scenarios.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-cogs"></i>
+                Start Control & Optimization
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

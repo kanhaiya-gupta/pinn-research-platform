@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Inverse problems in PINNs involve inferring unknown parameters, source terms, or boundary conditions from observed data. This is a powerful application where PINNs can solve problems that are often impossible or extremely difficult with traditional numerical methods.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Data-Driven:</strong> Uses observational data to infer unknown quantities</li>
+                    <li><strong>Parameter Identification:</strong> Determines system parameters from measurements</li>
+                    <li><strong>Source Reconstruction:</strong> Identifies unknown source terms or forcing functions</li>
+                    <li><strong>Boundary Condition Estimation:</strong> Infers boundary conditions from interior data</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Inverse Problems
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                            Start Inverse Problem
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-thermometer-half"></i> Thermal Property Identification</h4>
+                <p>Infer thermal conductivity, heat capacity, and other material properties from temperature measurements.</p>
+                <ul>
+                    <li>Material characterization</li>
+                    <li>Thermal conductivity mapping</li>
+                    <li>Heat source identification</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-water"></i> Fluid Parameter Estimation</h4>
+                <p>Determine viscosity, flow rates, and boundary conditions from flow field measurements.</p>
+                <ul>
+                    <li>Viscosity estimation</li>
+                    <li>Flow rate determination</li>
+                    <li>Boundary condition inference</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-wave-square"></i> Wave Source Localization</h4>
+                <p>Identify the location and characteristics of wave sources from wave field measurements.</p>
+                <ul>
+                    <li>Seismic source location</li>
+                    <li>Acoustic source identification</li>
+                    <li>Wave speed estimation</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-atom"></i> Quantum Parameter Inference</h4>
+                <p>Determine quantum mechanical parameters and potentials from wave function measurements.</p>
+                <ul>
+                    <li>Potential reconstruction</li>
+                    <li>Energy level determination</li>
+                    <li>Quantum parameter estimation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Inverse Problems -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Inverse Problems
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h4>Unified Framework</h4>
+                <p>PINNs provide a unified approach to solve both forward and inverse problems within the same framework.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h4>Data Assimilation</h4>
+                <p>Naturally incorporate observational data with physical constraints in a single optimization problem.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>Differentiable Optimization</h4>
+                <p>End-to-end differentiable framework enables efficient parameter identification and uncertainty quantification.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Regularization</h4>
+                <p>Physics constraints act as natural regularizers, improving the well-posedness of ill-posed inverse problems.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-search"></i>
+                Start Inverse Problem
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

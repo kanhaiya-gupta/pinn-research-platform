@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <!-- Header -->
+    <div class="results-header">
+        <div class="breadcrumb">
+            <a href="/" class="breadcrumb-item">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/purpose/{{ purpose_key }}" class="breadcrumb-item">{{ purpose.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_type }}" class="breadcrumb-item">{{ equation.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">Results</span>
+        </div>
+        
+        <div class="results-title">
+            <h1><i class="{{ equation.icon }}" style="color: {{ equation.color }};"></i> {{ equation.name }}</h1>
+            <p class="results-subtitle">Forward Problem Results - {{ purpose.name }}</p>
+        </div>
+    </div>
+
+    <!-- Results Summary -->
+    <div class="results-summary">
+        <div class="summary-card">
+            <h3><i class="fas fa-chart-line"></i> Training Summary</h3>
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Final Loss:</span>
+                    <span id="final-loss" class="stat-value">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Training Time:</span>
+                    <span id="training-time" class="stat-value">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Convergence:</span>
+                    <span id="convergence-status" class="stat-value">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Visualization -->
+    <div class="results-visualization">
+        <div class="visualization-grid">
+            <!-- Loss History -->
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-line"></i> Loss History</h3>
+                <div id="loss-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>Training loss evolution showing physics loss, boundary loss, and total loss over epochs.</p>
+                </div>
+            </div>
+
+            <!-- Solution Comparison -->
+            <div class="chart-card">
+                <h3><i class="fas fa-chart-area"></i> Solution Comparison</h3>
+                <div id="solution-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>Comparison between PINN solution and analytical/numerical reference solution.</p>
+                </div>
+            </div>
+
+            <!-- Error Analysis -->
+            <div class="chart-card">
+                <h3><i class="fas fa-exclamation-triangle"></i> Error Analysis</h3>
+                <div id="error-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>Point-wise error distribution between PINN and reference solutions.</p>
+                </div>
+            </div>
+
+            <!-- Solution Surface -->
+            <div class="chart-card">
+                <h3><i class="fas fa-cube"></i> Solution Surface</h3>
+                <div id="surface-chart" class="chart-container"></div>
+                <div class="chart-description">
+                    <p>3D visualization of the solution surface over space and time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metrics Table -->
+    <div class="metrics-section">
+        <h2><i class="fas fa-calculator"></i> Performance Metrics</h2>
+        <div class="metrics-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>L² Error</td>
+                        <td id="l2-error">-</td>
+                        <td>Root mean square error between PINN and reference solution</td>
+                    </tr>
+                    <tr>
+                        <td>L∞ Error</td>
+                        <td id="linf-error">-</td>
+                        <td>Maximum absolute error between PINN and reference solution</td>
+                    </tr>
+                    <tr>
+                        <td>Relative Error</td>
+                        <td id="relative-error">-</td>
+                        <td>Relative error as percentage of reference solution magnitude</td>
+                    </tr>
+                    <tr>
+                        <td>Training Time</td>
+                        <td id="training-time-metric">-</td>
+                        <td>Total time taken for training completion</td>
+                    </tr>
+                    <tr>
+                        <td>Convergence Rate</td>
+                        <td id="convergence-rate">-</td>
+                        <td>Rate of loss reduction during training</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Forward Problem Analysis -->
+    <div class="analysis-section">
+        <h2><i class="fas fa-microscope"></i> Forward Problem Analysis</h2>
+        <div class="analysis-content">
+            <div class="analysis-card">
+                <h4><i class="fas fa-check-circle"></i> Solution Validation</h4>
+                <p>The PINN solution successfully captures the physical behavior described by the {{ equation.name }}. The solution satisfies the governing equation and boundary conditions within acceptable error bounds.</p>
+                <ul>
+                    <li>Physics constraints are satisfied</li>
+                    <li>Boundary conditions are respected</li>
+                    <li>Solution exhibits expected physical behavior</li>
+                </ul>
+            </div>
+            
+            <div class="analysis-card">
+                <h4><i class="fas fa-chart-line"></i> Convergence Analysis</h4>
+                <p>Training convergence analysis shows stable loss reduction with the PINN successfully learning the underlying physics. The model demonstrates good generalization across the domain.</p>
+                <ul>
+                    <li>Stable loss convergence</li>
+                    <li>Consistent physics learning</li>
+                    <li>Good domain coverage</li>
+                </ul>
+            </div>
+            
+            <div class="analysis-card">
+                <h4><i class="fas fa-rocket"></i> Computational Efficiency</h4>
+                <p>The PINN approach provides efficient forward problem solution with advantages over traditional numerical methods for this class of problems.</p>
+                <ul>
+                    <li>Mesh-free computation</li>
+                    <li>Differentiable physics</li>
+                    <li>Real-time prediction capability</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="results-actions">
+        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_type }}" class="btn btn-primary">
+            <i class="fas fa-redo"></i>
+            Run New Simulation
+        </a>
+        <button type="button" class="btn btn-outline-primary" onclick="downloadResults()">
+            <i class="fas fa-download"></i>
+            Download Results
+        </button>
+        <a href="/purpose/{{ purpose_key }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Back to {{ purpose.name }}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/equation-detail.js"></script>
+<script>
+    // Purpose-specific results configuration
+    const purposeKey = "{{ purpose_key }}";
+    const purposeName = "{{ purpose.name }}";
+    const equationType = "{{ eq_type }}";
+    
+    // Load results for this specific purpose and equation
+    loadResults(purposeKey, equationType);
+</script>
+{% endblock %} 

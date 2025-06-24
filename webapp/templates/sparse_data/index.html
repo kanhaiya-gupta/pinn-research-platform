@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Sparse/Noisy Data Learning in PINNs leverages physical laws to guide learning when limited or noisy experimental data is available. This approach reduces dependence on large labeled datasets by incorporating fundamental physics as a form of regularization and prior knowledge.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Physics-Guided Learning:</strong> Physical laws act as regularizers</li>
+                    <li><strong>Data Efficiency:</strong> Learn from limited experimental data</li>
+                    <li><strong>Noise Robustness:</strong> Handle noisy measurements effectively</li>
+                    <li><strong>Data Augmentation:</strong> Physics constraints provide additional training signals</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Sparse Data Learning
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-database"></i>
+                            Start Sparse Data Learning
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-flask"></i> Experimental Data Analysis</h4>
+                <p>Learn from limited experimental measurements by incorporating physical constraints and laws.</p>
+                <ul>
+                    <li>Laboratory measurements</li>
+                    <li>Field observations</li>
+                    <li>Sensor data analysis</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-chart-line"></i> Noisy Data Processing</h4>
+                <p>Handle noisy experimental data by using physics as a denoising mechanism.</p>
+                <ul>
+                    <li>Signal denoising</li>
+                    <li>Measurement filtering</li>
+                    <li>Data reconstruction</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-expand-arrows-alt"></i> Data Augmentation</h4>
+                <p>Generate additional training data using physics constraints when experimental data is scarce.</p>
+                <ul>
+                    <li>Synthetic data generation</li>
+                    <li>Physics-based augmentation</li>
+                    <li>Training data expansion</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-shield-alt"></i> Robust Learning</h4>
+                <p>Improve model robustness by incorporating physical priors and constraints.</p>
+                <ul>
+                    <li>Outlier detection</li>
+                    <li>Robust estimation</li>
+                    <li>Uncertainty quantification</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Sparse Data -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Sparse Data Learning
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h4>Data Efficiency</h4>
+                <p>Learn effectively from limited experimental data by leveraging physical constraints as additional training signals.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Noise Robustness</h4>
+                <p>Handle noisy measurements by using physics as a denoising mechanism and regularization.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h4>Physics-Guided Learning</h4>
+                <p>Physical laws act as natural regularizers, improving generalization and reducing overfitting.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </div>
+                <h4>Data Augmentation</h4>
+                <p>Generate additional training data using physics constraints when experimental data is scarce.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-database"></i>
+                Start Sparse Data Learning
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

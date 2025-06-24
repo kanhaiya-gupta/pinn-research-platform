@@ -1,0 +1,791 @@
+/* Main CSS for PINN Dashboard */
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --info-color: #17a2b8;
+    --background-color: #f8f9fa;
+    --text-color: #2c3e50;
+    --border-color: #dee2e6;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.main-content {
+    padding: 2rem 0;
+    min-height: calc(100vh - 76px);
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    margin-right: 0.5rem;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.main-title i {
+    margin-right: 1rem;
+    color: var(--warning-color);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* PINN Purposes Section */
+.purposes-section {
+    margin-bottom: 3rem;
+}
+
+.purposes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.purpose-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.purpose-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.purpose-header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.purpose-icon {
+    font-size: 1.8rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.purpose-title h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.purpose-body {
+    padding: 1.5rem;
+}
+
+.purpose-description {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.purpose-examples {
+    margin-bottom: 1.5rem;
+}
+
+.purpose-examples ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.purpose-examples li {
+    margin-bottom: 0.25rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.purpose-actions {
+    margin-top: 1rem;
+}
+
+.purpose-actions .btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Statistics Cards */
+.stats-section {
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border-left: 4px solid var(--secondary-color);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 50%;
+}
+
+.stat-content h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.stat-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: var(--secondary-color);
+}
+
+/* Equations Grid */
+.equations-section {
+    margin-bottom: 3rem;
+}
+
+.equations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.equation-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.equation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.equation-header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.equation-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.equation-title h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.equation-formula {
+    margin: 0.5rem 0 0 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    background: rgba(52, 152, 219, 0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.equation-body {
+    padding: 1.5rem;
+}
+
+.equation-description {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.equation-purposes {
+    margin-bottom: 1.5rem;
+}
+
+.purpose-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.purpose-tag {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 500;
+}
+
+.equation-applications {
+    margin-bottom: 1.5rem;
+}
+
+.equation-applications ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.equation-applications li {
+    margin-bottom: 0.25rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.equation-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.equation-actions .btn {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+/* Research Section */
+.research-section {
+    margin-bottom: 3rem;
+}
+
+.research-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    transition: var(--transition);
+    border-left: 4px solid var(--secondary-color);
+}
+
+.research-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.research-card h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.research-card p {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.research-card ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.research-card li {
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+/* Quick Start Section */
+.quick-start-section {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.step-card {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.step-card:hover {
+    background: rgba(52, 152, 219, 0.05);
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: var(--secondary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 1rem auto;
+}
+
+.step-card h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.step-card p {
+    color: #666;
+    margin: 0;
+}
+
+/* Purpose Detail Page Styles */
+.purpose-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.purpose-header-section {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    box-shadow: var(--shadow);
+}
+
+.purpose-header-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.purpose-icon-large {
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.purpose-info h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.purpose-description-large {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Overview Section */
+.overview-section {
+    margin-bottom: 3rem;
+}
+
+.overview-content {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.overview-content p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.key-features h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.key-features ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.key-features li {
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+/* Research Grid */
+.research-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Advantages Grid */
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.advantage-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.advantage-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.advantage-icon {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.advantage-card h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.advantage-card p {
+    color: #666;
+    margin: 0;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition);
+    border: none;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-primary {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .purposes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .equations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .equation-actions {
+        flex-direction: column;
+    }
+    
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .purpose-tags {
+        flex-direction: column;
+    }
+    
+    .purpose-header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .research-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .advantages-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Alerts */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: var(--shadow);
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-title i {
+    margin-right: 0.5rem;
+    color: var(--secondary-color);
+}
+
+/* Configuration Form Styles */
+.configuration-section {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.config-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+.config-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--secondary-color);
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.section-header i {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+.simulation-form {
+    margin-top: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.form-group input {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-text {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-large {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Responsive adjustments for configuration */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .config-section {
+        padding: 1rem;
+    }
+    
+    .configuration-section {
+        padding: 1.5rem;
+    }
+} 

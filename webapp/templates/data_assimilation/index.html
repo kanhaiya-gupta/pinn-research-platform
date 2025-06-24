@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Data Assimilation in PINNs combines observational data with physical models to improve predictions and state estimation. This approach integrates real-time measurements with physics-based simulations to provide more accurate and reliable forecasts.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Observational Integration:</strong> Incorporate real-time measurements</li>
+                    <li><strong>State Estimation:</strong> Estimate system states from partial observations</li>
+                    <li><strong>Forecast Improvement:</strong> Enhance predictions using data assimilation</li>
+                    <li><strong>Uncertainty Reduction:</strong> Reduce prediction uncertainties with observations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Equations for Data Assimilation
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in supported_equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-sync"></i>
+                            Start Data Assimilation
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-cloud"></i> Weather Forecasting</h4>
+                <p>Assimilate atmospheric observations to improve weather predictions and climate modeling.</p>
+                <ul>
+                    <li>Atmospheric data assimilation</li>
+                    <li>Weather prediction improvement</li>
+                    <li>Climate model calibration</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-water"></i> Ocean Modeling</h4>
+                <p>Integrate oceanographic measurements to enhance ocean circulation and wave predictions.</p>
+                <ul>
+                    <li>Ocean current assimilation</li>
+                    <li>Wave height prediction</li>
+                    <li>Marine ecosystem modeling</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-satellite"></i> Remote Sensing</h4>
+                <p>Combine satellite observations with physical models for environmental monitoring.</p>
+                <ul>
+                    <li>Satellite data assimilation</li>
+                    <li>Environmental monitoring</li>
+                    <li>Land surface modeling</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-industry"></i> Industrial Processes</h4>
+                <p>Integrate sensor data with process models for real-time monitoring and control.</p>
+                <ul>
+                    <li>Process monitoring</li>
+                    <li>Real-time control</li>
+                    <li>Quality prediction</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Data Assimilation -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Data Assimilation
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-sync"></i>
+                </div>
+                <h4>Unified Framework</h4>
+                <p>Seamlessly integrate observations with physics in a single differentiable framework.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Real-time Assimilation</h4>
+                <p>Enable real-time data assimilation for dynamic systems with fast response requirements.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h4>Differentiable Optimization</h4>
+                <p>End-to-end differentiable framework enables efficient state estimation and parameter identification.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Uncertainty Quantification</h4>
+                <p>Provide uncertainty estimates for assimilated states and predictions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-sync"></i>
+                Start Data Assimilation
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 
