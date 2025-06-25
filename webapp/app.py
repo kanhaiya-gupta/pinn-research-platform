@@ -9,7 +9,7 @@ import httpx
 import json
 from config import Config
 
-# Import purpose-specific routers
+# Import purpose-specific routers using absolute imports
 from forward_problems.routes import router as forward_problems_router
 from inverse_problems.routes import router as inverse_problems_router
 from efficiency.routes import router as efficiency_router
