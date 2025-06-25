@@ -101,7 +101,7 @@ class Config:
         }
     }
     
-    # Supported Equations with expanded scope
+        # Supported Equations with expanded scope
     SUPPORTED_EQUATIONS = {
         'burgers': {
             'name': 'Burgers Equation',
@@ -109,7 +109,7 @@ class Config:
             'icon': 'fas fa-water',
             'color': '#3498db',
             'formula': '∂u/∂t + u∂u/∂x = ν∂²u/∂x²',
-            'purposes': ['forward_problems', 'inverse_problems', 'efficiency'],
+            'purposes': ['forward_problems', 'inverse_problems', 'efficiency', 'sparse_data', 'data_assimilation', 'generalization'],
             'applications': ['Shock wave propagation', 'Traffic flow modeling', 'Gas dynamics']
         },
         'heat': {
@@ -118,7 +118,7 @@ class Config:
             'icon': 'fas fa-fire',
             'color': '#e74c3c',
             'formula': '∂u/∂t = α∂²u/∂x²',
-            'purposes': ['forward_problems', 'inverse_problems', 'efficiency', 'sparse_data'],
+            'purposes': ['forward_problems', 'inverse_problems', 'efficiency', 'sparse_data', 'data_assimilation', 'generalization', 'uncertainty'],
             'applications': ['Thermal analysis', 'Material processing', 'Climate modeling']
         },
         'wave': {
@@ -127,7 +127,7 @@ class Config:
             'icon': 'fas fa-wave-square',
             'color': '#9b59b6',
             'formula': '∂²u/∂t² = c²∂²u/∂x²',
-            'purposes': ['forward_problems', 'inverse_problems', 'efficiency', 'multiphysics'],
+            'purposes': ['forward_problems', 'inverse_problems', 'efficiency', 'multiphysics', 'sparse_data', 'data_assimilation', 'generalization'],
             'applications': ['Acoustic waves', 'Electromagnetic waves', 'Seismic waves']
         },
         'shm': {
@@ -136,7 +136,7 @@ class Config:
             'icon': 'fas fa-sync',
             'color': '#f39c12',
             'formula': 'd²x/dt² + ω²x = 0',
-            'purposes': ['forward_problems', 'control_optimization', 'generalization'],
+            'purposes': ['forward_problems', 'control_optimization', 'generalization', 'efficiency', 'sparse_data', 'uncertainty'],
             'applications': ['Mechanical vibrations', 'Electrical circuits', 'Molecular dynamics']
         },
         'helmholtz': {
@@ -145,7 +145,7 @@ class Config:
             'icon': 'fas fa-atom',
             'color': '#1abc9c',
             'formula': '∇²u + k²u = 0',
-            'purposes': ['forward_problems', 'inverse_problems', 'multiphysics'],
+            'purposes': ['forward_problems', 'inverse_problems', 'multiphysics', 'efficiency', 'sparse_data', 'scientific_discovery'],
             'applications': ['Acoustic scattering', 'Electromagnetic fields', 'Quantum mechanics']
         },
         'navier_stokes': {
@@ -154,7 +154,7 @@ class Config:
             'icon': 'fas fa-wind',
             'color': '#34495e',
             'formula': 'ρ(∂v/∂t + v·∇v) = -∇p + μ∇²v + f',
-            'purposes': ['forward_problems', 'inverse_problems', 'multiphysics', 'efficiency'],
+            'purposes': ['forward_problems', 'inverse_problems', 'multiphysics', 'efficiency', 'data_assimilation', 'scientific_discovery', 'uncertainty'],
             'applications': ['Aerodynamics', 'Oceanography', 'Blood flow modeling']
         },
         'schrodinger': {
@@ -163,7 +163,7 @@ class Config:
             'icon': 'fas fa-quantum',
             'color': '#8e44ad',
             'formula': 'iℏ∂ψ/∂t = Ĥψ',
-            'purposes': ['forward_problems', 'scientific_discovery', 'uncertainty'],
+            'purposes': ['forward_problems', 'scientific_discovery', 'uncertainty', 'efficiency', 'sparse_data', 'generalization'],
             'applications': ['Quantum chemistry', 'Material properties', 'Quantum computing']
         },
         'maxwell': {
@@ -172,9 +172,9 @@ class Config:
             'icon': 'fas fa-bolt',
             'color': '#e67e22',
             'formula': '∇·E = ρ/ε₀, ∇×E = -∂B/∂t, ∇·B = 0, ∇×B = μ₀J + μ₀ε₀∂E/∂t',
-            'purposes': ['forward_problems', 'multiphysics', 'efficiency'],
+            'purposes': ['forward_problems', 'multiphysics', 'efficiency', 'scientific_discovery', 'uncertainty'],
             'applications': ['Antenna design', 'Optical systems', 'Electromagnetic compatibility']
-        }
+        },
     }
     
     # Default Parameters for each equation
@@ -375,7 +375,7 @@ class Config:
         }
     }
     
-    # Architecture Recommendations by Purpose
+        # Architecture Recommendations by Purpose
     ARCHITECTURE_RECOMMENDATIONS = {
         'forward_problems': {
             'hidden_activation': 'tanh',
@@ -388,6 +388,12 @@ class Config:
             'output_activation': 'linear',
             'optimizer': 'adam_lbfgs',
             'notes': 'Sensitive to optimizer tuning, Adam + L-BFGS ideal'
+        },
+        'efficiency': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam_lbfgs',
+            'notes': 'Fast convergence + smooth activations for real-time applications'
         },
         'sparse_data': {
             'hidden_activation': 'tanh',
@@ -418,6 +424,12 @@ class Config:
             'output_activation': 'linear',
             'optimizer': 'adam',
             'notes': 'Extended with probabilistic layers or ensembles'
+        },
+        'generalization': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam_lbfgs',
+            'notes': 'Physics constraints act as regularizers for better generalization'
         },
         'control_optimization': {
             'hidden_activation': 'tanh',
