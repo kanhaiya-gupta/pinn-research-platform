@@ -18,14 +18,15 @@ class MLP(nn.Module):
     """Multi-Layer Perceptron with customizable architecture."""
 
     def __init__(self, input_dim: int, output_dim: int, hidden_dims: List[int],
-                 activation: str = "tanh", dropout: float = 0.0):
+                 activation: str = "tanh", output_activation: str = "linear", dropout: float = 0.0):
         """Initialize MLP.
 
         Args:
             input_dim (int): Input dimension.
             output_dim (int): Output dimension.
             hidden_dims (List[int]): List of hidden layer dimensions.
-            activation (str): Activation function ('tanh', 'relu', 'sigmoid', 'swish').
+            activation (str): Activation function for hidden layers ('tanh', 'relu', 'sigmoid', 'swish').
+            output_activation (str): Activation function for output layer ('linear', 'tanh', 'sigmoid', 'softplus').
             dropout (float): Dropout rate.
         """
         super(MLP, self).__init__()
@@ -34,6 +35,7 @@ class MLP(nn.Module):
         self.output_dim = output_dim
         self.hidden_dims = hidden_dims
         self.activation_name = activation
+        self.output_activation_name = output_activation
         self.dropout = dropout
         
         # Build layers
@@ -48,6 +50,10 @@ class MLP(nn.Module):
             prev_dim = hidden_dim
         
         layers.append(nn.Linear(prev_dim, output_dim))
+        
+        # Add output activation if not linear
+        if output_activation.lower() != "linear":
+            layers.append(self._get_activation(output_activation))
         
         self.network = nn.Sequential(*layers)
         
@@ -65,10 +71,14 @@ class MLP(nn.Module):
         """
         if activation.lower() == "tanh":
             return nn.Tanh()
+        elif activation.lower() == "sin":
+            return SinActivation()
         elif activation.lower() == "relu":
             return nn.ReLU()
         elif activation.lower() == "sigmoid":
             return nn.Sigmoid()
+        elif activation.lower() == "softplus":
+            return nn.Softplus()
         elif activation.lower() == "swish":
             return nn.SiLU()
         elif activation.lower() == "gelu":
@@ -315,10 +325,14 @@ class ResNetPINN(nn.Module):
         """Get activation function."""
         if activation.lower() == "tanh":
             return nn.Tanh()
+        elif activation.lower() == "sin":
+            return SinActivation()
         elif activation.lower() == "relu":
             return nn.ReLU()
         elif activation.lower() == "sigmoid":
             return nn.Sigmoid()
+        elif activation.lower() == "softplus":
+            return nn.Softplus()
         elif activation.lower() == "swish":
             return nn.SiLU()
         elif activation.lower() == "gelu":
@@ -384,10 +398,14 @@ class ResidualBlock(nn.Module):
         # Activation function
         if activation.lower() == "tanh":
             self.activation = nn.Tanh()
+        elif activation.lower() == "sin":
+            self.activation = SinActivation()
         elif activation.lower() == "relu":
             self.activation = nn.ReLU()
         elif activation.lower() == "sigmoid":
             self.activation = nn.Sigmoid()
+        elif activation.lower() == "softplus":
+            self.activation = nn.Softplus()
         elif activation.lower() == "swish":
             self.activation = nn.SiLU()
         elif activation.lower() == "gelu":
@@ -416,6 +434,24 @@ class ResidualBlock(nn.Module):
         out = self.layer2(out)
         
         return self.activation(out + identity)
+
+
+class SinActivation(nn.Module):
+    """Sine activation function for PINNs - useful for high-frequency problems."""
+    
+    def __init__(self):
+        super(SinActivation, self).__init__()
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass with sine activation.
+        
+        Args:
+            x (torch.Tensor): Input tensor.
+            
+        Returns:
+            torch.Tensor: sin(x)
+        """
+        return torch.sin(x)
 
 
 def create_pinn_model(model_type: str = "standard", **kwargs) -> nn.Module:

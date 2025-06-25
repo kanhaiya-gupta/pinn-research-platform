@@ -59,6 +59,55 @@
                         <small class="form-text">Neurons in each hidden layer</small>
                     </div>
                 </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hidden_activation">Hidden Layers Activation</label>
+                        <select id="hidden_activation" name="hidden_activation" required>
+                            <option value="tanh" selected>tanh - Hyperbolic Tangent (Recommended)</option>
+                            <option value="sin">sin - Sine Function (High-frequency problems)</option>
+                            <option value="softplus">softplus - Smooth ReLU Alternative</option>
+                            <option value="sigmoid">sigmoid - Sigmoid Function</option>
+                            <option value="relu">relu - ReLU (Not recommended for PINNs)</option>
+                        </select>
+                        <small class="form-text">Activation function for hidden layers (must be smooth for PDEs)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="output_activation">Output Layer Activation</label>
+                        <select id="output_activation" name="output_activation" required>
+                            <option value="linear" selected>linear - No Activation (Standard)</option>
+                            <option value="tanh">tanh - Bounded (-1 to 1)</option>
+                            <option value="sigmoid">sigmoid - Bounded (0 to 1)</option>
+                            <option value="softplus">softplus - Positive (≥ 0)</option>
+                        </select>
+                        <small class="form-text">Activation function for output layer</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="optimizer">Optimizer</label>
+                        <select id="optimizer" name="optimizer" required>
+                            <option value="adam_lbfgs" selected>Adam → L-BFGS (Best Practice)</option>
+                            <option value="adam">Adam (Fast initial convergence)</option>
+                            <option value="lbfgs">L-BFGS (High precision)</option>
+                            <option value="sgd">SGD (Not recommended for PINNs)</option>
+                        </select>
+                        <small class="form-text">Optimization algorithm</small>
+                    </div>
+                </div>
+                
+                <!-- Architecture Recommendations -->
+                <div class="recommendation-box">
+                    <h4><i class="fas fa-lightbulb"></i> Architecture Recommendations for {{ purpose.name }}</h4>
+                    <div class="recommendation-content">
+                        <p><strong>Hidden Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].hidden_activation|upper }}</p>
+                        <p><strong>Output Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].output_activation|upper }}</p>
+                        <p><strong>Optimizer:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].optimizer|upper }}</p>
+                        <p><strong>Notes:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].notes }}</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Training Configuration -->

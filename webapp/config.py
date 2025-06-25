@@ -260,82 +260,170 @@ class Config:
     
     # Parameter descriptions for UI
     PARAMETER_DESCRIPTIONS = {
-        'burgers': {
-            'nu': 'Viscosity coefficient',
-            'nx': 'Number of spatial points',
-            'nt': 'Number of time points',
-            'x_min': 'Minimum x value',
-            'x_max': 'Maximum x value',
-            't_min': 'Minimum time value',
-            't_max': 'Maximum time value'
+        'nu': 'Viscosity coefficient',
+        'alpha': 'Thermal diffusivity',
+        'c': 'Wave speed',
+        'omega': 'Angular frequency',
+        'k': 'Wavenumber',
+        'reynolds': 'Reynolds number',
+        'hbar': 'Reduced Planck constant',
+        'mass': 'Particle mass',
+        'epsilon': 'Permittivity',
+        'mu': 'Permeability'
+    }
+    
+    # Activation Functions Configuration
+    ACTIVATION_FUNCTIONS = {
+        'hidden_activations': {
+            'tanh': {
+                'name': 'Hyperbolic Tangent (tanh)',
+                'description': 'Smooth, differentiable - ideal for PDEs',
+                'suitability': 'Very common in PINNs',
+                'notes': 'Smooth, differentiable — ideal for PDEs',
+                'recommended_for': ['forward_problems', 'inverse_problems', 'data_assimilation']
+            },
+            'sin': {
+                'name': 'Sine Function (sin)',
+                'description': 'Captures high-frequency patterns and oscillatory behavior',
+                'suitability': 'High-frequency problems (e.g., Fourier PINNs)',
+                'notes': 'Captures fine details and oscillatory behavior',
+                'recommended_for': ['scientific_discovery', 'multiphysics', 'high_frequency']
+            },
+            'softplus': {
+                'name': 'Softplus Function',
+                'description': 'Smooth ReLU alternative - smooth and differentiable',
+                'suitability': 'Sometimes used as ReLU alternative',
+                'notes': 'Smooth ReLU alternative, good for bounded outputs',
+                'recommended_for': ['bounded_outputs', 'positive_values']
+            },
+            'relu': {
+                'name': 'Rectified Linear Unit (ReLU)',
+                'description': 'Not recommended for PINNs due to lack of smoothness',
+                'suitability': 'Generally avoided in PINNs',
+                'notes': 'Not smooth — poor for higher-order PDEs',
+                'recommended_for': ['avoid_in_pinns']
+            },
+            'sigmoid': {
+                'name': 'Sigmoid Function',
+                'description': 'For bounded outputs between 0 and 1',
+                'suitability': 'When output needs bounding',
+                'notes': 'Useful when solution values need to be bounded',
+                'recommended_for': ['bounded_outputs', 'probability_outputs']
+            }
         },
-        'heat': {
-            'alpha': 'Thermal diffusivity',
-            'nx': 'Number of spatial points',
-            'nt': 'Number of time points',
-            'x_min': 'Minimum x value',
-            'x_max': 'Maximum x value',
-            't_min': 'Minimum time value',
-            't_max': 'Maximum time value'
+        'output_activations': {
+            'linear': {
+                'name': 'Linear (No Activation)',
+                'description': 'No transformation - standard for most PINN outputs',
+                'suitability': 'Most common for PINN outputs',
+                'notes': 'No transformation applied - raw network output',
+                'recommended_for': ['most_pinn_applications', 'unbounded_outputs']
+            },
+            'tanh': {
+                'name': 'Hyperbolic Tangent (tanh)',
+                'description': 'Bounded output between -1 and 1',
+                'suitability': 'When solution is bounded',
+                'notes': 'Useful for normalized or bounded physical variables',
+                'recommended_for': ['bounded_solutions', 'normalized_outputs']
+            },
+            'sigmoid': {
+                'name': 'Sigmoid Function',
+                'description': 'Bounded output between 0 and 1',
+                'suitability': 'Probability or positive bounded outputs',
+                'notes': 'Useful for probabilities or positive bounded variables',
+                'recommended_for': ['probabilities', 'positive_bounded']
+            },
+            'softplus': {
+                'name': 'Softplus Function',
+                'description': 'Positive output (≥ 0)',
+                'suitability': 'When solution must be positive',
+                'notes': 'Smooth alternative to ReLU for positive outputs',
+                'recommended_for': ['positive_outputs', 'concentrations', 'temperatures']
+            }
+        }
+    }
+    
+    # Optimizers Configuration
+    OPTIMIZERS = {
+        'adam': {
+            'name': 'Adam Optimizer',
+            'description': 'Adaptive learning rate optimizer',
+            'suitability': 'Pre-training or early phases',
+            'notes': 'Fast and adaptive, good for initial convergence',
+            'recommended_for': ['initial_training', 'adaptive_learning']
         },
-        'wave': {
-            'c': 'Wave speed',
-            'nx': 'Number of spatial points',
-            'nt': 'Number of time points',
-            'x_min': 'Minimum x value',
-            'x_max': 'Maximum x value',
-            't_min': 'Minimum time value',
-            't_max': 'Maximum time value'
+        'lbfgs': {
+            'name': 'L-BFGS Optimizer',
+            'description': 'Second-order optimization method',
+            'suitability': 'Final convergence',
+            'notes': 'Full-batch, second-order, excellent for PDEs',
+            'recommended_for': ['final_convergence', 'high_precision']
         },
-        'shm': {
-            'omega': 'Angular frequency',
-            'nt': 'Number of time points',
-            't_min': 'Minimum time value',
-            't_max': 'Maximum time value'
+        'adam_lbfgs': {
+            'name': 'Adam → L-BFGS Hybrid',
+            'description': 'Best practice combination for PINNs',
+            'suitability': 'Best practice combination',
+            'notes': 'Combines speed of Adam with precision of L-BFGS',
+            'recommended_for': ['best_practice', 'production_use']
         },
-        'helmholtz': {
-            'k': 'Wavenumber',
-            'nx': 'Number of x points',
-            'ny': 'Number of y points',
-            'x_min': 'Minimum x value',
-            'x_max': 'Maximum x value',
-            'y_min': 'Minimum y value',
-            'y_max': 'Maximum y value'
+        'sgd': {
+            'name': 'Stochastic Gradient Descent',
+            'description': 'Basic gradient descent optimizer',
+            'suitability': 'Rare in PINNs',
+            'notes': 'Too noisy, unstable for PINN training',
+            'recommended_for': ['avoid_in_pinns']
+        }
+    }
+    
+    # Architecture Recommendations by Purpose
+    ARCHITECTURE_RECOMMENDATIONS = {
+        'forward_problems': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam_lbfgs',
+            'notes': 'Smooth hidden activations + linear output + L-BFGS for PDE solving'
         },
-        'navier_stokes': {
-            'reynolds': 'Reynolds number',
-            'nx': 'Number of x points',
-            'ny': 'Number of y points',
-            'nt': 'Number of time points',
-            'x_min': 'Minimum x value',
-            'x_max': 'Maximum x value',
-            'y_min': 'Minimum y value',
-            'y_max': 'Maximum y value',
-            't_min': 'Minimum time value',
-            't_max': 'Maximum time value'
+        'inverse_problems': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam_lbfgs',
+            'notes': 'Sensitive to optimizer tuning, Adam + L-BFGS ideal'
         },
-        'schrodinger': {
-            'hbar': 'Reduced Planck constant',
-            'mass': 'Particle mass',
-            'nx': 'Number of spatial points',
-            'nt': 'Number of time points',
-            'x_min': 'Minimum x value',
-            'x_max': 'Maximum x value',
-            't_min': 'Minimum time value',
-            't_max': 'Maximum time value'
+        'sparse_data': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam',
+            'notes': 'Physics loss helps regularize; tanh preferred'
         },
-        'maxwell': {
-            'epsilon': 'Permittivity',
-            'mu': 'Permeability',
-            'nx': 'Number of x points',
-            'ny': 'Number of y points',
-            'nt': 'Number of time points',
-            'x_min': 'Minimum x value',
-            'x_max': 'Maximum x value',
-            'y_min': 'Minimum y value',
-            'y_max': 'Maximum y value',
-            't_min': 'Minimum time value',
-            't_max': 'Maximum time value'
+        'data_assimilation': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam_lbfgs',
+            'notes': 'Requires loss weighting + smooth activations'
+        },
+        'multiphysics': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam',
+            'notes': 'May need custom activations or domain decomposition'
+        },
+        'scientific_discovery': {
+            'hidden_activation': 'sin',
+            'output_activation': 'linear',
+            'optimizer': 'adam_lbfgs',
+            'notes': 'sin/tanh + robust optimizer; may use symbolic loss'
+        },
+        'uncertainty': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam',
+            'notes': 'Extended with probabilistic layers or ensembles'
+        },
+        'control_optimization': {
+            'hidden_activation': 'tanh',
+            'output_activation': 'linear',
+            'optimizer': 'adam_lbfgs',
+            'notes': 'Differentiable models needed → smooth activations'
         }
     }
 

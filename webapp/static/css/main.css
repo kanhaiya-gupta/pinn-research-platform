@@ -750,9 +750,41 @@ body {
 }
 
 .form-text {
-    font-size: 0.85rem;
-    color: #666;
+    font-size: 0.875rem;
+    color: #6c757d;
     margin-top: 0.25rem;
+}
+
+.recommendation-box {
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border: 1px solid #bbdefb;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-box h4 {
+    color: #1976d2;
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recommendation-box h4 i {
+    color: #ff9800;
+}
+
+.recommendation-content p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #424242;
+}
+
+.recommendation-content strong {
+    color: #1976d2;
 }
 
 .form-actions {
