@@ -13,6 +13,10 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from config import Config
 
+# Add comprehensive models import
+sys.path.append(str(Path(__file__).parent.parent.parent))
+from utils.comprehensive_models import ComprehensiveTrainingRequest, SamplingMethod, BoundaryConditionType, InitialConditionType
+
 router = APIRouter(prefix="/purpose/efficiency", tags=["Simulation Efficiency"])
 templates = Jinja2Templates(directory="templates")
 config = Config()
@@ -183,3 +187,99 @@ def map_parameters_to_backend(eq_type: str, frontend_params: dict) -> dict:
         })
     
     return backend_params
+
+
+@router.get("/comprehensive-parameters")
+async def get_comprehensive_parameters():
+    """Get comprehensive parameter options and recommendations."""
+    return {
+        "sampling_methods": [method.value for method in SamplingMethod],
+        "boundary_conditions": [bc.value for bc in BoundaryConditionType],
+        "initial_conditions": [ic.value for ic in InitialConditionType],
+        "activation_functions": {
+            "hidden": ["tanh", "sin", "softplus", "sigmoid", "relu"],
+            "output": ["linear", "tanh", "sigmoid", "softplus"]
+        },
+        "optimizers": ["adam", "lbfgs", "adam_lbfgs", "sgd"],
+        "weight_inits": ["xavier", "normal", "uniform", "he"],
+        "schedulers": ["constant", "step", "cosine", "exponential"],
+        "error_metrics": ["l2_norm", "relative_error", "rmse", "mae", "max_error"],
+        "scaling_methods": ["none", "domain_size", "adaptive"]
+    }
+
+@router.get("/parameter-recommendations")
+async def get_parameter_recommendations(equation: str = "burgers"):
+    """Get parameter recommendations for specific equations."""
+    recommendations = {
+        "burgers": {
+            "hidden_activation": "tanh",
+            "output_activation": "linear",
+            "optimizer": "adam_lbfgs",
+            "time_duration": 1.0,
+            "time_points": 100,
+            "n_interior_points": 1000,
+            "n_boundary_points": 200,
+            "physics_weight": 1.0,
+            "boundary_weight": 1.0,
+            "initial_weight": 1.0,
+            "notes": "Burgers equation benefits from smooth activations and careful loss balancing"
+        },
+        "heat": {
+            "hidden_activation": "tanh",
+            "output_activation": "linear",
+            "optimizer": "adam_lbfgs",
+            "time_duration": 1.0,
+            "time_points": 100,
+            "n_interior_points": 800,
+            "n_boundary_points": 150,
+            "physics_weight": 1.0,
+            "boundary_weight": 1.0,
+            "initial_weight": 1.0,
+            "notes": "Heat equation is well-behaved, standard parameters work well"
+        },
+        "wave": {
+            "hidden_activation": "sin",
+            "output_activation": "linear",
+            "optimizer": "adam_lbfgs",
+            "time_duration": 2.0,
+            "time_points": 200,
+            "n_interior_points": 1200,
+            "n_boundary_points": 300,
+            "physics_weight": 1.0,
+            "boundary_weight": 1.0,
+            "initial_weight": 1.0,
+            "notes": "Wave equation benefits from sin activation for oscillatory behavior"
+        }
+    }
+    
+    return recommendations.get(equation, recommendations["burgers"])
+
+@router.post("/validate-parameters")
+async def validate_parameters(request: ComprehensiveTrainingRequest):
+    """Validate comprehensive training parameters."""
+    validation_results = {
+        "valid": True,
+        "warnings": [],
+        "errors": []
+    }
+    
+    # Check for potential issues
+    if request.hidden_activation == "relu":
+        validation_results["warnings"].append("ReLU activation may not be smooth enough for PDEs")
+    
+    if request.optimizer == "sgd":
+        validation_results["warnings"].append("SGD optimizer is not recommended for PINNs")
+    
+    if request.learning_rate > 0.01:
+        validation_results["warnings"].append("High learning rate may cause instability")
+    
+    if request.n_interior_points < 500:
+        validation_results["warnings"].append("Low number of interior points may affect accuracy")
+    
+    if request.physics_weight < 0.1 or request.physics_weight > 10.0:
+        validation_results["errors"].append("Physics weight should be between 0.1 and 10.0")
+    
+    if validation_results["errors"]:
+        validation_results["valid"] = False
+    
+    return validation_results
