@@ -36,7 +36,7 @@
         <h2><i class="fas fa-cogs"></i> Simulation Configuration</h2>
         
         <form id="simulation-form" class="simulation-form">
-            <!-- Neural Network Configuration -->
+                        <!-- Neural Network Configuration -->
             <div class="config-section">
                 <h3 class="section-header">
                     <i class="fas fa-brain"></i>
@@ -59,21 +59,72 @@
                         <small class="form-text">Neurons in each hidden layer</small>
                     </div>
                 </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hidden_activation">Hidden Layers Activation</label>
+                        <select id="hidden_activation" name="hidden_activation" required>
+                            <option value="tanh" selected>tanh - Hyperbolic Tangent (Recommended)</option>
+                            <option value="sin">sin - Sine Function (High-frequency problems)</option>
+                            <option value="softplus">softplus - Smooth ReLU Alternative</option>
+                            <option value="sigmoid">sigmoid - Sigmoid Function</option>
+                            <option value="relu">relu - ReLU (Not recommended for PINNs)</option>
+                        </select>
+                        <small class="form-text">Activation function for hidden layers (must be smooth for PDEs)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="output_activation">Output Layer Activation</label>
+                        <select id="output_activation" name="output_activation" required>
+                            <option value="linear" selected>linear - No Activation (Standard)</option>
+                            <option value="tanh">tanh - Bounded (-1 to 1)</option>
+                            <option value="sigmoid">sigmoid - Bounded (0 to 1)</option>
+                            <option value="softplus">softplus - Positive (≥ 0)</option>
+                        </select>
+                        <small class="form-text">Activation function for output layer</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="optimizer">Optimizer</label>
+                        <select id="optimizer" name="optimizer" required>
+                            <option value="adam_lbfgs" selected>Adam → L-BFGS (Best Practice)</option>
+                            <option value="adam">Adam (Fast initial convergence)</option>
+                            <option value="lbfgs">L-BFGS (High precision)</option>
+                            <option value="sgd">SGD (Not recommended for PINNs)</option>
+                        </select>
+                        <small class="form-text">Optimization algorithm</small>
+                    </div>
+                </div>
+                
+                <!-- Architecture Recommendations -->
+                <div class="recommendation-box">
+                    <h4><i class="fas fa-lightbulb"></i> Architecture Recommendations for {{ purpose.name }}</h4>
+                    <div class="recommendation-content">
+                        <p><strong>Hidden Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].hidden_activation|upper }}</p>
+                        <p><strong>Output Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].output_activation|upper }}</p>
+                        <p><strong>Optimizer:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].optimizer|upper }}</p>
+                        <p><strong>Notes:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].notes }}</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Training Configuration -->
+                        <!-- Training Configuration -->
             <div class="config-section">
                 <h3 class="section-header">
                     <i class="fas fa-graduation-cap"></i>
                     Training Parameters
                 </h3>
+                
+                <!-- Basic Training Parameters -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="learning_rate">Learning Rate</label>
                         <input type="number" id="learning_rate" name="learning_rate" 
                                value="{{ default_params.learning_rate|default(0.001) }}" 
                                step="0.0001" min="0.0001" max="0.1" required>
-                        <small class="form-text">Gradient descent step size</small>
+                        <small class="form-text">Step size for gradient updates</small>
                     </div>
                     
                     <div class="form-group">
@@ -81,7 +132,148 @@
                         <input type="number" id="epochs" name="epochs" 
                                value="{{ default_params.epochs|default(10000) }}" 
                                min="1000" max="100000" required>
-                        <small class="form-text">Number of training iterations</small>
+                        <small class="form-text">Number of full training iterations</small>
+                    </div>
+                </div>
+                
+                <!-- Advanced Training Parameters -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="learning_rate_scheduler">Learning Rate Scheduler</label>
+                        <select id="learning_rate_scheduler" name="learning_rate_scheduler" required>
+                            <option value="constant" selected>Constant (Fixed LR)</option>
+                            <option value="step">Step Decay</option>
+                            <option value="cosine">Cosine Annealing</option>
+                            <option value="exponential">Exponential Decay</option>
+                        </select>
+                        <small class="form-text">How learning rate changes during training</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weight_init">Weight Initialization</label>
+                        <select id="weight_init" name="weight_init" required>
+                            <option value="xavier" selected>Xavier/Glorot (Recommended)</option>
+                            <option value="normal">Normal Distribution</option>
+                            <option value="uniform">Uniform Distribution</option>
+                            <option value="he">He (Not recommended for PINNs)</option>
+                        </select>
+                        <small class="form-text">Initial weight distribution strategy</small>
+                    </div>
+                </div>
+                
+                <!-- Scheduler Parameters (conditionally shown) -->
+                <div id="scheduler-params" class="form-row" style="display: none;">
+                    <div class="form-group">
+                        <label for="scheduler_step_size">Scheduler Step Size</label>
+                        <input type="number" id="scheduler_step_size" name="scheduler_step_size" 
+                               value="1000" min="100" max="10000">
+                        <small class="form-text">Epochs between LR reductions</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="scheduler_gamma">Scheduler Gamma</label>
+                        <input type="number" id="scheduler_gamma" name="scheduler_gamma" 
+                               value="0.9" step="0.1" min="0.1" max="1.0">
+                        <small class="form-text">LR reduction factor</small>
+                    </div>
+                </div>
+                
+                <!-- Training Control -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gradient_clipping">Gradient Clipping</label>
+                        <input type="number" id="gradient_clipping" name="gradient_clipping" 
+                               value="" step="0.1" min="0.1" max="10.0" placeholder="None (disabled)">
+                        <small class="form-text">Max gradient norm (prevents exploding gradients)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="early_stopping_patience">Early Stopping Patience</label>
+                        <input type="number" id="early_stopping_patience" name="early_stopping_patience" 
+                               value="1000" min="100" max="5000">
+                        <small class="form-text">Epochs to wait before stopping</small>
+                    </div>
+                </div>
+                
+                <!-- Loss Weights (PINN-specific) -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="physics_weight">Physics Loss Weight</label>
+                        <input type="number" id="physics_weight" name="physics_weight" 
+                               value="1.0" step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Weight for PDE residual loss</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="boundary_weight">Boundary Loss Weight</label>
+                        <input type="number" id="boundary_weight" name="boundary_weight" 
+                               value="1.0" step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Weight for boundary condition loss</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="initial_weight">Initial Condition Weight</label>
+                        <input type="number" id="initial_weight" name="initial_weight" 
+                               value="1.0" step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Weight for initial condition loss</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="data_weight">Data Loss Weight</label>
+                        <input type="number" id="data_weight" name="data_weight" 
+                               value="1.0" step="0.1" min="0.1" max="10.0">
+                        <small class="form-text">Weight for data fitting loss (inverse problems)</small>
+                    </div>
+                </div>
+                
+                <!-- Sampling Strategy -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="n_interior_points">Interior Points</label>
+                        <input type="number" id="n_interior_points" name="n_interior_points" 
+                               value="1000" min="100" max="10000" required>
+                        <small class="form-text">Collocation points for PDE</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="n_boundary_points">Boundary Points</label>
+                        <input type="number" id="n_boundary_points" name="n_boundary_points" 
+                               value="200" min="50" max="2000" required>
+                        <small class="form-text">Points for boundary conditions</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="n_initial_points">Initial Points</label>
+                        <input type="number" id="n_initial_points" name="n_initial_points" 
+                               value="200" min="50" max="2000" required>
+                        <small class="form-text">Points for initial conditions</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="n_data_points">Data Points</label>
+                        <input type="number" id="n_data_points" name="n_data_points" 
+                               value="" min="10" max="1000" placeholder="None">
+                        <small class="form-text">Observed data points (inverse problems)</small>
+                    </div>
+                </div>
+                
+                <!-- Training Recommendations -->
+                <div class="recommendation-box">
+                    <h4><i class="fas fa-lightbulb"></i> Training Recommendations for {{ purpose.name }}</h4>
+                    <div class="recommendation-content">
+                        <p><strong>Learning Rate:</strong> {{ config.TRAINING_RECOMMENDATIONS[purpose_key].learning_rate }}</p>
+                        <p><strong>Scheduler:</strong> {{ config.TRAINING_RECOMMENDATIONS[purpose_key].scheduler|title }}</p>
+                        <p><strong>Loss Weights:</strong> Physics={{ config.TRAINING_RECOMMENDATIONS[purpose_key].loss_weights.physics }}, 
+                           Boundary={{ config.TRAINING_RECOMMENDATIONS[purpose_key].loss_weights.boundary }}, 
+                           Initial={{ config.TRAINING_RECOMMENDATIONS[purpose_key].loss_weights.initial }}</p>
+                        <p><strong>Sampling:</strong> Interior={{ config.TRAINING_RECOMMENDATIONS[purpose_key].sampling.interior }}, 
+                           Boundary={{ config.TRAINING_RECOMMENDATIONS[purpose_key].sampling.boundary }}, 
+                           Initial={{ config.TRAINING_RECOMMENDATIONS[purpose_key].sampling.initial }}</p>
+                        <p><strong>Notes:</strong> {{ config.TRAINING_RECOMMENDATIONS[purpose_key].notes }}</p>
                     </div>
                 </div>
             </div>

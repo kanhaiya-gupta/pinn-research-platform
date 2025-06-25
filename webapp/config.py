@@ -427,6 +427,170 @@ class Config:
         }
     }
 
+    # Training Parameters Configuration
+    TRAINING_PARAMETERS = {
+        'learning_rate_schedulers': {
+            'constant': {
+                'name': 'Constant Learning Rate',
+                'description': 'Fixed learning rate throughout training',
+                'suitability': 'Simple problems, stable training',
+                'notes': 'Most common for PINNs'
+            },
+            'step': {
+                'name': 'Step Decay',
+                'description': 'Reduces LR by factor every N epochs',
+                'suitability': 'When convergence plateaus',
+                'notes': 'Good for fine-tuning'
+            },
+            'cosine': {
+                'name': 'Cosine Annealing',
+                'description': 'Smooth learning rate reduction',
+                'suitability': 'Better convergence, less sensitive',
+                'notes': 'Popular in modern deep learning'
+            },
+            'exponential': {
+                'name': 'Exponential Decay',
+                'description': 'Continuous LR reduction',
+                'suitability': 'Stiff problems, careful tuning needed',
+                'notes': 'Can be too aggressive'
+            }
+        },
+        'weight_initializations': {
+            'xavier': {
+                'name': 'Xavier/Glorot',
+                'description': 'Optimal for tanh/sigmoid activations',
+                'suitability': 'Most common, good for PINNs',
+                'notes': 'Default choice for most networks'
+            },
+            'he': {
+                'name': 'He Initialization',
+                'description': 'Good for ReLU-like activations',
+                'suitability': 'Not recommended for PINNs',
+                'notes': 'Designed for ReLU, not smooth activations'
+            },
+            'normal': {
+                'name': 'Normal Distribution',
+                'description': 'Simple normal distribution',
+                'suitability': 'Simple, but may need tuning',
+                'notes': 'Standard deviation matters'
+            },
+            'uniform': {
+                'name': 'Uniform Distribution',
+                'description': 'Bounded weight initialization',
+                'suitability': 'Simple, bounded weights',
+                'notes': 'Range selection is important'
+            }
+        },
+        'batch_strategies': {
+            'full_batch': {
+                'name': 'Full Batch',
+                'description': 'Use all points in each iteration',
+                'suitability': 'Most common in PINNs',
+                'notes': 'Stable gradients, memory intensive'
+            },
+            'mini_batch': {
+                'name': 'Mini Batch',
+                'description': 'Use subset of points per iteration',
+                'suitability': 'Large datasets, memory constraints',
+                'notes': 'May need more epochs'
+            }
+        }
+    }
+    
+    # Training Recommendations by Purpose
+    TRAINING_RECOMMENDATIONS = {
+        'forward_problems': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam_lbfgs',
+            'scheduler': 'constant',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'initial': 1.0},
+            'sampling': {'interior': 1000, 'boundary': 200, 'initial': 200},
+            'notes': 'Standard PINN setup with balanced loss weights'
+        },
+        'inverse_problems': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam_lbfgs',
+            'scheduler': 'step',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'data': 10.0, 'boundary': 1.0},
+            'sampling': {'interior': 1000, 'boundary': 200, 'data': 100},
+            'notes': 'Higher data weight, step scheduler for fine-tuning'
+        },
+        'data_assimilation': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam',
+            'scheduler': 'cosine',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'data': 5.0, 'boundary': 1.0},
+            'sampling': {'interior': 1000, 'boundary': 200, 'data': 200},
+            'notes': 'Balanced physics and data, cosine scheduler'
+        },
+        'scientific_discovery': {
+            'learning_rate': 0.0005,
+            'optimizer': 'adam_lbfgs',
+            'scheduler': 'constant',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'initial': 1.0},
+            'sampling': {'interior': 2000, 'boundary': 400, 'initial': 400},
+            'notes': 'Lower LR, more points for discovery tasks'
+        },
+        'multiphysics': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam',
+            'scheduler': 'step',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'coupling': 1.0},
+            'sampling': {'interior': 1500, 'boundary': 300, 'initial': 300},
+            'notes': 'Step scheduler for complex coupled systems'
+        },
+        'sparse_data': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam',
+            'scheduler': 'constant',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'data': 2.0},
+            'sampling': {'interior': 1000, 'boundary': 200, 'data': 50},
+            'notes': 'Physics loss helps regularize sparse data'
+        },
+        'efficiency': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam',
+            'scheduler': 'constant',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'initial': 1.0},
+            'sampling': {'interior': 800, 'boundary': 150, 'initial': 150},
+            'notes': 'Optimized for speed while maintaining accuracy'
+        },
+        'uncertainty': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam',
+            'scheduler': 'cosine',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'initial': 1.0},
+            'sampling': {'interior': 1000, 'boundary': 200, 'initial': 200},
+            'notes': 'Cosine scheduler for stable uncertainty estimation'
+        },
+        'control_optimization': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam_lbfgs',
+            'scheduler': 'step',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'control': 1.0},
+            'sampling': {'interior': 1000, 'boundary': 200, 'initial': 200},
+            'notes': 'Step scheduler for control optimization convergence'
+        },
+        'generalization': {
+            'learning_rate': 0.001,
+            'optimizer': 'adam',
+            'scheduler': 'cosine',
+            'batch_size': 'full_batch',
+            'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'initial': 1.0},
+            'sampling': {'interior': 1200, 'boundary': 250, 'initial': 250},
+            'notes': 'Cosine scheduler for better generalization'
+        }
+    }
+
 class DevelopmentConfig(Config):
     """Development configuration"""
     DEBUG = True

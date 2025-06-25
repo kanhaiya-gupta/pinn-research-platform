@@ -260,4 +260,138 @@ window.validateBurgersParameters = validateBurgersParameters;
 window.validateHeatParameters = validateHeatParameters;
 window.validateWaveParameters = validateWaveParameters;
 window.validateSHMParameters = validateSHMParameters;
-window.validateHelmholtzParameters = validateHelmholtzParameters; 
+window.validateHelmholtzParameters = validateHelmholtzParameters;
+
+// PINN Simulation JavaScript
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle learning rate scheduler parameter visibility
+    const schedulerSelect = document.getElementById('learning_rate_scheduler');
+    const schedulerParams = document.getElementById('scheduler-params');
+    
+    if (schedulerSelect && schedulerParams) {
+        schedulerSelect.addEventListener('change', function() {
+            if (this.value === 'constant') {
+                schedulerParams.style.display = 'none';
+            } else {
+                schedulerParams.style.display = 'flex';
+            }
+        });
+    }
+    
+    // Form validation and submission
+    const simulationForm = document.getElementById('simulation-form');
+    if (simulationForm) {
+        simulationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            startTraining();
+        });
+    }
+    
+    // Reset form to defaults
+    window.resetForm = function() {
+        if (simulationForm) {
+            simulationForm.reset();
+            // Reset scheduler params visibility
+            if (schedulerSelect && schedulerParams) {
+                schedulerParams.style.display = 'none';
+            }
+        }
+    };
+});
+
+function startTraining() {
+    const form = document.getElementById('simulation-form');
+    const formData = new FormData(form);
+    
+    // Convert form data to JSON
+    const trainingData = {};
+    for (let [key, value] of formData.entries()) {
+        // Handle empty values for optional fields
+        if (value === '') {
+            if (key === 'gradient_clipping' || key === 'n_data_points') {
+                trainingData[key] = null;
+            } else {
+                trainingData[key] = undefined;
+            }
+        } else {
+            // Convert numeric values
+            if (['hidden_layers', 'neurons_per_layer', 'epochs', 'scheduler_step_size', 
+                 'early_stopping_patience', 'n_interior_points', 'n_boundary_points', 
+                 'n_initial_points', 'n_data_points'].includes(key)) {
+                trainingData[key] = parseInt(value);
+            } else if (['learning_rate', 'scheduler_gamma', 'physics_weight', 'boundary_weight', 
+                       'initial_weight', 'data_weight', 'gradient_clipping'].includes(key)) {
+                trainingData[key] = parseFloat(value);
+            } else {
+                trainingData[key] = value;
+            }
+        }
+    }
+    
+    // Add purpose and equation type
+    trainingData.purpose = 'forward_problems';
+    trainingData.equation_type = getEquationType();
+    
+    // Show training progress
+    showTrainingProgress();
+    
+    // Send training request
+    fetch('/api/simulate/forward_problems', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(trainingData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            showTrainingSuccess(data);
+        } else {
+            showTrainingError(data.message);
+        }
+    })
+    .catch(error => {
+        showTrainingError('Training failed: ' + error.message);
+    });
+}
+
+function getEquationType() {
+    // Extract equation type from URL
+    const pathParts = window.location.pathname.split('/');
+    return pathParts[pathParts.length - 1];
+}
+
+function showTrainingProgress() {
+    const progressSection = document.getElementById('training-progress');
+    if (progressSection) {
+        progressSection.style.display = 'block';
+        progressSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function showTrainingSuccess(data) {
+    // Update progress with success
+    const progressFill = document.getElementById('progress-fill');
+    const progressPercentage = document.getElementById('progress-percentage');
+    
+    if (progressFill) progressFill.style.width = '100%';
+    if (progressPercentage) progressPercentage.textContent = '100%';
+    
+    // Show success message
+    setTimeout(() => {
+        window.location.href = `/purpose/forward_problems/results/${getEquationType()}`;
+    }, 1000);
+}
+
+function showTrainingError(message) {
+    // Hide progress and show error
+    const progressSection = document.getElementById('training-progress');
+    if (progressSection) {
+        progressSection.style.display = 'none';
+    }
+    
+    // Show error alert
+    alert('Training Error: ' + message);
+} 
