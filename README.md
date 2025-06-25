@@ -141,14 +141,14 @@ python run_frontend.py
 - **UI**: Modern, responsive interface with real-time interaction
 - **Visualization**: Rich plotting and analysis tools
 - **Documentation**: Comprehensive help and examples
-- **[📖 Frontend Documentation](README_Frontend.md)**
+- **[📖 Frontend Documentation](docs/README_Frontend.md)**
 
 ### Backend Architecture
 - **Framework**: FastAPI with comprehensive API endpoints
 - **Modular Design**: Extensible architecture for easy expansion
 - **Performance**: Optimized for real-time interaction
 - **Security**: Input validation and error handling
-- **[📖 Backend Documentation](README_BACKEND.md)**
+- **[📖 Backend Documentation](docs/README_BACKEND.md)**
 
 ### Key Features
 - **🎨 Modern UI**: Responsive, intuitive interface
