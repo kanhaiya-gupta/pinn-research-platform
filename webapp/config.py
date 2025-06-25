@@ -101,7 +101,7 @@ class Config:
         }
     }
     
-        # Supported Equations with expanded scope
+    # Supported Equations with expanded scope
     SUPPORTED_EQUATIONS = {
         'burgers': {
             'name': 'Burgers Equation',
@@ -175,6 +175,249 @@ class Config:
             'purposes': ['forward_problems', 'multiphysics', 'efficiency', 'scientific_discovery', 'uncertainty'],
             'applications': ['Antenna design', 'Optical systems', 'Electromagnetic compatibility']
         },
+        'linear_dynamics': {
+            'name': 'Linear Dynamical Systems',
+            'description': 'Linear state-space models for control and optimization',
+            'icon': 'fas fa-cogs',
+            'color': '#3498db',
+            'formula': 'dx/dt = Ax + Bu',
+            'purposes': ['control_optimization', 'forward_problems', 'inverse_problems', 'efficiency'],
+            'applications': ['Robotics', 'Aerospace', 'Process control', 'Satellite attitude control']
+        },
+        'nonlinear_dynamics': {
+            'name': 'Nonlinear Dynamical Systems',
+            'description': 'Nonlinear state-space models for complex control problems',
+            'icon': 'fas fa-project-diagram',
+            'color': '#e74c3c',
+            'formula': 'dx/dt = f(x, u, t)',
+            'purposes': ['control_optimization', 'forward_problems', 'inverse_problems', 'efficiency'],
+            'applications': ['Autonomous vehicles', 'Biological systems', 'Fluid dynamics', 'Neural control']
+        },
+        'optimal_control_shm': {
+            'name': 'Optimal Control - Simple Harmonic Motion',
+            'description': 'Controlled harmonic oscillator with optimal control input',
+            'icon': 'fas fa-wave-square',
+            'color': '#9b59b6',
+            'formula': 'd²x/dt² + ω²x = u(t)',
+            'purposes': ['control_optimization', 'forward_problems', 'efficiency', 'generalization'],
+            'applications': ['Vibration suppression', 'Suspension systems', 'LC oscillators', 'Molecular dynamics']
+        },
+        'fluid_control': {
+            'name': 'Fluid Dynamics Control',
+            'description': 'Navier-Stokes equations with control forces for flow optimization',
+            'icon': 'fas fa-wind',
+            'color': '#1abc9c',
+            'formula': '∂u/∂t + (u·∇)u = -∇p/ρ + ν∇²u + f(u,t)',
+            'purposes': ['control_optimization', 'multiphysics', 'efficiency', 'data_assimilation'],
+            'applications': ['Aerodynamic optimization', 'Flow control', 'HVAC systems', 'Pipeline optimization']
+        },
+        'thermal_control': {
+            'name': 'Thermal Control Systems',
+            'description': 'Heat transfer equation with control heat sources',
+            'icon': 'fas fa-thermometer-half',
+            'color': '#f39c12',
+            'formula': 'ρc_p ∂T/∂t = ∇·(k∇T) + u',
+            'purposes': ['control_optimization', 'additive_manufacturing', 'efficiency', 'data_assimilation'],
+            'applications': ['Additive manufacturing', 'Electronics cooling', 'Heat treatment', 'Laser processing']
+        },
+        'wave_control': {
+            'name': 'Wave Control Systems',
+            'description': 'Wave equation with control forces for vibration and acoustic control',
+            'icon': 'fas fa-broadcast-tower',
+            'color': '#34495e',
+            'formula': '∂²u/∂t² = c²∇²u + f',
+            'purposes': ['control_optimization', 'forward_problems', 'efficiency', 'generalization'],
+            'applications': ['Structural engineering', 'Noise cancellation', 'Laser stabilization', 'Earthquake resistance']
+        },
+        'additive_manufacturing_control': {
+            'name': 'Additive Manufacturing Control',
+            'description': 'Heat transfer with phase change and laser control for 3D printing',
+            'icon': 'fas fa-print',
+            'color': '#8e44ad',
+            'formula': 'ρc_p ∂T/∂t = ∇·(k∇T) + Q_laser - L ∂f_s/∂t',
+            'purposes': ['control_optimization', 'additive_manufacturing', 'multiphysics', 'efficiency'],
+            'applications': ['Laser powder bed fusion', 'Melt pool control', 'Defect minimization', 'Stress reduction']
+        },
+        'material_control': {
+            'name': 'Material Science Control',
+            'description': 'Phase-field equation with external control for microstructure optimization',
+            'icon': 'fas fa-atom',
+            'color': '#16a085',
+            'formula': '∂φ/∂t = -M δF/δφ + u',
+            'purposes': ['control_optimization', 'material_science', 'scientific_discovery', 'efficiency'],
+            'applications': ['Grain growth control', 'Phase transformation', 'Thin film deposition', 'Alloy optimization']
+        },
+        'hjb_equation': {
+            'name': 'Hamilton-Jacobi-Bellman Equation',
+            'description': 'Optimal control theory for finding optimal control policies',
+            'icon': 'fas fa-chess',
+            'color': '#e67e22',
+            'formula': '∂V/∂t + min_u[L(x,u,t) + ∇V·f(x,u,t)] = 0',
+            'purposes': ['control_optimization', 'scientific_discovery', 'efficiency', 'generalization'],
+            'applications': ['Robotics path planning', 'Power grid optimization', 'Portfolio optimization', 'Energy systems']
+        },
+        'multi_objective_control': {
+            'name': 'Multi-Objective Control',
+            'description': 'Control systems with multiple competing objectives',
+            'icon': 'fas fa-balance-scale',
+            'color': '#27ae60',
+            'formula': 'J = Σ w_i J_i where J_i are individual objectives',
+            'purposes': ['control_optimization', 'efficiency', 'generalization', 'uncertainty'],
+            'applications': ['Autonomous systems', 'Smart cities', 'Healthcare', 'Environmental control']
+        },
+        'heat_transfer_phase_change': {
+            'name': 'Heat Transfer with Phase Change',
+            'description': 'PDE for thermal processes with melting/solidification in additive manufacturing',
+            'icon': 'fas fa-thermometer-half',
+            'color': '#e74c3c',
+            'formula': 'ρc_p ∂T/∂t = ∇·(k∇T) + Q - L ∂f_s/∂t',
+            'purposes': ['forward_problems', 'additive_manufacturing', 'multiphysics', 'efficiency'],
+            'applications': ['Melt pool dynamics', 'Thermal history prediction', 'Solidification modeling']
+        },
+        'stefan_condition': {
+            'name': 'Stefan Condition',
+            'description': 'Boundary condition for moving phase interfaces',
+            'icon': 'fas fa-arrows-alt-h',
+            'color': '#9b59b6',
+            'formula': 'k_s ∇T_s·n - k_l ∇T_l·n = ρL v_n',
+            'purposes': ['forward_problems', 'additive_manufacturing', 'multiphysics'],
+            'applications': ['Melt pool boundaries', 'Solidification front modeling']
+        },
+        'navier_stokes_free_surface': {
+            'name': 'Navier-Stokes with Free Surface',
+            'description': 'PDEs for fluid flow in melt pools with surface tension effects',
+            'icon': 'fas fa-water',
+            'color': '#3498db',
+            'formula': 'ρ(∂v/∂t + v·∇v) = -∇p + μ∇²v + f_surface, ∇·v = 0',
+            'purposes': ['forward_problems', 'additive_manufacturing', 'multiphysics', 'efficiency'],
+            'applications': ['Melt pool dynamics', 'Keyhole formation', 'Surface tension effects']
+        },
+        'thermal_stress': {
+            'name': 'Thermal Stress Equation',
+            'description': 'PDE for residual stresses due to thermal gradients',
+            'icon': 'fas fa-compress-arrows-alt',
+            'color': '#f39c12',
+            'formula': '∇·σ = 0, σ = C:(ε - ε_th)',
+            'purposes': ['forward_problems', 'additive_manufacturing', 'multiphysics'],
+            'applications': ['Residual stress prediction', 'Warping analysis', 'Cracking analysis']
+        },
+        'phase_field': {
+            'name': 'Phase-Field Equation',
+            'description': 'PDE for microstructure evolution in materials',
+            'icon': 'fas fa-atom',
+            'color': '#1abc9c',
+            'formula': '∂φ/∂t = -M δF/δφ',
+            'purposes': ['forward_problems', 'material_science', 'multiphysics', 'scientific_discovery'],
+            'applications': ['Grain growth', 'Phase transformations', 'Solidification']
+        },
+        'cahn_hilliard': {
+            'name': 'Cahn-Hilliard Equation',
+            'description': 'PDE for phase separation and diffusion in materials',
+            'icon': 'fas fa-layer-group',
+            'color': '#34495e',
+            'formula': '∂c/∂t = ∇·(M∇μ), μ = δF/δc',
+            'purposes': ['forward_problems', 'material_science', 'multiphysics'],
+            'applications': ['Spinodal decomposition', 'Thin film growth', 'Battery materials']
+        },
+        'fick_second_law': {
+            'name': 'Fick\'s Second Law',
+            'description': 'PDE for diffusion processes in materials',
+            'icon': 'fas fa-exchange-alt',
+            'color': '#27ae60',
+            'formula': '∂c/∂t = ∇·(D∇c)',
+            'purposes': ['forward_problems', 'material_science', 'efficiency'],
+            'applications': ['Dopant diffusion', 'Hydrogen diffusion', 'Drug diffusion']
+        },
+        'crystal_plasticity': {
+            'name': 'Crystal Plasticity Equations',
+            'description': 'ODEs/PDEs for plastic deformation in crystalline materials',
+            'icon': 'fas fa-cube',
+            'color': '#8e44ad',
+            'formula': 'ε̇^p = Σ_α γ̇^α m^α, γ̇^α = f(τ^α, s^α)',
+            'purposes': ['forward_problems', 'material_science', 'multiphysics'],
+            'applications': ['Deformation modeling', 'Fatigue analysis', 'Part integrity']
+        },
+        'advection_diffusion': {
+            'name': 'Advection-Diffusion Equation',
+            'description': 'PDE for transport phenomena with convection and diffusion',
+            'icon': 'fas fa-wind',
+            'color': '#16a085',
+            'formula': '∂c/∂t + v·∇c = ∇·(D∇c)',
+            'purposes': ['forward_problems', 'data_assimilation', 'multiphysics', 'efficiency'],
+            'applications': ['Atmospheric transport', 'Ocean currents', 'Pollutant dispersion']
+        },
+        'shallow_water': {
+            'name': 'Shallow Water Equations',
+            'description': 'PDEs for fluid flow in shallow layers',
+            'icon': 'fas fa-water',
+            'color': '#2980b9',
+            'formula': '∂h/∂t + ∇·(hv) = 0, ∂v/∂t + v·∇v = -g∇h',
+            'purposes': ['forward_problems', 'data_assimilation', 'multiphysics'],
+            'applications': ['Ocean modeling', 'Tsunami simulation', 'River flow']
+        },
+        'poroelasticity': {
+            'name': 'Poroelasticity Equations',
+            'description': 'PDEs for fluid-saturated porous media',
+            'icon': 'fas fa-filter',
+            'color': '#d35400',
+            'formula': '∇·σ = 0, ∂ζ/∂t + ∇·q = 0',
+            'purposes': ['forward_problems', 'biomechanics', 'geophysics', 'multiphysics'],
+            'applications': ['Bone mechanics', 'Groundwater flow', 'Tissue modeling']
+        },
+        'radiative_transfer': {
+            'name': 'Radiative Transfer Equation',
+            'description': 'PDE for radiation transport in participating media',
+            'icon': 'fas fa-sun',
+            'color': '#f1c40f',
+            'formula': 'Ω·∇I + κI = κI_b + σ/(4π)∫I(Ω′)Φ(Ω,Ω′)dΩ′',
+            'purposes': ['forward_problems', 'remote_sensing', 'multiphysics'],
+            'applications': ['Atmospheric radiation', 'Optical systems', 'Climate modeling']
+        },
+        'reaction_diffusion': {
+            'name': 'Reaction-Diffusion Equations',
+            'description': 'PDEs for chemical reactions with diffusion',
+            'icon': 'fas fa-flask',
+            'color': '#e67e22',
+            'formula': '∂u/∂t = D∇²u + f(u,v), ∂v/∂t = D∇²v + g(u,v)',
+            'purposes': ['forward_problems', 'scientific_discovery', 'multiphysics'],
+            'applications': ['Chemical kinetics', 'Pattern formation', 'Biological systems']
+        },
+        'elastic_wave': {
+            'name': 'Elastic Wave Equation',
+            'description': 'PDE for wave propagation in elastic media',
+            'icon': 'fas fa-wave-square',
+            'color': '#9b59b6',
+            'formula': 'ρ∂²u/∂t² = ∇·(C:∇u)',
+            'purposes': ['forward_problems', 'geophysics', 'multiphysics'],
+            'applications': ['Seismic waves', 'Ultrasound', 'Structural dynamics']
+        },
+        'magnetohydrodynamics': {
+            'name': 'Magnetohydrodynamics (MHD)',
+            'description': 'PDEs for electrically conducting fluids in magnetic fields',
+            'icon': 'fas fa-magnet',
+            'color': '#8e44ad',
+            'formula': 'ρ(∂v/∂t + v·∇v) = -∇p + μ∇²v + J×B, ∂B/∂t = ∇×(v×B) + η∇²B',
+            'purposes': ['forward_problems', 'fusion_energy', 'multiphysics'],
+            'applications': ['Plasma physics', 'Fusion reactors', 'Space physics']
+        },
+        'viscoelasticity': {
+            'name': 'Viscoelasticity Equations',
+            'description': 'PDEs for materials with both viscous and elastic properties',
+            'icon': 'fas fa-tint',
+            'color': '#3498db',
+            'formula': 'σ + τ∂σ/∂t = E(ε + τ_ε∂ε/∂t)',
+            'purposes': ['forward_problems', 'material_science', 'biomechanics'],
+            'applications': ['Polymer mechanics', 'Biological tissues', 'Rheology']
+        },
+        'thermoelasticity': {
+            'name': 'Thermoelasticity Equations',
+            'description': 'PDEs coupling thermal and mechanical effects',
+            'icon': 'fas fa-thermometer-half',
+            'color': '#e74c3c',
+            'formula': '∇·σ = 0, ρc_p∂T/∂t = ∇·(k∇T) - T_0α∇·∂u/∂t',
+            'purposes': ['forward_problems', 'additive_manufacturing', 'multiphysics'],
+            'applications': ['Thermal stress', 'Heat exchangers', 'Electronic packaging']
+        }
     }
     
     # Default Parameters for each equation
@@ -375,7 +618,7 @@ class Config:
         }
     }
     
-        # Architecture Recommendations by Purpose
+    # Architecture Recommendations by Purpose
     ARCHITECTURE_RECOMMENDATIONS = {
         'forward_problems': {
             'hidden_activation': 'tanh',
@@ -600,6 +843,522 @@ class Config:
             'loss_weights': {'physics': 1.0, 'boundary': 1.0, 'initial': 1.0},
             'sampling': {'interior': 1200, 'boundary': 250, 'initial': 250},
             'notes': 'Cosine scheduler for better generalization'
+        }
+    }
+
+    # Enhanced Data Assimilation Applications
+    DATA_ASSIMILATION_APPLICATIONS = {
+        'weather_forecasting': {
+            'name': 'Weather Forecasting',
+            'description': 'Atmospheric data assimilation for weather prediction',
+            'equations': ['advection_diffusion', 'navier_stokes', 'shallow_water'],
+            'data_sources': ['Satellite observations', 'Radar data', 'Weather stations'],
+            'challenges': ['High-dimensional state space', 'Nonlinear dynamics', 'Sparse observations']
+        },
+        'ocean_modeling': {
+            'name': 'Ocean Modeling',
+            'description': 'Ocean circulation and wave prediction',
+            'equations': ['shallow_water', 'advection_diffusion', 'navier_stokes'],
+            'data_sources': ['Satellite altimetry', 'Buoy measurements', 'Ship observations'],
+            'challenges': ['Multi-scale dynamics', 'Boundary conditions', 'Data sparsity']
+        },
+        'additive_manufacturing': {
+            'name': 'Additive Manufacturing',
+            'description': 'Real-time process monitoring and control',
+            'equations': ['thermal_stress', 'stefan_condition', 'phase_field'],
+            'data_sources': ['Thermal imaging', 'Strain gauges', 'Optical sensors'],
+            'challenges': ['Multi-physics coupling', 'Moving boundaries', 'Real-time requirements']
+        },
+        'material_science': {
+            'name': 'Material Science',
+            'description': 'Microstructure evolution and property prediction',
+            'equations': ['phase_field', 'cahn_hilliard', 'thermal_stress'],
+            'data_sources': ['X-ray diffraction', 'Microscopy', 'Mechanical testing'],
+            'challenges': ['Multi-scale modeling', 'Phase transitions', 'Experimental validation']
+        },
+        'remote_sensing': {
+            'name': 'Remote Sensing',
+            'description': 'Satellite data assimilation and environmental monitoring',
+            'equations': ['radiative_transfer', 'advection_diffusion', 'heat'],
+            'data_sources': ['Satellite imagery', 'Ground sensors', 'Aircraft measurements'],
+            'challenges': ['Atmospheric correction', 'Spatial resolution', 'Temporal coverage']
+        },
+        'biomechanics': {
+            'name': 'Biomechanics',
+            'description': 'Biological tissue modeling and medical applications',
+            'equations': ['poroelasticity', 'navier_stokes', 'advection_diffusion'],
+            'data_sources': ['MRI', 'CT scans', 'Biomechanical testing'],
+            'challenges': ['Patient-specific modeling', 'Multi-scale physics', 'Validation data']
+        },
+        'geophysics': {
+            'name': 'Geophysics',
+            'description': 'Subsurface imaging and natural hazard prediction',
+            'equations': ['wave', 'poroelasticity', 'advection_diffusion'],
+            'data_sources': ['Seismic data', 'Gravity measurements', 'Well logs'],
+            'challenges': ['Inverse problems', 'Nonlinear relationships', 'Sparse data']
+        }
+    }
+    
+    # Data Assimilation Loss Function Components
+    DATA_ASSIMILATION_LOSS_COMPONENTS = {
+        'data_mismatch': {
+            'name': 'Data Mismatch Loss',
+            'formula': 'L_data = (1/N_d) Σ|u(x_i,t_i) - u_obs(x_i,t_i)|²',
+            'description': 'Ensures neural network fits observed data points',
+            'weight_range': [0.1, 100.0],
+            'default_weight': 10.0
+        },
+        'physics_residual': {
+            'name': 'Physics Residual Loss',
+            'formula': 'L_physics = (1/N_r) Σ|N[u](x_j,t_j)|²',
+            'description': 'Enforces governing physical equations at collocation points',
+            'weight_range': [0.1, 10.0],
+            'default_weight': 1.0
+        },
+        'boundary_conditions': {
+            'name': 'Boundary Condition Loss',
+            'formula': 'L_bc = (1/N_bc) Σ|u(x_bc,t) - u_bc|²',
+            'description': 'Ensures solution satisfies boundary conditions',
+            'weight_range': [0.1, 10.0],
+            'default_weight': 1.0
+        },
+        'initial_conditions': {
+            'name': 'Initial Condition Loss',
+            'formula': 'L_ic = (1/N_ic) Σ|u(x,t=0) - u_ic(x)|²',
+            'description': 'Ensures solution satisfies initial conditions',
+            'weight_range': [0.1, 10.0],
+            'default_weight': 1.0
+        },
+        'regularization': {
+            'name': 'Regularization Loss',
+            'formula': 'L_reg = λ||∇u||²',
+            'description': 'Prevents overfitting and ensures smooth solutions',
+            'weight_range': [0.001, 1.0],
+            'default_weight': 0.01
+        }
+    }
+
+    # Enhanced Control & Optimization Applications
+    CONTROL_OPTIMIZATION_APPLICATIONS = {
+        'mechanical_systems': {
+            'name': 'Mechanical Systems',
+            'description': 'Vibration control and optimal actuator placement',
+            'equations': ['optimal_control_shm', 'wave_control', 'linear_dynamics'],
+            'control_objectives': ['Vibration suppression', 'Trajectory tracking', 'Energy minimization'],
+            'challenges': ['Nonlinear dynamics', 'Real-time constraints', 'Multi-body interactions']
+        },
+        'aerospace': {
+            'name': 'Aerospace',
+            'description': 'Aircraft optimization and satellite control',
+            'equations': ['fluid_control', 'linear_dynamics', 'thermal_control'],
+            'control_objectives': ['Drag reduction', 'Attitude control', 'Thermal management'],
+            'challenges': ['High-dimensional dynamics', 'Safety constraints', 'Environmental factors']
+        },
+        'additive_manufacturing': {
+            'name': 'Additive Manufacturing',
+            'description': '3D printing process optimization and control',
+            'equations': ['additive_manufacturing_control', 'thermal_control', 'material_control'],
+            'control_objectives': ['Defect minimization', 'Stress reduction', 'Quality optimization'],
+            'challenges': ['Multi-physics coupling', 'Real-time control', 'Process variability']
+        },
+        'material_science': {
+            'name': 'Material Science',
+            'description': 'Microstructure control and material property optimization',
+            'equations': ['material_control', 'phase_field', 'cahn_hilliard'],
+            'control_objectives': ['Grain size control', 'Phase transformation', 'Property optimization'],
+            'challenges': ['Multi-scale modeling', 'Experimental validation', 'Processing constraints']
+        },
+        'energy_systems': {
+            'name': 'Energy Systems',
+            'description': 'Power grid optimization and renewable energy control',
+            'equations': ['hjb_equation', 'linear_dynamics', 'thermal_control'],
+            'control_objectives': ['Grid stability', 'Efficiency maximization', 'Cost minimization'],
+            'challenges': ['Large-scale systems', 'Uncertainty', 'Real-time operation']
+        },
+        'healthcare': {
+            'name': 'Healthcare',
+            'description': 'Medical device control and therapeutic optimization',
+            'equations': ['linear_dynamics', 'advection_diffusion', 'fluid_control'],
+            'control_objectives': ['Drug delivery', 'Blood flow control', 'Device optimization'],
+            'challenges': ['Patient-specific modeling', 'Safety constraints', 'Clinical validation']
+        },
+        'autonomous_systems': {
+            'name': 'Autonomous Systems',
+            'description': 'Robotics, autonomous vehicles, and smart systems',
+            'equations': ['nonlinear_dynamics', 'hjb_equation', 'multi_objective_control'],
+            'control_objectives': ['Path planning', 'Obstacle avoidance', 'Multi-agent coordination'],
+            'challenges': ['Complex environments', 'Real-time decision making', 'Safety assurance']
+        }
+    }
+    
+    # Control & Optimization Loss Function Components
+    CONTROL_OPTIMIZATION_LOSS_COMPONENTS = {
+        'data_fidelity': {
+            'name': 'Data Fidelity Loss',
+            'formula': 'L_data = (1/N_d) Σ|u(x_i,t_i) - u_obs(x_i,t_i)|²',
+            'description': 'Ensures neural network fits observed data points',
+            'weight_range': [0.1, 100.0],
+            'default_weight': 1.0
+        },
+        'physics_constraint': {
+            'name': 'Physics Constraint Loss',
+            'formula': 'L_physics = (1/N_r) Σ|N[u](x_j,t_j)|²',
+            'description': 'Enforces governing physical equations',
+            'weight_range': [0.1, 10.0],
+            'default_weight': 1.0
+        },
+        'control_objective': {
+            'name': 'Control Objective Loss',
+            'formula': 'L_control = ∫[L(x,u,t) + Φ(x(T))]dt',
+            'description': 'Minimizes control/optimization cost functional',
+            'weight_range': [0.1, 50.0],
+            'default_weight': 10.0
+        },
+        'boundary_conditions': {
+            'name': 'Boundary Condition Loss',
+            'formula': 'L_bc = (1/N_bc) Σ|u(x_bc,t) - u_bc|²',
+            'description': 'Ensures solution satisfies boundary conditions',
+            'weight_range': [0.1, 10.0],
+            'default_weight': 1.0
+        },
+        'initial_conditions': {
+            'name': 'Initial Condition Loss',
+            'formula': 'L_ic = (1/N_ic) Σ|u(x,t=0) - u_ic(x)|²',
+            'description': 'Ensures solution satisfies initial conditions',
+            'weight_range': [0.1, 10.0],
+            'default_weight': 1.0
+        },
+        'regularization': {
+            'name': 'Regularization Loss',
+            'formula': 'L_reg = λ||∇u||² + μ||u||²',
+            'description': 'Prevents overfitting and ensures smooth solutions',
+            'weight_range': [0.001, 1.0],
+            'default_weight': 0.01
+        },
+        'constraint_penalty': {
+            'name': 'Constraint Penalty Loss',
+            'formula': 'L_constraint = Σ max(0, g_i(x,u))²',
+            'description': 'Penalizes constraint violations',
+            'weight_range': [0.1, 100.0],
+            'default_weight': 10.0
+        }
+    }
+    
+    # Optimal Control Problem Types
+    OPTIMAL_CONTROL_TYPES = {
+        'linear_quadratic': {
+            'name': 'Linear Quadratic (LQ) Control',
+            'description': 'Linear dynamics with quadratic cost function',
+            'formula': 'J = ∫(x^T Q x + u^T R u)dt',
+            'applications': ['Robotics', 'Aerospace', 'Process control'],
+            'advantages': ['Analytical solutions', 'Stability guarantees', 'Computational efficiency']
+        },
+        'nonlinear_optimal': {
+            'name': 'Nonlinear Optimal Control',
+            'description': 'Nonlinear dynamics with general cost function',
+            'formula': 'J = ∫L(x,u,t)dt + Φ(x(T))',
+            'applications': ['Autonomous vehicles', 'Biological systems', 'Complex dynamics'],
+            'advantages': ['Handles nonlinearities', 'General cost functions', 'Real-world applicability']
+        },
+        'model_predictive': {
+            'name': 'Model Predictive Control (MPC)',
+            'description': 'Receding horizon optimization with constraints',
+            'formula': 'min_u ∫[t,t+H] L(x,u)dt subject to constraints',
+            'applications': ['Chemical processes', 'Autonomous systems', 'Energy management'],
+            'advantages': ['Constraint handling', 'Robustness', 'Real-time adaptation']
+        },
+        'robust_control': {
+            'name': 'Robust Control',
+            'description': 'Control under uncertainty and disturbances',
+            'formula': 'min_u max_w J(x,u,w)',
+            'applications': ['Aerospace', 'Manufacturing', 'Healthcare'],
+            'advantages': ['Uncertainty handling', 'Disturbance rejection', 'Safety guarantees']
+        },
+        'adaptive_control': {
+            'name': 'Adaptive Control',
+            'description': 'Online parameter estimation and control',
+            'formula': 'u = K(θ̂)x where θ̂ is estimated parameter',
+            'applications': ['Robotics', 'Aerospace', 'Biomedical systems'],
+            'advantages': ['Parameter adaptation', 'Online learning', 'Performance improvement']
+        }
+    }
+
+    # Forward Problems Research Applications
+    FORWARD_PROBLEMS_APPLICATIONS = {
+        "additive_manufacturing": {
+            "name": "Additive Manufacturing",
+            "description": "3D printing process simulation and optimization",
+            "equations": [
+                "heat_transfer_phase_change",
+                "stefan_condition",
+                "navier_stokes_free_surface",
+                "thermal_stress"
+            ],
+            "challenges": [
+                "Multi-physics coupling",
+                "Moving boundaries",
+                "Real-time control"
+            ],
+            "benefits": [
+                "Process optimization",
+                "Defect prevention",
+                "Quality improvement"
+            ]
+        },
+        "material_science": {
+            "name": "Material Science",
+            "description": "Microstructure evolution and material property prediction",
+            "equations": [
+                "phase_field",
+                "cahn_hilliard",
+                "fick_second_law",
+                "crystal_plasticity"
+            ],
+            "challenges": [
+                "Multi-scale modeling",
+                "Phase transitions",
+                "Experimental validation"
+            ],
+            "benefits": [
+                "Accelerated design",
+                "Property optimization",
+                "Process understanding"
+            ]
+        },
+        "battery_systems": {
+            "name": "Battery and Energy Systems",
+            "description": "Electrochemical transport and thermal management",
+            "equations": [
+                "advection_diffusion",
+                "heat_transfer_phase_change",
+                "thermal_stress"
+            ],
+            "challenges": [
+                "Multi-physics coupling",
+                "Safety constraints",
+                "Performance optimization"
+            ],
+            "benefits": [
+                "Enhanced safety",
+                "Improved performance",
+                "Extended lifetime"
+            ]
+        },
+        "biomechanics": {
+            "name": "Biomechanics",
+            "description": "Biological tissue modeling and medical applications",
+            "equations": [
+                "poroelasticity",
+                "viscoelasticity",
+                "advection_diffusion"
+            ],
+            "challenges": [
+                "Patient-specific modeling",
+                "Multi-scale physics",
+                "Validation data"
+            ],
+            "benefits": [
+                "Personalized medicine",
+                "Reduced experimental costs",
+                "Better treatments"
+            ]
+        },
+        "geophysics": {
+            "name": "Geophysics",
+            "description": "Subsurface imaging and natural hazard prediction",
+            "equations": [
+                "elastic_wave",
+                "poroelasticity",
+                "advection_diffusion"
+            ],
+            "challenges": [
+                "Inverse problems",
+                "Nonlinear relationships",
+                "Sparse data"
+            ],
+            "benefits": [
+                "Resource exploration",
+                "Hazard prediction",
+                "Environmental monitoring"
+            ]
+        },
+        "fusion_energy": {
+            "name": "Fusion Energy",
+            "description": "Plasma dynamics and reactor design",
+            "equations": [
+                "magnetohydrodynamics",
+                "heat_transfer_phase_change",
+                "thermal_stress"
+            ],
+            "challenges": [
+                "High-dimensional systems",
+                "Complex physics",
+                "Safety requirements"
+            ],
+            "benefits": [
+                "Clean energy",
+                "Advanced physics",
+                "Technology development"
+            ]
+        },
+        "climate_modeling": {
+            "name": "Climate Modeling",
+            "description": "Atmospheric and oceanic circulation modeling",
+            "equations": [
+                "advection_diffusion",
+                "shallow_water",
+                "radiative_transfer"
+            ],
+            "challenges": [
+                "Multi-scale dynamics",
+                "Uncertainty quantification",
+                "Computational cost"
+            ],
+            "benefits": [
+                "Climate prediction",
+                "Policy support",
+                "Risk assessment"
+            ]
+        },
+        "nanotechnology": {
+            "name": "Nanotechnology",
+            "description": "Nanoscale phenomena and device modeling",
+            "equations": [
+                "phase_field",
+                "cahn_hilliard",
+                "reaction_diffusion"
+            ],
+            "challenges": [
+                "Quantum effects",
+                "Surface phenomena",
+                "Fabrication constraints"
+            ],
+            "benefits": [
+                "Device optimization",
+                "Material design",
+                "Process control"
+            ]
+        },
+        "aerospace": {
+            "name": "Aerospace Engineering",
+            "description": "Aircraft and spacecraft design optimization",
+            "equations": [
+                "navier_stokes_free_surface",
+                "thermoelasticity",
+                "elastic_wave"
+            ],
+            "challenges": [
+                "High-speed flows",
+                "Thermal management",
+                "Structural integrity"
+            ],
+            "benefits": [
+                "Performance improvement",
+                "Safety enhancement",
+                "Cost reduction"
+            ]
+        },
+        "biomedical": {
+            "name": "Biomedical Engineering",
+            "description": "Medical device design and therapeutic optimization",
+            "equations": [
+                "poroelasticity",
+                "advection_diffusion",
+                "viscoelasticity"
+            ],
+            "challenges": [
+                "Patient variability",
+                "Safety requirements",
+                "Clinical validation"
+            ],
+            "benefits": [
+                "Better treatments",
+                "Reduced side effects",
+                "Personalized care"
+            ]
+        },
+        "renewable_energy": {
+            "name": "Renewable Energy",
+            "description": "Solar, wind, and other renewable energy systems",
+            "equations": [
+                "radiative_transfer",
+                "navier_stokes_free_surface",
+                "thermoelasticity"
+            ],
+            "challenges": [
+                "Intermittency",
+                "Storage requirements",
+                "Grid integration"
+            ],
+            "benefits": [
+                "Efficiency improvement",
+                "Cost reduction",
+                "Sustainability"
+            ]
+        }
+    }
+
+    # Forward Problems Loss Function Components
+    FORWARD_PROBLEMS_LOSS_COMPONENTS = {
+        "physics_residual": {
+            "name": "Physics Residual Loss",
+            "formula": "L_physics = (1/N_r) \u03a3|N[u](x_i,t_i)|\u00b2",
+            "description": "Enforces governing physical equations at collocation points",
+            "weight_range": [
+                0.1,
+                10.0
+            ],
+            "default_weight": 1.0
+        },
+        "boundary_conditions": {
+            "name": "Boundary Condition Loss",
+            "formula": "L_bc = (1/N_bc) \u03a3|u(x_bc,t) - u_bc|\u00b2",
+            "description": "Ensures solution satisfies boundary conditions",
+            "weight_range": [
+                0.1,
+                10.0
+            ],
+            "default_weight": 1.0
+        },
+        "initial_conditions": {
+            "name": "Initial Condition Loss",
+            "formula": "L_ic = (1/N_ic) \u03a3|u(x,t=0) - u_ic(x)|\u00b2",
+            "description": "Ensures solution satisfies initial conditions",
+            "weight_range": [
+                0.1,
+                10.0
+            ],
+            "default_weight": 1.0
+        },
+        "interface_conditions": {
+            "name": "Interface Condition Loss",
+            "formula": "L_interface = (1/N_i) \u03a3|f_interface(u_s,u_l)|\u00b2",
+            "description": "Enforces conditions at phase interfaces or domain boundaries",
+            "weight_range": [
+                0.1,
+                10.0
+            ],
+            "default_weight": 1.0
+        },
+        "conservation_laws": {
+            "name": "Conservation Law Loss",
+            "formula": "L_conservation = (1/N_c) \u03a3|\u2207\u00b7J + \u2202\u03c1/\u2202t|\u00b2",
+            "description": "Enforces mass, momentum, or energy conservation",
+            "weight_range": [
+                0.1,
+                10.0
+            ],
+            "default_weight": 1.0
+        },
+        "regularization": {
+            "name": "Regularization Loss",
+            "formula": "L_reg = \u03bb||\u2207u||\u00b2 + \u03bc||u||\u00b2",
+            "description": "Prevents overfitting and ensures smooth solutions",
+            "weight_range": [
+                0.001,
+                1.0
+            ],
+            "default_weight": 0.01
         }
     }
 
