@@ -47,46 +47,6 @@ async def inverse_problems_page(request: Request):
         }
     )
 
-@router.get("/simulation/{eq_id}", response_class=HTMLResponse)
-async def inverse_problems_simulation(request: Request, eq_id: str):
-    """Simulation page for inverse problems and specific equation"""
-    purpose_info = config.get_purpose_info("inverse_problems")
-    equations = config.get_equations_by_purpose("inverse_problems")
-    parameters = config.get_parameters_by_purpose("inverse_problems")
-    
-    if eq_id not in equations:
-        raise HTTPException(status_code=404, detail="Equation not found")
-    
-    equation_info = equations[eq_id]
-    
-    # Create default parameters for the template
-    default_params = {
-        "hidden_layers": 4,
-        "neurons_per_layer": 20,
-        "learning_rate": 0.001,
-        "epochs": 10000
-    }
-    
-    # Add equation-specific default parameters
-    for param_id, param_info in parameters.items():
-        if isinstance(param_info, dict) and 'default' in param_info:
-            default_params[param_id] = param_info['default']
-    
-    return templates.TemplateResponse(
-        "inverse_problems/simulation.html",
-        {
-            "request": request,
-            "purpose": purpose_info,
-            "purpose_key": "inverse_problems",
-            "equation": equation_info,
-            "eq_id": eq_id,
-            "parameters": parameters,
-            "default_params": default_params,
-            "config": config,
-            "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
-        }
-    )
-
 @router.get("/results/{eq_id}", response_class=HTMLResponse)
 async def inverse_problems_results(request: Request, eq_id: str):
     """Results page for inverse problems and specific equation"""
