@@ -823,132 +823,191 @@ body {
     }
 }
 
-/* Parameter Grid Layout - Enhanced */
+/* Parameter Grid Layout - Enhanced with Brown Theme (High Specificity) */
 .parameters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+    gap: 2rem !important;
+    margin-bottom: 2rem !important;
 }
 
 .parameter-item {
-    background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
-    padding: 1.5rem;
-    transition: var(--transition);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: white !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
     position: relative;
 }
 
 .parameter-item:hover {
-    border-color: var(--secondary-color);
-    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.15);
+    border-color: #5d4037 !important;
+    box-shadow: 0 4px 16px rgba(93, 64, 55, 0.15) !important;
     transform: translateY(-2px);
 }
 
 .parameter-item label {
-    display: block;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
+    display: block !important;
+    font-weight: 700 !important;
+    color: #5d4037 !important;
+    margin-bottom: 0.75rem !important;
+    font-size: 1rem !important;
     line-height: 1.3;
 }
 
 .parameter-item input {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: var(--transition);
-    background: #f8f9fa;
-    color: var(--primary-color);
+    width: 100% !important;
+    padding: 1rem !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    background: #fafafa !important;
+    color: #212121 !important;
 }
 
 .parameter-item input:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
-    background: white;
+    outline: none !important;
+    border-color: #5d4037 !important;
+    box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1) !important;
+    background: white !important;
 }
 
 .parameter-item .form-text {
-    font-size: 0.875rem;
-    color: #6c757d;
-    margin-top: 0.5rem;
-    line-height: 1.5;
+    font-size: 0.875rem !important;
+    color: #757575 !important;
+    margin-top: 0.5rem !important;
+    line-height: 1.5 !important;
     display: block;
 }
 
 .parameter-item .form-text.text-muted {
-    color: #adb5bd;
-    font-style: italic;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
+    color: #9e9e9e !important;
+    font-style: italic !important;
+    font-size: 0.8rem !important;
+    margin-top: 0.25rem !important;
 }
 
-/* Time Parameters Section - Enhanced */
+/* Time Parameters Section - Enhanced with Brown Theme (High Specificity) */
 .time-parameters-section {
-    margin-top: 2.5rem;
-    padding-top: 2rem;
-    border-top: 3px solid #e9ecef;
-    background: #f8f9fa;
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 2.5rem !important;
+    padding-top: 2rem !important;
+    border-top: 3px solid #e0e0e0 !important;
+    background: #fafafa !important;
+    border-radius: 12px !important;
+    padding: 2rem !important;
+    margin-bottom: 2rem !important;
 }
 
 .subsection-header {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--secondary-color);
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #5d4037 !important;
+    margin-bottom: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    border-bottom: 2px solid #5d4037 !important;
 }
 
 .subsection-header i {
-    color: var(--info-color);
-    font-size: 1.1rem;
+    color: #6d4c41 !important;
+    font-size: 1.1rem !important;
 }
 
-/* Enhanced spacing for parameter sections */
-.config-section {
-    background: white;
-    border-radius: 15px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
+/* Enhanced Brown Theme for Parameters - High Priority */
+.config-section .parameters-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+    gap: 2rem !important;
+    margin-bottom: 2rem !important;
 }
 
-.config-section:last-of-type {
-    margin-bottom: 0;
+.config-section .parameter-item {
+    background: white !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    position: relative;
 }
 
-/* Responsive adjustments for parameters */
-@media (max-width: 768px) {
-    .parameters-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .parameter-item {
-        padding: 1.25rem;
-    }
-    
-    .time-parameters-section {
-        padding: 1.5rem;
-        margin-top: 2rem;
-    }
-    
-    .config-section {
-        padding: 1.5rem;
-    }
+.config-section .parameter-item:hover {
+    border-color: #5d4037 !important;
+    box-shadow: 0 4px 16px rgba(93, 64, 55, 0.15) !important;
+    transform: translateY(-2px);
+}
+
+.config-section .parameter-item label {
+    display: block !important;
+    font-weight: 700 !important;
+    color: #5d4037 !important;
+    margin-bottom: 0.75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.3;
+}
+
+.config-section .parameter-item input {
+    width: 100% !important;
+    padding: 1rem !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    background: #fafafa !important;
+    color: #212121 !important;
+}
+
+.config-section .parameter-item input:focus {
+    outline: none !important;
+    border-color: #5d4037 !important;
+    box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1) !important;
+    background: white !important;
+}
+
+.config-section .parameter-item .form-text {
+    font-size: 0.875rem !important;
+    color: #757575 !important;
+    margin-top: 0.5rem !important;
+    line-height: 1.5 !important;
+    display: block;
+}
+
+.config-section .parameter-item .form-text.text-muted {
+    color: #9e9e9e !important;
+    font-style: italic !important;
+    font-size: 0.8rem !important;
+    margin-top: 0.25rem !important;
+}
+
+.config-section .time-parameters-section {
+    margin-top: 2.5rem !important;
+    padding-top: 2rem !important;
+    border-top: 3px solid #e0e0e0 !important;
+    background: #fafafa !important;
+    border-radius: 12px !important;
+    padding: 2rem !important;
+    margin-bottom: 2rem !important;
+}
+
+.config-section .subsection-header {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #5d4037 !important;
+    margin-bottom: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    border-bottom: 2px solid #5d4037 !important;
+}
+
+.config-section .subsection-header i {
+    color: #6d4c41 !important;
+    font-size: 1.1rem !important;
 } 
