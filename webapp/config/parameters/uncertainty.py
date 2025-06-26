@@ -302,4 +302,281 @@ UNCERTAINTY_PARAMETERS_DICT = {
         'category': 'output_parameters',
         'propagation_method': 'statistical'
     }
+}
+
+# Equation-specific parameters for uncertainty quantification
+UNCERTAINTY_EQUATION_PARAMETERS = {
+    'uncertainty_burgers': {
+        'viscosity_uncertainty': {'default': 0.1, 'range': [0.0, 0.5]},
+        'initial_condition_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'boundary_condition_uncertainty': {'default': 0.02, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_heat': {
+        'thermal_diffusivity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
+        'initial_temperature_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_wave': {
+        'wave_speed_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'initial_condition_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'boundary_condition_uncertainty': {'default': 0.02, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_shm': {
+        'frequency_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'damping_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'initial_amplitude_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_helmholtz': {
+        'wavenumber_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
+        'medium_property_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_navier_stokes': {
+        'viscosity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'density_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
+        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_schrodinger': {
+        'potential_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'initial_state_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'hamiltonian_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_maxwell': {
+        'permittivity_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'permeability_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_heat_transfer': {
+        'thermal_conductivity_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'heat_capacity_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'heat_source_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_elastic': {
+        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'poisson_ratio_uncertainty': {'default': 0.1, 'range': [0.0, 0.3]},
+        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_phase_field': {
+        'mobility_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'free_energy_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'interface_thickness_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_reaction_diffusion': {
+        'diffusion_coefficient_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'reaction_rate_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'initial_concentration_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_poroelasticity': {
+        'permeability_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'fluid_viscosity_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_viscoelasticity': {
+        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'relaxation_time_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'viscosity_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_radiative_transfer': {
+        'absorption_coefficient_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'scattering_coefficient_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'phase_function_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_shallow_water': {
+        'bathymetry_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'friction_coefficient_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'initial_condition_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_magnetohydrodynamics': {
+        'plasma_density_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'magnetic_field_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'temperature_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_thermoelasticity': {
+        'thermal_expansion_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'elastic_modulus_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'thermal_conductivity_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_advection_diffusion': {
+        'velocity_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'diffusion_coefficient_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'initial_concentration_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_elastic_wave': {
+        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'density_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'damping_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_fluid_structure_interaction': {
+        'fluid_viscosity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'elastic_modulus_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'coupling_parameter_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_electromagnetic_thermal': {
+        'electromagnetic_property_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'thermal_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'coupling_coefficient_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_biomechanical_transport': {
+        'elastic_modulus_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'diffusion_coefficient_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'biological_parameter_uncertainty': {'default': 0.25, 'range': [0.0, 0.7]},
+        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_geophysical_flow': {
+        'coriolis_parameter_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
+        'friction_parameter_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'topography_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_atmospheric_oceanic': {
+        'atmospheric_parameter_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'oceanic_parameter_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'coupling_parameter_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 3000, 'range': [1000, 30000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_nuclear_thermal': {
+        'nuclear_cross_section_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'thermal_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'neutron_flux_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_quantum_mechanical': {
+        'potential_energy_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'wave_function_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'quantum_number_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_phase_field_allen_cahn': {
+        'mobility_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'free_energy_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'interface_energy_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_phase_field_cahn_hilliard': {
+        'mobility_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'free_energy_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'gradient_energy_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_solidification_stefan': {
+        'thermal_diffusivity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'latent_heat_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'phase_change_temperature_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_grain_growth': {
+        'mobility_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'grain_boundary_energy_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'initial_grain_size_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_sintering': {
+        'diffusion_coefficient_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'sintering_mechanism_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'powder_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_laser_heat_source': {
+        'laser_power_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'beam_radius_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
+        'absorption_coefficient_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_melt_pool_dynamics': {
+        'fluid_viscosity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'surface_tension_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'thermal_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_crystal_plasticity': {
+        'critical_resolved_shear_stress_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'hardening_parameter_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'dislocation_density_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_diffusion_solids': {
+        'diffusion_coefficient_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'activation_energy_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'temperature_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_precipitation_nucleation': {
+        'nucleation_rate_uncertainty': {'default': 0.25, 'range': [0.0, 0.7]},
+        'activation_energy_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'supersaturation_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_residual_stress': {
+        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'thermal_expansion_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
+        'temperature_gradient_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    },
+    'uncertainty_microstructure_evolution': {
+        'evolution_parameter_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
+        'phase_field_parameter_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
+        'initial_microstructure_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
+        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
+        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+    }
 } 

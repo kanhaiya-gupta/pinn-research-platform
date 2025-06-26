@@ -1530,4 +1530,1057 @@ INVERSE_PROBLEMS_EQUATION_PARAMETERS = {
         },
         
     }
-} 
+,
+    'inverse_burgers': {
+        'unknown_viscosity': {
+            'name': 'Unknown Viscosity (ν)',
+            'description': 'Dynamic viscosity to be identified from flow data',
+            'unit': 'Pa·s',
+            'default': 0.01,
+            'range': [1e-6, 1e-1],
+            'category': 'unknown_fluid_properties',
+            'identification_method': 'flow_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_heat': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from heat data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'heat_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_wave': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from wave data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'wave_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_shm': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from shm data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'shm_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_helmholtz': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from helmholtz data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'helmholtz_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_navier_stokes': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from navier_stokes data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'navier_stokes_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_schrodinger': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from schrodinger data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'schrodinger_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_maxwell': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from maxwell data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'maxwell_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_heat_transfer': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from heat_transfer data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'heat_transfer_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_elastic': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from elastic data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'elastic_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_phase_field': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from phase_field data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'phase_field_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_reaction_diffusion': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from reaction_diffusion data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'reaction_diffusion_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_poroelasticity': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from poroelasticity data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'poroelasticity_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_viscoelasticity': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from viscoelasticity data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'viscoelasticity_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_radiative_transfer': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from radiative_transfer data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'radiative_transfer_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_shallow_water': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from shallow_water data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'shallow_water_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_magnetohydrodynamics': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from magnetohydrodynamics data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'magnetohydrodynamics_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_thermoelasticity': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from thermoelasticity data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'thermoelasticity_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_advection_diffusion': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from advection_diffusion data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'advection_diffusion_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_elastic_wave': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from elastic_wave data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'elastic_wave_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_fluid_structure_interaction': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from fluid_structure_interaction data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'fluid_structure_interaction_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_electromagnetic_thermal': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from electromagnetic_thermal data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'electromagnetic_thermal_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_biomechanical_transport': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from biomechanical_transport data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'biomechanical_transport_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_geophysical_flow': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from geophysical_flow data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'geophysical_flow_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_atmospheric_oceanic': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from atmospheric_oceanic data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'atmospheric_oceanic_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_nuclear_thermal': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from nuclear_thermal data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'nuclear_thermal_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_quantum_mechanical': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from quantum_mechanical data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'quantum_mechanical_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_phase_field_allen_cahn': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from phase_field_allen_cahn data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'phase_field_allen_cahn_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_phase_field_cahn_hilliard': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from phase_field_cahn_hilliard data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'phase_field_cahn_hilliard_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_solidification_stefan': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from solidification_stefan data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'solidification_stefan_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_grain_growth': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from grain_growth data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'grain_growth_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_sintering': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from sintering data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'sintering_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_laser_heat_source': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from laser_heat_source data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'laser_heat_source_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_melt_pool_dynamics': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from melt_pool_dynamics data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'melt_pool_dynamics_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_crystal_plasticity': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from crystal_plasticity data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'crystal_plasticity_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_diffusion_solids': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from diffusion_solids data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'diffusion_solids_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_precipitation_nucleation': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from precipitation_nucleation data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'precipitation_nucleation_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_residual_stress': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from residual_stress data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'residual_stress_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    'inverse_microstructure_evolution': {
+        'unknown_parameter': {
+            'name': 'Unknown Parameter',
+            'description': 'Parameter to be identified from microstructure_evolution data',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'unknown_properties',
+            'identification_method': 'microstructure_evolution_reconstruction'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    }} 

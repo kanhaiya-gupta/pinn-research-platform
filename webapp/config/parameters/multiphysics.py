@@ -331,4 +331,288 @@ MULTIPHYSICS_PARAMETERS_DICT = {
         'category': 'time_integration_parameters',
         'coupling_type': 'general'
     }
+}
+
+# Equation-specific parameters for multiphysics simulations
+MULTIPHYSICS_EQUATION_PARAMETERS = {
+    'multiphysics_thermoelasticity': {
+        'thermal_expansion_coefficient': {'default': 1e-5, 'range': [1e-7, 1e-3]},
+        'thermal_stress_coefficient': {'default': 1e6, 'range': [1e3, 1e9]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_electromagnetic_thermal': {
+        'joule_heating_coefficient': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'electromagnetic_loss': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_fluid_structure_interaction': {
+        'added_mass_coefficient': {'default': 1000.0, 'range': [100.0, 10000.0]},
+        'hydrodynamic_damping': {'default': 1.0, 'range': [0.1, 10.0]},
+        'interface_stiffness': {'default': 1e6, 'range': [1e3, 1e9]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_biomechanical_transport': {
+        'elastic_modulus': {'default': 1e6, 'range': [1e3, 1e9]},
+        'diffusion_coefficient': {'default': 1e-9, 'range': [1e-12, 1e-6]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_geophysical_flow': {
+        'coriolis_parameter': {'default': 1e-4, 'range': [1e-5, 1e-3]},
+        'friction_coefficient': {'default': 0.01, 'range': [1e-4, 1e-1]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_atmospheric_oceanic': {
+        'atmospheric_coupling': {'default': 1.0, 'range': [0.1, 10.0]},
+        'oceanic_coupling': {'default': 1.0, 'range': [0.1, 10.0]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 20, 'range': [10, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_nuclear_thermal': {
+        'nuclear_cross_section': {'default': 1e-24, 'range': [1e-28, 1e-20]},
+        'neutron_flux': {'default': 1e14, 'range': [1e10, 1e18]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_magnetohydrodynamics': {
+        'magnetic_reynolds_number': {'default': 1.0, 'range': [0.1, 100.0]},
+        'alfven_speed': {'default': 1000.0, 'range': [10.0, 10000.0]},
+        'magnetic_prandtl_number': {'default': 1.0, 'range': [0.1, 10.0]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_poroelasticity': {
+        'biot_coefficient': {'default': 0.8, 'range': [0.0, 1.0]},
+        'skempton_coefficient': {'default': 0.5, 'range': [0.0, 1.0]},
+        'storage_coefficient': {'default': 1e-9, 'range': [1e-12, 1e-6]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_viscoelasticity': {
+        'relaxation_time': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'retardation_time': {'default': 0.1, 'range': [1e-4, 1e2]},
+        'viscoelastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_radiative_transfer': {
+        'absorption_coefficient': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'scattering_coefficient': {'default': 0.1, 'range': [1e-4, 1e2]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_phase_field': {
+        'phase_field_elastic_coupling': {'default': 1e6, 'range': [1e3, 1e9]},
+        'mobility': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'interface_energy': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_reaction_diffusion': {
+        'diffusion_coefficient': {'default': 1e-9, 'range': [1e-12, 1e-6]},
+        'reaction_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_advection_diffusion': {
+        'velocity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'diffusion_coefficient': {'default': 1e-9, 'range': [1e-12, 1e-6]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_elastic_wave': {
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'density': {'default': 1000.0, 'range': [100.0, 10000.0]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_quantum_mechanical': {
+        'potential_energy': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'wave_function': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_thermoelectric': {
+        'seebeck_coefficient': {'default': 1e-5, 'range': [1e-7, 1e-3]},
+        'thermal_conductivity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'electrical_conductivity': {'default': 1e6, 'range': [1e3, 1e9]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_electrochemical': {
+        'electrical_conductivity': {'default': 1e6, 'range': [1e3, 1e9]},
+        'reaction_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_thermochemical': {
+        'thermal_conductivity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'reaction_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_mechanical_electrical': {
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'electrical_conductivity': {'default': 1e6, 'range': [1e3, 1e9]},
+        'piezoelectric_coefficient': {'default': 1e-9, 'range': [1e-12, 1e-6]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_optical_mechanical': {
+        'optical_index': {'default': 1.5, 'range': [1.0, 3.0]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_magnetic_mechanical': {
+        'magnetic_permeability': {'default': 1e-6, 'range': [1e-9, 1e-3]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'magnetostrictive_coefficient': {'default': 1e-5, 'range': [1e-7, 1e-3]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_acoustic_elastic': {
+        'acoustic_speed': {'default': 340.0, 'range': [100.0, 1000.0]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_thermal_optical': {
+        'thermal_conductivity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'optical_index': {'default': 1.5, 'range': [1.0, 3.0]},
+        'thermo_optic_coefficient': {'default': 1e-5, 'range': [1e-7, 1e-3]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_chemical_mechanical': {
+        'reaction_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'multiphysics_biological_mechanical': {
+        'biological_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'elastic_modulus': {'default': 1e6, 'range': [1e3, 1e9]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'phase_field_mechanics': {
+        'phase_field_elastic_coupling': {'default': 1e6, 'range': [1e3, 1e9]},
+        'mobility': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'interface_energy': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'phase_field_heat': {
+        'phase_field_thermal_coupling': {'default': 1e3, 'range': [1e0, 1e6]},
+        'mobility': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'thermal_conductivity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'solidification_mechanics': {
+        'latent_heat': {'default': 1e6, 'range': [1e3, 1e9]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'sintering_mechanics': {
+        'sintering_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'laser_material_interaction': {
+        'laser_material_coupling': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'absorption_coefficient': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'melt_pool_thermomechanics': {
+        'melt_pool_thermomechanics': {'default': 1e6, 'range': [1e3, 1e9]},
+        'surface_tension': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'crystal_plasticity_heat': {
+        'critical_resolved_shear_stress': {'default': 1e6, 'range': [1e3, 1e9]},
+        'thermal_conductivity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'diffusion_mechanics': {
+        'diffusion_coefficient': {'default': 1e-9, 'range': [1e-12, 1e-6]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'precipitation_mechanics': {
+        'nucleation_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'grain_growth_mechanics': {
+        'mobility': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_strength': {'default': 1.0, 'range': [0.0, 10.0]},
+        'coupling_iterations': {'default': 10, 'range': [1, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'additive_manufacturing_process': {
+        'laser_material_coupling': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'melt_pool_thermomechanics': {'default': 1e6, 'range': [1e3, 1e9]},
+        'powder_fluid_coupling': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'coupling_iterations': {'default': 20, 'range': [10, 100]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'material_processing_thermomechanics': {
+        'thermal_conductivity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'phase_transformation_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'microstructure_mechanics': {
+        'phase_field_mobility': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'interface_energy': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    },
+    'powder_processing_thermomechanics': {
+        'powder_flow_rate': {'default': 1e-3, 'range': [1e-6, 1e-1]},
+        'thermal_conductivity': {'default': 1.0, 'range': [1e-3, 1e3]},
+        'elastic_modulus': {'default': 1e9, 'range': [1e6, 1e12]},
+        'coupling_iterations': {'default': 15, 'range': [5, 50]},
+        'coupling_tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+    }
 } 

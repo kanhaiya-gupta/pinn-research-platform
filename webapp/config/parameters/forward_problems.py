@@ -910,5 +910,1056 @@ FORWARD_PROBLEMS_EQUATION_PARAMETERS = {
             'range': [100.0, 86400.0],
             'category': 'temporal_properties'
         }
+    },
+    
+    'advection_diffusion': {
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for advection-diffusion equation',
+            'unit': 'm²/s',
+            'default': 1e-5,
+            'range': [1e-8, 1e-3],
+            'category': 'transport_properties'
+        },
+        'advection_velocity': {
+            'name': 'Advection Velocity (v)',
+            'description': 'Advection velocity vector',
+            'unit': 'm/s',
+            'default': 1.0,
+            'range': [0.1, 100.0],
+            'category': 'flow_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'atmospheric_oceanic': {
+        'coriolis_parameter': {
+            'name': 'Coriolis Parameter (f)',
+            'description': 'Coriolis parameter for atmospheric/oceanic flows',
+            'unit': '1/s',
+            'default': 1e-4,
+            'range': [1e-5, 1e-3],
+            'category': 'geophysical_properties'
+        },
+        'gravity': {
+            'name': 'Gravity (g)',
+            'description': 'Acceleration due to gravity',
+            'unit': 'm/s²',
+            'default': 9.81,
+            'range': [1.0, 20.0],
+            'category': 'geophysical_properties'
+        },
+        'density': {
+            'name': 'Density (ρ)',
+            'description': 'Fluid density',
+            'unit': 'kg/m³',
+            'default': 1000.0,
+            'range': [1.0, 20000.0],
+            'category': 'fluid_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'biomechanical_transport': {
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for biological transport',
+            'unit': 'm²/s',
+            'default': 1e-9,
+            'range': [1e-12, 1e-6],
+            'category': 'transport_properties'
+        },
+        'reaction_rate': {
+            'name': 'Reaction Rate (k)',
+            'description': 'Biochemical reaction rate',
+            'unit': '1/s',
+            'default': 1e-3,
+            'range': [1e-6, 1e0],
+            'category': 'biochemical_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'crystal_plasticity': {
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Young\'s modulus for crystal plasticity',
+            'unit': 'GPa',
+            'default': 200.0,
+            'range': [1.0, 1000.0],
+            'category': 'mechanical_properties'
+        },
+        'yield_strength': {
+            'name': 'Yield Strength (σ_y)',
+            'description': 'Material yield strength',
+            'unit': 'MPa',
+            'default': 200.0,
+            'range': [10.0, 2000.0],
+            'category': 'mechanical_properties'
+        },
+        'hardening_modulus': {
+            'name': 'Hardening Modulus (H)',
+            'description': 'Strain hardening modulus',
+            'unit': 'GPa',
+            'default': 10.0,
+            'range': [0.1, 100.0],
+            'category': 'mechanical_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'diffusion_solids': {
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient in solids',
+            'unit': 'm²/s',
+            'default': 1e-12,
+            'range': [1e-20, 1e-8],
+            'category': 'transport_properties'
+        },
+        'activation_energy': {
+            'name': 'Activation Energy (E_a)',
+            'description': 'Activation energy for diffusion',
+            'unit': 'J/mol',
+            'default': 50000.0,
+            'range': [1000.0, 500000.0],
+            'category': 'thermodynamic_properties'
+        },
+        'temperature': {
+            'name': 'Temperature (T)',
+            'description': 'Temperature for diffusion process',
+            'unit': 'K',
+            'default': 300.0,
+            'range': [100.0, 2000.0],
+            'category': 'thermal_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'elastic_wave': {
+        'wave_speed': {
+            'name': 'Wave Speed (c)',
+            'description': 'Elastic wave propagation speed',
+            'unit': 'm/s',
+            'default': 5000.0,
+            'range': [1000.0, 10000.0],
+            'category': 'wave_properties'
+        },
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Young\'s modulus',
+            'unit': 'GPa',
+            'default': 200.0,
+            'range': [1.0, 1000.0],
+            'category': 'mechanical_properties'
+        },
+        'density': {
+            'name': 'Density (ρ)',
+            'description': 'Material density',
+            'unit': 'kg/m³',
+            'default': 7800.0,
+            'range': [1000.0, 20000.0],
+            'category': 'material_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'electromagnetic_thermal': {
+        'electrical_conductivity': {
+            'name': 'Electrical Conductivity (σ)',
+            'description': 'Electrical conductivity',
+            'unit': 'S/m',
+            'default': 1e6,
+            'range': [1e-6, 1e8],
+            'category': 'electrical_properties'
+        },
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [0.01, 1000.0],
+            'category': 'thermal_properties'
+        },
+        'specific_heat': {
+            'name': 'Specific Heat (c_p)',
+            'description': 'Specific heat capacity',
+            'unit': 'J/(kg·K)',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'thermal_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'fluid_structure_interaction': {
+        'viscosity': {
+            'name': 'Viscosity (μ)',
+            'description': 'Dynamic viscosity',
+            'unit': 'Pa·s',
+            'default': 0.001,
+            'range': [1e-6, 1e-1],
+            'category': 'fluid_properties'
+        },
+        'density': {
+            'name': 'Density (ρ)',
+            'description': 'Fluid density',
+            'unit': 'kg/m³',
+            'default': 1000.0,
+            'range': [1.0, 20000.0],
+            'category': 'fluid_properties'
+        },
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Young\'s modulus of structure',
+            'unit': 'GPa',
+            'default': 200.0,
+            'range': [1.0, 1000.0],
+            'category': 'mechanical_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'geophysical_flow': {
+        'gravity': {
+            'name': 'Gravity (g)',
+            'description': 'Acceleration due to gravity',
+            'unit': 'm/s²',
+            'default': 9.81,
+            'range': [1.0, 20.0],
+            'category': 'geophysical_properties'
+        },
+        'coriolis_parameter': {
+            'name': 'Coriolis Parameter (f)',
+            'description': 'Coriolis parameter',
+            'unit': '1/s',
+            'default': 1e-4,
+            'range': [1e-5, 1e-3],
+            'category': 'geophysical_properties'
+        },
+        'viscosity': {
+            'name': 'Viscosity (μ)',
+            'description': 'Dynamic viscosity',
+            'unit': 'Pa·s',
+            'default': 0.001,
+            'range': [1e-6, 1e-1],
+            'category': 'fluid_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'grain_growth': {
+        'mobility': {
+            'name': 'Mobility (M)',
+            'description': 'Grain boundary mobility',
+            'unit': 'm²/(J·s)',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'phase_field'
+        },
+        'interface_energy': {
+            'name': 'Interface Energy (γ)',
+            'description': 'Grain boundary energy',
+            'unit': 'J/m²',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'thermodynamic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'laser_heat_source': {
+        'laser_power': {
+            'name': 'Laser Power (P)',
+            'description': 'Laser beam power',
+            'unit': 'W',
+            'default': 1000.0,
+            'range': [1.0, 10000.0],
+            'category': 'laser_properties'
+        },
+        'beam_radius': {
+            'name': 'Beam Radius (r)',
+            'description': 'Laser beam radius',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-2],
+            'category': 'laser_properties'
+        },
+        'absorption_coefficient': {
+            'name': 'Absorption Coefficient (α)',
+            'description': 'Material absorption coefficient',
+            'unit': '1/m',
+            'default': 1e6,
+            'range': [1e3, 1e8],
+            'category': 'optical_properties'
+        },
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [0.01, 1000.0],
+            'category': 'thermal_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-2,
+            'range': [1e-4, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'magnetohydrodynamics': {
+        'magnetic_permeability': {
+            'name': 'Magnetic Permeability (μ)',
+            'description': 'Magnetic permeability',
+            'unit': 'H/m',
+            'default': 1.257e-6,
+            'range': [1e-7, 1e-5],
+            'category': 'magnetic_properties'
+        },
+        'electrical_conductivity': {
+            'name': 'Electrical Conductivity (σ)',
+            'description': 'Electrical conductivity',
+            'unit': 'S/m',
+            'default': 1e6,
+            'range': [1e-6, 1e8],
+            'category': 'electrical_properties'
+        },
+        'viscosity': {
+            'name': 'Viscosity (μ)',
+            'description': 'Dynamic viscosity',
+            'unit': 'Pa·s',
+            'default': 0.001,
+            'range': [1e-6, 1e-1],
+            'category': 'fluid_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'melt_pool_dynamics': {
+        'laser_power': {
+            'name': 'Laser Power (P)',
+            'description': 'Laser beam power',
+            'unit': 'W',
+            'default': 1000.0,
+            'range': [1.0, 10000.0],
+            'category': 'laser_properties'
+        },
+        'scan_speed': {
+            'name': 'Scan Speed (v)',
+            'description': 'Laser scan speed',
+            'unit': 'm/s',
+            'default': 0.1,
+            'range': [0.01, 1.0],
+            'category': 'process_parameters'
+        },
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [0.01, 1000.0],
+            'category': 'thermal_properties'
+        },
+        'latent_heat': {
+            'name': 'Latent Heat (L)',
+            'description': 'Latent heat of fusion',
+            'unit': 'J/kg',
+            'default': 3.34e5,
+            'range': [1e4, 1e6],
+            'category': 'thermodynamic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-2,
+            'range': [1e-4, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'microstructure_evolution': {
+        'mobility': {
+            'name': 'Mobility (M)',
+            'description': 'Microstructure evolution mobility',
+            'unit': 'm²/(J·s)',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'phase_field'
+        },
+        'interface_energy': {
+            'name': 'Interface Energy (γ)',
+            'description': 'Interface energy for microstructure',
+            'unit': 'J/m²',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'thermodynamic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'nuclear_thermal': {
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [0.01, 1000.0],
+            'category': 'thermal_properties'
+        },
+        'specific_heat': {
+            'name': 'Specific Heat (c_p)',
+            'description': 'Specific heat capacity',
+            'unit': 'J/(kg·K)',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'thermal_properties'
+        },
+        'heat_source': {
+            'name': 'Heat Source (Q)',
+            'description': 'Nuclear heat source strength',
+            'unit': 'W/m³',
+            'default': 1e6,
+            'range': [1e3, 1e9],
+            'category': 'nuclear_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'phase_field_allen_cahn': {
+        'mobility': {
+            'name': 'Mobility (M)',
+            'description': 'Phase field mobility',
+            'unit': 'm²/(J·s)',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'phase_field'
+        },
+        'interface_thickness': {
+            'name': 'Interface Thickness (ε)',
+            'description': 'Phase field interface thickness',
+            'unit': 'm',
+            'default': 1e-6,
+            'range': [1e-9, 1e-3],
+            'category': 'phase_field'
+        },
+        'free_energy_barrier': {
+            'name': 'Free Energy Barrier (W)',
+            'description': 'Free energy barrier',
+            'unit': 'J/m³',
+            'default': 1e6,
+            'range': [1e3, 1e9],
+            'category': 'thermodynamic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'phase_field_cahn_hilliard': {
+        'mobility': {
+            'name': 'Mobility (M)',
+            'description': 'Phase field mobility',
+            'unit': 'm²/(J·s)',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'phase_field'
+        },
+        'interface_thickness': {
+            'name': 'Interface Thickness (ε)',
+            'description': 'Phase field interface thickness',
+            'unit': 'm',
+            'default': 1e-6,
+            'range': [1e-9, 1e-3],
+            'category': 'phase_field'
+        },
+        'free_energy_barrier': {
+            'name': 'Free Energy Barrier (W)',
+            'description': 'Free energy barrier',
+            'unit': 'J/m³',
+            'default': 1e6,
+            'range': [1e3, 1e9],
+            'category': 'thermodynamic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'porosity_evolution': {
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for porosity evolution',
+            'unit': 'm²/s',
+            'default': 1e-12,
+            'range': [1e-20, 1e-8],
+            'category': 'transport_properties'
+        },
+        'surface_energy': {
+            'name': 'Surface Energy (γ)',
+            'description': 'Surface energy of pores',
+            'unit': 'J/m²',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'thermodynamic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'powder_spreading': {
+        'particle_size': {
+            'name': 'Particle Size (d)',
+            'description': 'Average powder particle size',
+            'unit': 'm',
+            'default': 1e-5,
+            'range': [1e-7, 1e-3],
+            'category': 'powder_properties'
+        },
+        'particle_density': {
+            'name': 'Particle Density (ρ_p)',
+            'description': 'Powder particle density',
+            'unit': 'kg/m³',
+            'default': 8000.0,
+            'range': [1000.0, 20000.0],
+            'category': 'powder_properties'
+        },
+        'spread_speed': {
+            'name': 'Spread Speed (v)',
+            'description': 'Powder spreading speed',
+            'unit': 'm/s',
+            'default': 0.1,
+            'range': [0.01, 1.0],
+            'category': 'process_parameters'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-2,
+            'range': [1e-4, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'precipitation_nucleation': {
+        'nucleation_rate': {
+            'name': 'Nucleation Rate (J)',
+            'description': 'Precipitation nucleation rate',
+            'unit': '1/(m³·s)',
+            'default': 1e12,
+            'range': [1e6, 1e18],
+            'category': 'nucleation_properties'
+        },
+        'critical_radius': {
+            'name': 'Critical Radius (r_c)',
+            'description': 'Critical nucleation radius',
+            'unit': 'm',
+            'default': 1e-9,
+            'range': [1e-12, 1e-6],
+            'category': 'nucleation_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'quantum_mechanical': {
+        'planck_constant': {
+            'name': 'Planck Constant (ℏ)',
+            'description': 'Reduced Planck constant',
+            'unit': 'J·s',
+            'default': 1.055e-34,
+            'range': [1e-35, 1e-33],
+            'category': 'quantum_properties'
+        },
+        'mass': {
+            'name': 'Mass (m)',
+            'description': 'Particle mass',
+            'unit': 'kg',
+            'default': 9.109e-31,
+            'range': [1e-32, 1e-29],
+            'category': 'quantum_properties'
+        },
+        'potential_strength': {
+            'name': 'Potential Strength (V_0)',
+            'description': 'Potential energy strength',
+            'unit': 'J',
+            'default': 1e-20,
+            'range': [1e-25, 1e-15],
+            'category': 'quantum_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-9,
+            'range': [1e-12, 1e-6],
+            'category': 'domain_properties'
+        }
+    },
+    
+    'residual_stress': {
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Young\'s modulus for residual stress analysis',
+            'unit': 'GPa',
+            'default': 200.0,
+            'range': [1.0, 1000.0],
+            'category': 'mechanical_properties'
+        },
+        'poisson_ratio': {
+            'name': 'Poisson Ratio (ν)',
+            'description': 'Poisson\'s ratio for stress-strain relationship',
+            'unit': 'dimensionless',
+            'default': 0.3,
+            'range': [0.0, 0.5],
+            'category': 'mechanical_properties'
+        },
+        'thermal_expansion': {
+            'name': 'Thermal Expansion Coefficient (α)',
+            'description': 'Coefficient of thermal expansion',
+            'unit': '1/K',
+            'default': 2.3e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'thermal_properties'
+        },
+        'temperature_gradient': {
+            'name': 'Temperature Gradient',
+            'description': 'Temperature gradient causing thermal stresses',
+            'unit': 'K/m',
+            'default': 100.0,
+            'range': [1.0, 10000.0],
+            'category': 'thermal_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'sintering': {
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for sintering',
+            'unit': 'm²/s',
+            'default': 1e-12,
+            'range': [1e-20, 1e-8],
+            'category': 'transport_properties'
+        },
+        'surface_energy': {
+            'name': 'Surface Energy (γ)',
+            'description': 'Surface energy',
+            'unit': 'J/m²',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'thermodynamic_properties'
+        },
+        'temperature': {
+            'name': 'Temperature (T)',
+            'description': 'Sintering temperature',
+            'unit': 'K',
+            'default': 1500.0,
+            'range': [500.0, 3000.0],
+            'category': 'thermal_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-6, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 86400.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'solidification_stefan': {
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [0.01, 1000.0],
+            'category': 'thermal_properties'
+        },
+        'latent_heat': {
+            'name': 'Latent Heat (L)',
+            'description': 'Latent heat of fusion',
+            'unit': 'J/kg',
+            'default': 3.34e5,
+            'range': [1e4, 1e6],
+            'category': 'thermodynamic_properties'
+        },
+        'melting_temperature': {
+            'name': 'Melting Temperature (T_m)',
+            'description': 'Melting temperature',
+            'unit': 'K',
+            'default': 1800.0,
+            'range': [500.0, 4000.0],
+            'category': 'thermal_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1e-2,
+            'range': [1e-4, 1e-1],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'thermoelasticity': {
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Young\'s modulus',
+            'unit': 'GPa',
+            'default': 200.0,
+            'range': [1.0, 1000.0],
+            'category': 'mechanical_properties'
+        },
+        'thermal_expansion': {
+            'name': 'Thermal Expansion Coefficient (α)',
+            'description': 'Coefficient of thermal expansion',
+            'unit': '1/K',
+            'default': 2.3e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'thermal_properties'
+        },
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [0.01, 1000.0],
+            'category': 'thermal_properties'
+        },
+        'specific_heat': {
+            'name': 'Specific Heat (c_p)',
+            'description': 'Specific heat capacity',
+            'unit': 'J/(kg·K)',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'thermal_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
     }
 } 
