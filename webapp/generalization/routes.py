@@ -3,6 +3,7 @@ Routes for Generalization Study PINN Application
 """
 
 from fastapi import APIRouter, Request, HTTPException
+from config.equations import ALL_PURPOSE_EQUATIONS
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import httpx
@@ -11,7 +12,9 @@ import sys
 
 # Add parent directory to path to import config
 sys.path.append(str(Path(__file__).parent.parent))
-from config import Config
+from config.config import Config
+from config.equations import ALL_PURPOSE_EQUATIONS
+from config.parameters import ALL_PURPOSE_PARAMETERS
 
 # Add comprehensive models import
 sys.path.append(str(Path(__file__).parent.parent.parent))
@@ -21,16 +24,22 @@ router = APIRouter(prefix="/purpose/generalization", tags=["Generalization Study
 templates = Jinja2Templates(directory="templates")
 config = Config()
 
+# Get generalization equations and parameters from modular structure
+GENERALIZATION_EQUATIONS = ALL_PURPOSE_EQUATIONS.get('generalization', {})
+GENERALIZATION_PARAMETERS = ALL_PURPOSE_PARAMETERS.get('generalization', {})
+
 @router.get("/", response_class=HTMLResponse)
 async def generalization_page(request: Request):
     """Generalization Study main page"""
-    purpose_info = config.PINN_PURPOSES["generalization"]
+    purpose_info = config.get_purpose_info("generalization")
+    equations = config.get_equations_by_purpose("generalization")
+    parameters = config.get_parameters_by_purpose("generalization")
     
-    # Get equations that support this purpose
+    # Get equations that support generalization using modular structure
     supported_equations = {}
-    for eq_key, eq_info in config.SUPPORTED_EQUATIONS.items():
-        if "generalization" in eq_info.get('purposes', []):
-            supported_equations[eq_key] = eq_info
+    for eq_key in GENERALIZATION_EQUATIONS:
+        if eq_key in config.SUPPORTED_EQUATIONS:
+            supported_equations[eq_key] = equations[eq_key]
     
     return templates.TemplateResponse(
         "generalization/index.html",
@@ -38,7 +47,8 @@ async def generalization_page(request: Request):
             "request": request,
             "purpose": purpose_info,
             "purpose_key": "generalization",
-            "supported_equations": supported_equations,
+            "equations": equations,
+            "parameters": parameters,
             "config": config,
             "title": f"{purpose_info['name']} - PINN Applications"
         }
@@ -50,8 +60,10 @@ async def generalization_simulation(request: Request, eq_type: str):
     if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
-    purpose_info = config.PINN_PURPOSES["generalization"]
-    equation_info = config.SUPPORTED_EQUATIONS[eq_type]
+    purpose_info = config.get_purpose_info("generalization")
+    equations = config.get_equations_by_purpose("generalization")
+    parameters = config.get_parameters_by_purpose("generalization")
+    equation_info = equations[eq_type]
     default_params = config.DEFAULT_PARAMETERS.get(eq_type, {})
     
     # Verify that this equation supports this purpose
@@ -78,8 +90,10 @@ async def generalization_results(request: Request, eq_type: str):
     if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
-    purpose_info = config.PINN_PURPOSES["generalization"]
-    equation_info = config.SUPPORTED_EQUATIONS[eq_type]
+    purpose_info = config.get_purpose_info("generalization")
+    equations = config.get_equations_by_purpose("generalization")
+    parameters = config.get_parameters_by_purpose("generalization")
+    equation_info = equations[eq_type]
     
     return templates.TemplateResponse(
         "generalization/results.html",
@@ -112,7 +126,7 @@ async def generalization_simulate(eq_type: str, request: Request):
         
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{config.API_BASE_URL}/api/{eq_type}/train",
+                f"{config.API_BASE_URL}/api/generalization/{eq_id}/train",
                 json=backend_params,
                 timeout=300.0
             )
@@ -137,7 +151,7 @@ async def generalization_get_results(eq_type: str):
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                f"{config.API_BASE_URL}/api/{eq_type}/results",
+                f"{config.API_BASE_URL}/api/generalization/{eq_id}/results",
                 timeout=30.0
             )
             
@@ -150,14 +164,15 @@ async def generalization_get_results(eq_type: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get results: {str(e)}")
 
-def map_parameters_to_backend(eq_type: str, frontend_params: dict) -> dict:
+def map_parameters_to_backend(eq_id: str, frontend_params: dict) -> dict:
     """Map frontend parameters to backend format for generalization study"""
     backend_params = {
         "hidden_layers": frontend_params.get("hidden_layers", 4),
         "neurons_per_layer": frontend_params.get("neurons_per_layer", 20),
         "learning_rate": frontend_params.get("learning_rate", 0.001),
         "epochs": frontend_params.get("epochs", 10000),
-        "purpose": "generalization"
+        "purpose": "generalization",
+        "equation_id": eq_id
     }
     
     # Add purpose-specific parameters

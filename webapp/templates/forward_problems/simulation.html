@@ -364,6 +364,104 @@
                     </div>
                 </div>
                 {% endif %}
+
+                {% if eq_type == "navier_stokes" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reynolds">Reynolds Number (Re)</label>
+                        <input type="number" id="reynolds" name="reynolds" 
+                               value="{{ default_params.reynolds|default(100.0) }}" 
+                               step="1.0" min="1.0" max="1000.0" required>
+                        <small class="form-text">Reynolds number (Re = UL/ν)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="domain_size">Domain Size (L)</label>
+                        <input type="number" id="domain_size" name="domain_size" 
+                               value="{{ default_params.domain_size|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Length of the spatial domain</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nx">Spatial Points X (Nx)</label>
+                        <input type="number" id="nx" name="nx" 
+                               value="{{ default_params.nx|default(128) }}" 
+                               min="32" max="512" required>
+                        <small class="form-text">Number of spatial points in x-direction</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ny">Spatial Points Y (Ny)</label>
+                        <input type="number" id="ny" name="ny" 
+                               value="{{ default_params.ny|default(128) }}" 
+                               min="32" max="512" required>
+                        <small class="form-text">Number of spatial points in y-direction</small>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if eq_type == "helmholtz" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="k">Wavenumber (k)</label>
+                        <input type="number" id="k" name="k" 
+                               value="{{ default_params.k|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Wavenumber (k = 2π/λ)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="domain_size">Domain Size (L)</label>
+                        <input type="number" id="domain_size" name="domain_size" 
+                               value="{{ default_params.domain_size|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Length of the spatial domain</small>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if eq_type == "schrodinger" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hbar">Planck's Constant (ℏ)</label>
+                        <input type="number" id="hbar" name="hbar" 
+                               value="{{ default_params.hbar|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Reduced Planck's constant</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mass">Particle Mass (m)</label>
+                        <input type="number" id="mass" name="mass" 
+                               value="{{ default_params.mass|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Mass of the particle</small>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if eq_type == "maxwell" %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="epsilon">Permittivity (ε)</label>
+                        <input type="number" id="epsilon" name="epsilon" 
+                               value="{{ default_params.epsilon|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Electric permittivity</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mu">Permeability (μ)</label>
+                        <input type="number" id="mu" name="mu" 
+                               value="{{ default_params.mu|default(1.0) }}" 
+                               step="0.1" min="0.1" max="10.0" required>
+                        <small class="form-text">Magnetic permeability</small>
+                    </div>
+                </div>
+                {% endif %}
             </div>
 
             

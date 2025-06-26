@@ -7,7 +7,7 @@ import uvicorn
 from pathlib import Path
 import httpx
 import json
-from config import Config
+from config.config import Config
 
 # Import purpose-specific routers using absolute imports
 from forward_problems.routes import router as forward_problems_router
@@ -61,14 +61,92 @@ app.include_router(uncertainty_router)
 # Main routes
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request):
-    """Main dashboard page"""
+    """Main dashboard page with modular purpose structure"""
     return templates.TemplateResponse(
         "index.html",
         {
             "request": request,
-            "equations": config.SUPPORTED_EQUATIONS,
-            "config": config,  # Pass entire config to access PINN_PURPOSES
-            "title": "PINN Dashboard"
+            "purposes": config.get_all_purposes(),
+            "config": config,
+            "title": "PINN Dashboard - Modular Platform"
+        }
+    )
+
+# Purpose-based routes
+@app.get("/purpose/{purpose_name}", response_class=HTMLResponse)
+async def purpose_page(request: Request, purpose_name: str):
+    """Individual purpose page"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    parameters = config.get_parameters_by_purpose(purpose_name)
+    
+    return templates.TemplateResponse(
+        f"{purpose_name}/index.html",
+        {
+            "request": request,
+            "purpose": purpose_info,
+            "purpose_key": purpose_name,
+            "supported_equations": equations,
+            "parameters": parameters,
+            "config": config,
+            "title": f"{purpose_info['name']} - PINN"
+        }
+    )
+
+@app.get("/purpose/{purpose_name}/simulation/{eq_id}", response_class=HTMLResponse)
+async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: str):
+    """Simulation page for specific purpose and equation"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    equation_info = equations[eq_id]
+    parameters = config.get_parameters_by_purpose(purpose_name)
+    
+    return templates.TemplateResponse(
+        f"{purpose_name}/simulation.html",
+        {
+            "request": request,
+            "purpose": purpose_info,
+            "purpose_name": purpose_name,
+            "equation": equation_info,
+            "eq_id": eq_id,
+            "parameters": parameters,
+            "config": config,
+            "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
+        }
+    )
+
+@app.get("/purpose/{purpose_name}/results/{eq_id}", response_class=HTMLResponse)
+async def purpose_results_page(request: Request, purpose_name: str, eq_id: str):
+    """Results page for specific purpose and equation"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    equation_info = equations[eq_id]
+    
+    return templates.TemplateResponse(
+        f"{purpose_name}/results.html",
+        {
+            "request": request,
+            "purpose": purpose_info,
+            "purpose_name": purpose_name,
+            "equation": equation_info,
+            "eq_id": eq_id,
+            "config": config,
+            "title": f"Results - {equation_info['name']} - {purpose_info['name']}"
         }
     )
 
@@ -80,7 +158,7 @@ async def equation_page(request: Request, eq_type: str):
         raise HTTPException(status_code=404, detail="Equation not found")
     
     equation_info = config.SUPPORTED_EQUATIONS[eq_type]
-    default_params = config.DEFAULT_PARAMETERS.get(eq_type, {})
+    default_params = config.get_default_parameters(eq_type)
     
     return templates.TemplateResponse(
         f"equations/{eq_type}/index.html",
@@ -101,7 +179,7 @@ async def simulation_page(request: Request, eq_type: str):
         raise HTTPException(status_code=404, detail="Equation not found")
     
     equation_info = config.SUPPORTED_EQUATIONS[eq_type]
-    default_params = config.DEFAULT_PARAMETERS.get(eq_type, {})
+    default_params = config.get_default_parameters(eq_type)
     
     return templates.TemplateResponse(
         f"equations/{eq_type}/simulation.html",
@@ -135,9 +213,45 @@ async def results_page(request: Request, eq_type: str):
     )
 
 # API routes for communicating with main.py backend
+@app.post("/api/simulate/{purpose_name}/{eq_id}")
+async def simulate_purpose_equation(purpose_name: str, eq_id: str, request: Request):
+    """Submit training request to main.py backend for purpose-based equations"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    try:
+        body = await request.json()
+        
+        # Map frontend parameters to backend format
+        backend_params = map_parameters_to_backend(purpose_name, eq_id, body)
+        
+        async with httpx.AsyncClient() as client:
+            # Call the main.py backend API using /train endpoint
+            response = await client.post(
+                f"{config.API_BASE_URL}/api/{purpose_name}/{eq_id}/train",
+                json=backend_params,
+                timeout=300.0  # 5 minutes timeout for training
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise HTTPException(status_code=response.status_code, 
+                                  detail=f"Backend error: {response.text}")
+                
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=408, detail="Training timeout - model may still be training")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
+
 @app.post("/api/simulate/{eq_type}")
 async def simulate_equation(eq_type: str, request: Request):
-    """Submit training request to main.py backend"""
+    """Submit training request to main.py backend (legacy route)"""
     if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
@@ -145,7 +259,7 @@ async def simulate_equation(eq_type: str, request: Request):
         body = await request.json()
         
         # Map frontend parameters to backend format
-        backend_params = map_parameters_to_backend(eq_type, body)
+        backend_params = map_parameters_to_backend_legacy(eq_type, body)
         
         async with httpx.AsyncClient() as client:
             # Call the main.py backend API using /train endpoint
@@ -166,9 +280,39 @@ async def simulate_equation(eq_type: str, request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
 
+@app.post("/api/predict/{purpose_name}/{eq_id}")
+async def predict_purpose_equation(purpose_name: str, eq_id: str, request: Request):
+    """Make predictions using trained model for purpose-based equations"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    try:
+        body = await request.json()
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{config.API_BASE_URL}/api/{purpose_name}/{eq_id}/predict",
+                json=body,
+                timeout=30.0
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise HTTPException(status_code=response.status_code, 
+                                  detail=f"Backend error: {response.text}")
+                
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+
 @app.post("/api/predict/{eq_type}")
 async def predict_equation(eq_type: str, request: Request):
-    """Make predictions using trained model"""
+    """Make predictions using trained model (legacy route)"""
     if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
@@ -191,9 +335,36 @@ async def predict_equation(eq_type: str, request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 
+@app.get("/api/results/{purpose_name}/{eq_id}")
+async def get_purpose_results(purpose_name: str, eq_id: str):
+    """Get training results and model status for purpose-based equations"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    try:
+        # Check if model exists
+        model_path = f"results/{purpose_name}/{eq_id}/models/model.pth"
+        
+        # For now, return basic model status
+        # In a real implementation, you might want to load actual results
+        return {
+            "model_exists": True,  # This would be checked dynamically
+            "purpose_name": purpose_name,
+            "equation_id": eq_id,
+            "message": "Model training completed"
+        }
+                
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch results: {str(e)}")
+
 @app.get("/api/results/{eq_type}")
 async def get_results(eq_type: str):
-    """Get training results and model status"""
+    """Get training results and model status (legacy route)"""
     if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
@@ -212,8 +383,33 @@ async def get_results(eq_type: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch results: {str(e)}")
 
-def map_parameters_to_backend(eq_type: str, frontend_params: dict) -> dict:
-    """Map frontend parameters to backend API format"""
+def map_parameters_to_backend(purpose_name: str, eq_id: str, frontend_params: dict) -> dict:
+    """Map frontend parameters to backend API format for purpose-based equations"""
+    # Convert string values to appropriate types
+    params = {}
+    for key, value in frontend_params.items():
+        if isinstance(value, str):
+            try:
+                params[key] = float(value) if '.' in value else int(value)
+            except ValueError:
+                params[key] = value
+        else:
+            params[key] = value
+    
+    # Add purpose and equation information
+    params['purpose'] = purpose_name
+    params['equation_id'] = eq_id
+    
+    # Add default training parameters if not provided
+    training_params = config.get_training_parameters()
+    for key, default_value in training_params.items():
+        if key not in params:
+            params[key] = default_value
+    
+    return params
+
+def map_parameters_to_backend_legacy(eq_type: str, frontend_params: dict) -> dict:
+    """Map frontend parameters to backend API format (legacy support)"""
     # Convert string values to appropriate types
     params = {}
     for key, value in frontend_params.items():

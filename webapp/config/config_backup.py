@@ -2936,9 +2936,151 @@ class Config:
             'y_max': 1.0,
             't_min': 0.0,
             't_max': 1.0
+        },
+        'linear_dynamics': {
+            'A11': 1.0, 'A12': 0.0, 'A21': 0.0, 'A22': 1.0,
+            'B1': 1.0, 'B2': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'nonlinear_dynamics': {
+            'alpha': 1.0, 'beta': 1.0, 'gamma': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'optimal_control_shm': {
+            'omega': 1.0, 'Q': 1.0, 'R': 0.1,
+            'nt': 1000, 't_min': 0.0, 't_max': 10.0
+        },
+        'fluid_control': {
+            'reynolds': 100.0, 'control_strength': 1.0,
+            'nx': 128, 'ny': 128, 'nt': 50,
+            'x_min': 0.0, 'x_max': 1.0, 'y_min': 0.0, 'y_max': 1.0,
+            't_min': 0.0, 't_max': 1.0
+        },
+        'thermal_control': {
+            'alpha': 0.1, 'control_heat': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'wave_control': {
+            'c': 1.0, 'control_force': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'additive_manufacturing_control': {
+            'alpha': 0.1, 'laser_power': 1000.0, 'latent_heat': 334000.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'material_control': {
+            'mobility': 1.0, 'control_field': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'hjb_equation': {
+            'discount_factor': 0.95, 'cost_weight': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'multi_objective_control': {
+            'weight1': 0.5, 'weight2': 0.5, 'weight3': 0.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'heat_transfer_phase_change': {
+            'alpha': 0.1, 'latent_heat': 334000.0, 'melting_temp': 273.15,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'stefan_condition': {
+            'thermal_conductivity_solid': 2.0, 'thermal_conductivity_liquid': 0.6,
+            'latent_heat': 334000.0, 'density': 1000.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'navier_stokes_free_surface': {
+            'reynolds': 100.0, 'surface_tension': 0.072, 'gravity': 9.81,
+            'nx': 128, 'ny': 128, 'nt': 50,
+            'x_min': 0.0, 'x_max': 1.0, 'y_min': 0.0, 'y_max': 1.0,
+            't_min': 0.0, 't_max': 1.0
+        },
+        'thermal_stress': {
+            'youngs_modulus': 200e9, 'poisson_ratio': 0.3, 'thermal_expansion': 12e-6,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'phase_field': {
+            'mobility': 1.0, 'interface_thickness': 0.01,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'cahn_hilliard': {
+            'mobility': 1.0, 'interface_energy': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'fick_second_law': {
+            'diffusion_coefficient': 1e-9,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'crystal_plasticity': {
+            'shear_modulus': 80e9, 'burgers_vector': 2.5e-10,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'advection_diffusion': {
+            'velocity': 1.0, 'diffusion_coefficient': 0.1,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'shallow_water': {
+            'gravity': 9.81, 'friction_coefficient': 0.01,
+            'nx': 256, 'ny': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 'y_min': 0.0, 'y_max': 1.0,
+            't_min': 0.0, 't_max': 1.0
+        },
+        'poroelasticity': {
+            'youngs_modulus': 1e9, 'poisson_ratio': 0.3, 'permeability': 1e-12,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'radiative_transfer': {
+            'absorption_coefficient': 1.0, 'scattering_coefficient': 0.1,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'reaction_diffusion': {
+            'diffusion_coefficient_u': 1.0, 'diffusion_coefficient_v': 0.5,
+            'reaction_rate_a': 1.0, 'reaction_rate_b': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'elastic_wave': {
+            'density': 2700.0, 'youngs_modulus': 70e9, 'poisson_ratio': 0.3,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'magnetohydrodynamics': {
+            'density': 1000.0, 'viscosity': 1e-3, 'magnetic_permeability': 1.26e-6,
+            'electrical_conductivity': 1e6,
+            'nx': 128, 'ny': 128, 'nt': 50,
+            'x_min': 0.0, 'x_max': 1.0, 'y_min': 0.0, 'y_max': 1.0,
+            't_min': 0.0, 't_max': 1.0
+        },
+        'viscoelasticity': {
+            'youngs_modulus': 1e9, 'viscosity': 1e3, 'relaxation_time': 1.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
+        },
+        'thermoelasticity': {
+            'youngs_modulus': 200e9, 'poisson_ratio': 0.3, 'thermal_expansion': 12e-6,
+            'thermal_conductivity': 50.0, 'specific_heat': 500.0,
+            'nx': 256, 'nt': 100,
+            'x_min': 0.0, 'x_max': 1.0, 't_min': 0.0, 't_max': 1.0
         }
     }
-    
     # Parameter descriptions for UI
     PARAMETER_DESCRIPTIONS = {
         'nu': 'Viscosity coefficient',

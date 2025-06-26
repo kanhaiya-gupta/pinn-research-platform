@@ -24,9 +24,9 @@
             PINN Applications & Purposes
         </h2>
         <div class="purposes-grid">
-            {% for purpose_key, purpose_info in config.PINN_PURPOSES.items() %}
+            {% for purpose_key, purpose_info in purposes.items() %}
             <div class="purpose-card" data-purpose="{{ purpose_key }}">
-                <div class="purpose-header" style="border-left: 4px solid {{ purpose_info.color }}">
+                <div class="purpose-header" style="border-left: 4px solid var(--{{ purpose_info.color }})">
                     <div class="purpose-icon">
                         <i class="{{ purpose_info.icon }}"></i>
                     </div>
@@ -36,13 +36,15 @@
                 </div>
                 <div class="purpose-body">
                     <p class="purpose-description">{{ purpose_info.description }}</p>
-                    <div class="purpose-examples">
-                        <strong>Examples:</strong>
-                        <ul>
-                            {% for example in purpose_info.examples %}
-                            <li>{{ example }}</li>
-                            {% endfor %}
-                        </ul>
+                    <div class="purpose-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-calculator"></i>
+                            <span>{{ purpose_info.equations|length }} Equations</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-cogs"></i>
+                            <span>{{ purpose_info.parameters|length }} Parameters</span>
+                        </div>
                     </div>
                     <div class="purpose-actions">
                         <a href="/purpose/{{ purpose_key }}" class="btn btn-primary">
@@ -69,19 +71,8 @@
                         <i class="fas fa-calculator"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>{{ equations|length }}</h3>
+                        <h3>{{ config.SUPPORTED_EQUATIONS|length }}</h3>
                         <p>Equations Supported</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-compass"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>{{ config.PINN_PURPOSES|length }}</h3>
-                        <p>PINN Applications</p>
                     </div>
                 </div>
             </div>
@@ -91,8 +82,19 @@
                         <i class="fas fa-cogs"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>Real-time</h3>
-                        <p>Training & Inference</p>
+                        <h3>{{ config.SUPPORTED_PARAMETERS|length }}</h3>
+                        <p>Parameters Available</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ purposes|length }}</h3>
+                        <p>PINN Applications</p>
                     </div>
                 </div>
             </div>
@@ -175,21 +177,21 @@
                 <div class="step-card">
                     <div class="step-number">1</div>
                     <h4>Choose Application</h4>
-                    <p>Select from forward problems, inverse problems, optimization, or scientific discovery</p>
+                    <p>Select from 10 PINN purposes: forward problems, inverse problems, optimization, or scientific discovery</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="step-card">
                     <div class="step-number">2</div>
                     <h4>Select Equation</h4>
-                    <p>Pick the differential equation that models your physical system</p>
+                    <p>Pick from 399+ differential equations that model your physical system</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="step-card">
                     <div class="step-number">3</div>
                     <h4>Configure Parameters</h4>
-                    <p>Set equation parameters and training configuration</p>
+                    <p>Set 314+ parameters including physical properties, training config, and model architecture</p>
                 </div>
             </div>
             <div class="col-md-3">
@@ -201,9 +203,87 @@
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
 
-{% block scripts %}
-<script src="/static/js/main.js"></script>
+    <!-- Features Section -->
+    <div class="features-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Platform Features
+        </h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h4>Modular Architecture</h4>
+                    <p>10 purpose-specific modules with 399 equations and 314 parameters for comprehensive coverage</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>Advanced PINNs</h4>
+                    <p>State-of-the-art physics-informed neural networks with multiple activation functions and optimizers</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Real-time Training</h4>
+                    <p>Interactive training with live progress monitoring and adaptive parameter tuning</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h4>Interactive Visualization</h4>
+                    <p>Dynamic 2D/3D plots, convergence analysis, and result comparison tools</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h4>Export & Share</h4>
+                    <p>Export results, models, and configurations for further analysis and collaboration</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Research-Grade</h4>
+                    <p>Production-ready platform for academic research, industry applications, and educational use</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add hover effects to purpose cards
+    const purposeCards = document.querySelectorAll('.purpose-card');
+    purposeCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+        });
+    });
+});
+</script>
 {% endblock %} 

@@ -3,6 +3,8 @@ Routes for Sparse Data Learning PINN Application
 """
 
 from fastapi import APIRouter, Request, HTTPException
+from config.equations import ALL_PURPOSE_EQUATIONS
+from config.parameters import ALL_PURPOSE_PARAMETERS
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import httpx
@@ -11,7 +13,9 @@ import sys
 
 # Add parent directory to path to import config
 sys.path.append(str(Path(__file__).parent.parent))
-from config import Config
+from config.config import Config
+from config.equations import ALL_PURPOSE_EQUATIONS
+from config.parameters import ALL_PURPOSE_PARAMETERS
 
 # Add comprehensive models import
 sys.path.append(str(Path(__file__).parent.parent.parent))
@@ -21,16 +25,22 @@ router = APIRouter(prefix="/purpose/sparse_data", tags=["Sparse Data Learning"])
 templates = Jinja2Templates(directory="templates")
 config = Config()
 
+# Get sparse_data equations and parameters from modular structure
+SPARSE_DATA_EQUATIONS = ALL_PURPOSE_EQUATIONS.get('sparse_data', {})
+SPARSE_DATA_PARAMETERS = ALL_PURPOSE_PARAMETERS.get('sparse_data', {})
+
 @router.get("/", response_class=HTMLResponse)
 async def sparse_data_page(request: Request):
     """Sparse Data Learning main page"""
-    purpose_info = config.PINN_PURPOSES["sparse_data"]
+    purpose_info = config.get_purpose_info("sparse_data")
+    equations = config.get_equations_by_purpose("sparse_data")
+    parameters = config.get_parameters_by_purpose("sparse_data")
     
-    # Get equations that support this purpose
+    # Get equations that support sparse_data using modular structure
     supported_equations = {}
-    for eq_key, eq_info in config.SUPPORTED_EQUATIONS.items():
-        if "sparse_data" in eq_info.get('purposes', []):
-            supported_equations[eq_key] = eq_info
+    for eq_key in SPARSE_DATA_EQUATIONS:
+        if eq_key in config.SUPPORTED_EQUATIONS:
+            supported_equations[eq_key] = equations[eq_key]
     
     return templates.TemplateResponse(
         "sparse_data/index.html",
@@ -38,7 +48,8 @@ async def sparse_data_page(request: Request):
             "request": request,
             "purpose": purpose_info,
             "purpose_key": "sparse_data",
-            "supported_equations": supported_equations,
+            "equations": equations,
+            "parameters": parameters,
             "config": config,
             "title": f"{purpose_info['name']} - PINN Applications"
         }
@@ -50,8 +61,10 @@ async def sparse_data_simulation(request: Request, eq_type: str):
     if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
-    purpose_info = config.PINN_PURPOSES["sparse_data"]
-    equation_info = config.SUPPORTED_EQUATIONS[eq_type]
+    purpose_info = config.get_purpose_info("sparse_data")
+    equations = config.get_equations_by_purpose("sparse_data")
+    parameters = config.get_parameters_by_purpose("sparse_data")
+    equation_info = equations[eq_type]
     default_params = config.DEFAULT_PARAMETERS.get(eq_type, {})
     
     # Verify that this equation supports this purpose
@@ -78,8 +91,10 @@ async def sparse_data_results(request: Request, eq_type: str):
     if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
-    purpose_info = config.PINN_PURPOSES["sparse_data"]
-    equation_info = config.SUPPORTED_EQUATIONS[eq_type]
+    purpose_info = config.get_purpose_info("sparse_data")
+    equations = config.get_equations_by_purpose("sparse_data")
+    parameters = config.get_parameters_by_purpose("sparse_data")
+    equation_info = equations[eq_type]
     
     return templates.TemplateResponse(
         "sparse_data/results.html",
@@ -112,7 +127,7 @@ async def sparse_data_simulate(eq_type: str, request: Request):
         
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{config.API_BASE_URL}/api/{eq_type}/train",
+                f"{config.API_BASE_URL}/api/sparse_data/{eq_id}/train",
                 json=backend_params,
                 timeout=300.0
             )
@@ -137,7 +152,7 @@ async def sparse_data_get_results(eq_type: str):
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                f"{config.API_BASE_URL}/api/{eq_type}/results",
+                f"{config.API_BASE_URL}/api/sparse_data/{eq_id}/results",
                 timeout=30.0
             )
             
@@ -150,14 +165,15 @@ async def sparse_data_get_results(eq_type: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get results: {str(e)}")
 
-def map_parameters_to_backend(eq_type: str, frontend_params: dict) -> dict:
+def map_parameters_to_backend(eq_id: str, frontend_params: dict) -> dict:
     """Map frontend parameters to backend format for sparse data learning"""
     backend_params = {
         "hidden_layers": frontend_params.get("hidden_layers", 4),
         "neurons_per_layer": frontend_params.get("neurons_per_layer", 20),
         "learning_rate": frontend_params.get("learning_rate", 0.001),
         "epochs": frontend_params.get("epochs", 10000),
-        "purpose": "sparse_data"
+        "purpose": "sparse_data",
+        "equation_id": eq_id
     }
     
     # Add purpose-specific parameters
