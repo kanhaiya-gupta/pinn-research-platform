@@ -60,6 +60,19 @@ async def forward_problems_simulation(request: Request, eq_id: str):
     equation_info = equations[eq_id]
     parameters = config.get_parameters_by_purpose("forward_problems")
     
+    # Create default parameters for the template
+    default_params = {
+        "hidden_layers": 4,
+        "neurons_per_layer": 20,
+        "learning_rate": 0.001,
+        "epochs": 10000
+    }
+    
+    # Add equation-specific default parameters
+    for param_id, param_info in parameters.items():
+        if isinstance(param_info, dict) and 'default' in param_info:
+            default_params[param_id] = param_info['default']
+    
     return templates.TemplateResponse(
         "forward_problems/simulation.html",
         {
@@ -69,6 +82,7 @@ async def forward_problems_simulation(request: Request, eq_id: str):
             "equation": equation_info,
             "eq_id": eq_id,
             "parameters": parameters,
+            "default_params": default_params,
             "config": config,
             "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
         }

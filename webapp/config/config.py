@@ -143,6 +143,232 @@ class Config:
             'boundary_points': 100,
             'initial_points': 100
         }
+        
+        # Architecture recommendations for each purpose
+        self.ARCHITECTURE_RECOMMENDATIONS = {
+            'forward_problems': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Use tanh for smooth solutions, linear output for continuous fields'
+            },
+            'inverse_problems': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Stable training with tanh, careful parameter initialization'
+            },
+            'data_assimilation': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Balance between data fitting and physics constraints'
+            },
+            'control_optimization': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Focus on control parameter optimization'
+            },
+            'sparse_data': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Physics-informed regularization for sparse data'
+            },
+            'uncertainty': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Monte Carlo or ensemble methods for uncertainty'
+            },
+            'multiphysics': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Coupled physics with balanced loss weights'
+            },
+            'efficiency': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Optimize for computational speed and memory'
+            },
+            'generalization': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Focus on transfer learning and domain adaptation'
+            },
+            'scientific_discovery': {
+                'hidden_activation': 'tanh',
+                'output_activation': 'linear',
+                'optimizer': 'adam',
+                'notes': 'Discover new physical laws and relationships'
+            }
+        }
+        
+        # Training recommendations for each purpose
+        self.TRAINING_RECOMMENDATIONS = {
+            'forward_problems': {
+                'learning_rate': '0.001',
+                'scheduler': 'constant',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0
+                },
+                'sampling': {
+                    'interior': 1000,
+                    'boundary': 200,
+                    'initial': 200
+                },
+                'notes': 'Standard PINN training with balanced loss weights'
+            },
+            'inverse_problems': {
+                'learning_rate': '0.001',
+                'scheduler': 'step',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0,
+                    'data': 10.0
+                },
+                'sampling': {
+                    'interior': 1000,
+                    'boundary': 200,
+                    'initial': 200,
+                    'data': 100
+                },
+                'notes': 'Higher weight on data loss for parameter identification'
+            },
+            'data_assimilation': {
+                'learning_rate': '0.001',
+                'scheduler': 'constant',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0,
+                    'data': 5.0
+                },
+                'sampling': {
+                    'interior': 1000,
+                    'boundary': 200,
+                    'initial': 200,
+                    'data': 200
+                },
+                'notes': 'Balance physics and observational data'
+            },
+            'control_optimization': {
+                'learning_rate': '0.001',
+                'scheduler': 'cosine',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0,
+                    'control': 2.0
+                },
+                'sampling': {
+                    'interior': 1000,
+                    'boundary': 200,
+                    'initial': 200
+                },
+                'notes': 'Optimize control parameters with physics constraints'
+            },
+            'sparse_data': {
+                'learning_rate': '0.001',
+                'scheduler': 'constant',
+                'loss_weights': {
+                    'physics': 2.0,
+                    'boundary': 1.0,
+                    'initial': 1.0,
+                    'data': 1.0
+                },
+                'sampling': {
+                    'interior': 2000,
+                    'boundary': 400,
+                    'initial': 400,
+                    'data': 50
+                },
+                'notes': 'Higher physics weight to compensate for sparse data'
+            },
+            'uncertainty': {
+                'learning_rate': '0.001',
+                'scheduler': 'constant',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0
+                },
+                'sampling': {
+                    'interior': 1000,
+                    'boundary': 200,
+                    'initial': 200
+                },
+                'notes': 'Monte Carlo dropout or ensemble methods'
+            },
+            'multiphysics': {
+                'learning_rate': '0.001',
+                'scheduler': 'constant',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0,
+                    'coupling': 1.0
+                },
+                'sampling': {
+                    'interior': 1500,
+                    'boundary': 300,
+                    'initial': 300
+                },
+                'notes': 'Coupled physics with balanced coupling terms'
+            },
+            'efficiency': {
+                'learning_rate': '0.001',
+                'scheduler': 'constant',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0
+                },
+                'sampling': {
+                    'interior': 500,
+                    'boundary': 100,
+                    'initial': 100
+                },
+                'notes': 'Optimize for speed with reduced sampling'
+            },
+            'generalization': {
+                'learning_rate': '0.001',
+                'scheduler': 'cosine',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0
+                },
+                'sampling': {
+                    'interior': 1000,
+                    'boundary': 200,
+                    'initial': 200
+                },
+                'notes': 'Focus on transfer learning and domain adaptation'
+            },
+            'scientific_discovery': {
+                'learning_rate': '0.001',
+                'scheduler': 'constant',
+                'loss_weights': {
+                    'physics': 1.0,
+                    'boundary': 1.0,
+                    'initial': 1.0
+                },
+                'sampling': {
+                    'interior': 1000,
+                    'boundary': 200,
+                    'initial': 200
+                },
+                'notes': 'Discover new physical laws and relationships'
+            }
+        }
     
     def _create_default_parameters(self) -> Dict[str, Dict[str, Any]]:
         """Create default parameters for legacy support."""

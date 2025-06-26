@@ -110,15 +110,30 @@ async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: st
     equation_info = equations[eq_id]
     parameters = config.get_parameters_by_purpose(purpose_name)
     
+    # Create default parameters for the template
+    default_params = {
+        "hidden_layers": 4,
+        "neurons_per_layer": 20,
+        "learning_rate": 0.001,
+        "epochs": 10000
+    }
+    
+    # Add equation-specific default parameters
+    for param_id, param_info in parameters.items():
+        if isinstance(param_info, dict) and 'default' in param_info:
+            default_params[param_id] = param_info['default']
+    
     return templates.TemplateResponse(
         f"{purpose_name}/simulation.html",
         {
             "request": request,
             "purpose": purpose_info,
             "purpose_name": purpose_name,
+            "purpose_key": purpose_name,
             "equation": equation_info,
             "eq_id": eq_id,
             "parameters": parameters,
+            "default_params": default_params,
             "config": config,
             "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
         }

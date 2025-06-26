@@ -102,10 +102,10 @@
                 <div class="recommendation-box">
                     <h4><i class="fas fa-lightbulb"></i> Architecture Recommendations for {{ purpose.name }}</h4>
                     <div class="recommendation-content">
-                        <p><strong>Hidden Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].hidden_activation|upper }}</p>
-                        <p><strong>Output Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].output_activation|upper }}</p>
-                        <p><strong>Optimizer:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].optimizer|upper }}</p>
-                        <p><strong>Notes:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].notes }}</p>
+                        <p><strong>Hidden Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS.get(purpose_name, {}).get('hidden_activation', 'TANH')|upper }}</p>
+                        <p><strong>Output Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS.get(purpose_name, {}).get('output_activation', 'LINEAR')|upper }}</p>
+                        <p><strong>Optimizer:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS.get(purpose_name, {}).get('optimizer', 'ADAM_LBFGS')|upper }}</p>
+                        <p><strong>Notes:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS.get(purpose_name, {}).get('notes', 'Use smooth activation functions for PDEs') }}</p>
                     </div>
                 </div>
             </div>

@@ -54,21 +54,30 @@ async def data_assimilation_page(request: Request):
         }
     )
 
-@router.get("/simulation/{eq_type}", response_class=HTMLResponse)
-async def data_assimilation_simulation(request: Request, eq_type: str):
+@router.get("/simulation/{eq_id}", response_class=HTMLResponse)
+async def data_assimilation_simulation(request: Request, eq_id: str):
     """Simulation page for data assimilation and specific equation"""
-    if eq_type not in config.SUPPORTED_EQUATIONS:
-        raise HTTPException(status_code=404, detail="Equation not found")
-    
     purpose_info = config.get_purpose_info("data_assimilation")
     equations = config.get_equations_by_purpose("data_assimilation")
     parameters = config.get_parameters_by_purpose("data_assimilation")
-    equation_info = equations[eq_type]
-    default_params = config.DEFAULT_PARAMETERS.get(eq_type, {})
     
-    # Verify that this equation supports this purpose
-    if "data_assimilation" not in equation_info.get('purposes', []):
-        raise HTTPException(status_code=400, detail="Equation does not support data assimilation")
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    equation_info = equations[eq_id]
+    
+    # Create default parameters for the template
+    default_params = {
+        "hidden_layers": 4,
+        "neurons_per_layer": 20,
+        "learning_rate": 0.001,
+        "epochs": 10000
+    }
+    
+    # Add equation-specific default parameters
+    for param_id, param_info in parameters.items():
+        if isinstance(param_info, dict) and 'default' in param_info:
+            default_params[param_id] = param_info['default']
     
     return templates.TemplateResponse(
         "data_assimilation/simulation.html",
@@ -77,7 +86,8 @@ async def data_assimilation_simulation(request: Request, eq_type: str):
             "purpose": purpose_info,
             "purpose_key": "data_assimilation",
             "equation": equation_info,
-            "eq_type": eq_type,
+            "eq_id": eq_id,
+            "parameters": parameters,
             "default_params": default_params,
             "config": config,
             "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
@@ -180,22 +190,22 @@ def map_parameters_to_backend(eq_id: str, frontend_params: dict) -> dict:
     backend_params["assimilation_window"] = frontend_params.get("assimilation_window", 1.0)  # Time window for assimilation
     
     # Add equation-specific parameters
-    if eq_type == "heat":
+    if eq_id == "heat":
         backend_params.update({
             "thermal_diffusivity": frontend_params.get("thermal_diffusivity", 0.1),
             "domain_size": frontend_params.get("domain_size", 1.0)
         })
-    elif eq_type == "wave":
+    elif eq_id == "wave":
         backend_params.update({
             "wave_speed": frontend_params.get("wave_speed", 1.0),
             "domain_size": frontend_params.get("domain_size", 1.0)
         })
-    elif eq_type == "burgers":
+    elif eq_id == "burgers":
         backend_params.update({
             "viscosity": frontend_params.get("viscosity", 0.01),
             "domain_size": frontend_params.get("domain_size", 1.0)
         })
-    elif eq_type == "shm":
+    elif eq_id == "shm":
         backend_params.update({
             "frequency": frontend_params.get("frequency", 1.0),
             "amplitude": frontend_params.get("amplitude", 1.0)
