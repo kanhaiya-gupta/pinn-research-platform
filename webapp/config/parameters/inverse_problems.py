@@ -280,4 +280,94 @@ INVERSE_PROBLEMS_PARAMETERS_DICT = {
         'category': 'observation_parameters',
         'identification_method': 'sensor_placement'
     }
+}
+
+# Equation-specific parameter mappings for inverse problems
+INVERSE_PROBLEMS_EQUATION_PARAMETERS = {
+    'parameter_identification': {
+        'unknown_viscosity': {
+            'name': 'Unknown Viscosity',
+            'description': 'Dynamic viscosity to be identified from flow data',
+            'unit': 'Pa·s',
+            'default': 0.001,
+            'range': [1e-6, 1e-2],
+            'category': 'unknown_fluid_properties',
+            'identification_method': 'flow_reconstruction'
+        },
+        'unknown_thermal_diffusivity': {
+            'name': 'Unknown Thermal Diffusivity',
+            'description': 'Thermal diffusivity to be identified from temperature data',
+            'unit': 'm²/s',
+            'default': 1e-5,
+            'range': [1e-8, 1e-3],
+            'category': 'unknown_thermal_properties',
+            'identification_method': 'temperature_reconstruction'
+        },
+        'regularization_parameter': {
+            'name': 'Regularization Parameter',
+            'description': 'Regularization parameter for inverse problem stability',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    
+    'boundary_reconstruction': {
+        'unknown_boundary_temperature': {
+            'name': 'Unknown Boundary Temperature',
+            'description': 'Boundary temperature to be identified from interior temperature data',
+            'unit': 'K',
+            'default': 300.0,
+            'range': [100.0, 2000.0],
+            'category': 'unknown_boundary_conditions',
+            'identification_method': 'temperature_reconstruction'
+        },
+        'unknown_boundary_heat_flux': {
+            'name': 'Unknown Boundary Heat Flux',
+            'description': 'Boundary heat flux to be identified from temperature data',
+            'unit': 'W/m²',
+            'default': 0.0,
+            'range': [-1e6, 1e6],
+            'category': 'unknown_boundary_conditions',
+            'identification_method': 'heat_flux_reconstruction'
+        },
+        'tolerance': {
+            'name': 'Solver Tolerance',
+            'description': 'Convergence tolerance for boundary reconstruction',
+            'unit': 'dimensionless',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'solver_parameters'
+        }
+    },
+    
+    'source_identification': {
+        'unknown_heat_source': {
+            'name': 'Unknown Heat Source',
+            'description': 'Heat source to be identified from temperature data',
+            'unit': 'W/m³',
+            'default': 0.0,
+            'range': [-1e6, 1e6],
+            'category': 'unknown_source_terms',
+            'identification_method': 'source_reconstruction'
+        },
+        'unknown_mass_source': {
+            'name': 'Unknown Mass Source',
+            'description': 'Mass source to be identified from concentration data',
+            'unit': 'kg/(m³·s)',
+            'default': 0.0,
+            'range': [-1e-3, 1e-3],
+            'category': 'unknown_source_terms',
+            'identification_method': 'source_reconstruction'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in observational data',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.0, 0.1],
+            'category': 'observation_parameters'
+        }
+    }
 } 

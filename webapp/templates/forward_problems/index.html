@@ -45,7 +45,7 @@
             Supported Equations for Forward Problems
         </h2>
         <div class="equations-grid">
-            {% for eq_key, eq_info in supported_equations.items() %}
+            {% for eq_key, eq_info in equations.items() %}
             <div class="equation-card" data-equation="{{ eq_key }}">
                 <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
                     <div class="equation-icon">
@@ -72,7 +72,7 @@
                     {% endif %}
                     
                     <div class="equation-actions">
-                        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                        <a href="/purpose/{{ purpose_name }}/simulation/{{ eq_key }}" class="btn btn-primary">
                             <i class="fas fa-play"></i>
                             Start Forward Simulation
                         </a>

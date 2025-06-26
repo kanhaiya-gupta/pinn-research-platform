@@ -13,7 +13,7 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent))
 from config.config import Config
 from config.equations import ALL_PURPOSE_EQUATIONS
-from config.parameters import ALL_PURPOSE_PARAMETERS
+from config.parameters import ALL_PURPOSE_PARAMETERS, get_equation_parameters
 
 # Add comprehensive models import
 sys.path.append(str(Path(__file__).parent.parent.parent))
@@ -58,7 +58,22 @@ async def forward_problems_simulation(request: Request, eq_id: str):
         raise HTTPException(status_code=404, detail="Equation not found")
     
     equation_info = equations[eq_id]
-    parameters = config.get_parameters_by_purpose("forward_problems")
+    
+    # Get equation-specific parameters only
+    from config.parameters.forward_problems import FORWARD_PROBLEMS_EQUATION_PARAMETERS
+    equation_specific_params = FORWARD_PROBLEMS_EQUATION_PARAMETERS.get(eq_id, {})
+    
+    # Filter out time-related parameters to avoid duplication with Time Domain Parameters section
+    time_related_params = {'time_duration', 'time_points', 'temporal_properties'}
+    filtered_params = {}
+    for param_id, param_info in equation_specific_params.items():
+        if isinstance(param_info, dict):
+            # Skip parameters that are time-related or have temporal category
+            if (param_id in time_related_params or 
+                param_info.get('category') == 'temporal_properties' or
+                'time' in param_id.lower() or 'duration' in param_id.lower()):
+                continue
+            filtered_params[param_id] = param_info
     
     # Create default parameters for the template
     default_params = {
@@ -68,10 +83,14 @@ async def forward_problems_simulation(request: Request, eq_id: str):
         "epochs": 10000
     }
     
-    # Add equation-specific default parameters
-    for param_id, param_info in parameters.items():
+    # Add equation-specific default parameters (excluding time-related ones)
+    for param_id, param_info in filtered_params.items():
         if isinstance(param_info, dict) and 'default' in param_info:
             default_params[param_id] = param_info['default']
+    
+    # Add time parameters separately
+    default_params['time_duration'] = 1.0
+    default_params['time_points'] = 100
     
     return templates.TemplateResponse(
         "forward_problems/simulation.html",
@@ -81,7 +100,7 @@ async def forward_problems_simulation(request: Request, eq_id: str):
             "purpose_key": "forward_problems",
             "equation": equation_info,
             "eq_id": eq_id,
-            "parameters": parameters,
+            "parameters": filtered_params,
             "default_params": default_params,
             "config": config,
             "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"

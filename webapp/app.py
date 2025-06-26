@@ -8,6 +8,7 @@ from pathlib import Path
 import httpx
 import json
 from config.config import Config
+from typing import Dict, Any
 
 # Import purpose-specific routers using absolute imports
 from forward_problems.routes import router as forward_problems_router
@@ -88,13 +89,53 @@ async def purpose_page(request: Request, purpose_name: str):
         {
             "request": request,
             "purpose": purpose_info,
-            "purpose_key": purpose_name,
-            "supported_equations": equations,
+            "purpose_name": purpose_name,
+            "equations": equations,
             "parameters": parameters,
             "config": config,
             "title": f"{purpose_info['name']} - PINN"
         }
     )
+
+def get_equation_specific_parameters(purpose_name: str, eq_id: str) -> Dict[str, Any]:
+    """Get equation-specific parameters for a given purpose and equation."""
+    try:
+        # Import the specific purpose parameters
+        if purpose_name == 'forward_problems':
+            from config.parameters.forward_problems import FORWARD_PROBLEMS_EQUATION_PARAMETERS
+            return FORWARD_PROBLEMS_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'inverse_problems':
+            from config.parameters.inverse_problems import INVERSE_PROBLEMS_EQUATION_PARAMETERS
+            return INVERSE_PROBLEMS_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'data_assimilation':
+            from config.parameters.data_assimilation import DATA_ASSIMILATION_EQUATION_PARAMETERS
+            return DATA_ASSIMILATION_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'control_optimization':
+            from config.parameters.control_optimization import CONTROL_OPTIMIZATION_EQUATION_PARAMETERS
+            return CONTROL_OPTIMIZATION_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'sparse_data':
+            from config.parameters.sparse_data import SPARSE_DATA_EQUATION_PARAMETERS
+            return SPARSE_DATA_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'uncertainty':
+            from config.parameters.uncertainty import UNCERTAINTY_EQUATION_PARAMETERS
+            return UNCERTAINTY_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'multiphysics':
+            from config.parameters.multiphysics import MULTIPHYSICS_EQUATION_PARAMETERS
+            return MULTIPHYSICS_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'efficiency':
+            from config.parameters.efficiency import EFFICIENCY_EQUATION_PARAMETERS
+            return EFFICIENCY_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'generalization':
+            from config.parameters.generalization import GENERALIZATION_EQUATION_PARAMETERS
+            return GENERALIZATION_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'scientific_discovery':
+            from config.parameters.scientific_discovery import SCIENTIFIC_DISCOVERY_EQUATION_PARAMETERS
+            return SCIENTIFIC_DISCOVERY_EQUATION_PARAMETERS.get(eq_id, {})
+        else:
+            return {}
+    except ImportError:
+        # If the equation-specific parameters don't exist yet, return empty dict
+        return {}
 
 @app.get("/purpose/{purpose_name}/simulation/{eq_id}", response_class=HTMLResponse)
 async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: str):
@@ -108,7 +149,9 @@ async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: st
         raise HTTPException(status_code=404, detail="Equation not found")
     
     equation_info = equations[eq_id]
-    parameters = config.get_parameters_by_purpose(purpose_name)
+    
+    # Get equation-specific parameters only
+    equation_specific_params = get_equation_specific_parameters(purpose_name, eq_id)
     
     # Create default parameters for the template
     default_params = {
@@ -119,7 +162,7 @@ async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: st
     }
     
     # Add equation-specific default parameters
-    for param_id, param_info in parameters.items():
+    for param_id, param_info in equation_specific_params.items():
         if isinstance(param_info, dict) and 'default' in param_info:
             default_params[param_id] = param_info['default']
     
@@ -132,7 +175,7 @@ async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: st
             "purpose_key": purpose_name,
             "equation": equation_info,
             "eq_id": eq_id,
-            "parameters": parameters,
+            "parameters": equation_specific_params,
             "default_params": default_params,
             "config": config,
             "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"

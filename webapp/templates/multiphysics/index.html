@@ -45,7 +45,7 @@
             Supported Equations for Multiphysics
         </h2>
         <div class="equations-grid">
-            {% for eq_key, eq_info in supported_equations.items() %}
+            {% for eq_key, eq_info in equations.items() %}
             <div class="equation-card" data-equation="{{ eq_key }}">
                 <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
                     <div class="equation-icon">

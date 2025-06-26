@@ -261,7 +261,7 @@
                     </div>
                 </div>
                 
-                <!-- Training Recommendations -->
+                <!-- Training recommendations temporarily disabled
                 <div class="recommendation-box">
                     <h4><i class="fas fa-lightbulb"></i> Training Recommendations for {{ purpose.name }}</h4>
                     <div class="recommendation-content">
@@ -276,6 +276,18 @@
                         <p><strong>Notes:</strong> {{ config.TRAINING_RECOMMENDATIONS[purpose_key].notes }}</p>
                     </div>
                 </div>
+                -->
+                
+                <div class="recommendation-box">
+                    <h4><i class="fas fa-lightbulb"></i> Training Recommendations for {{ purpose.name }}</h4>
+                    <div class="recommendation-content">
+                        <p><strong>Learning Rate:</strong> 0.001</p>
+                        <p><strong>Scheduler:</strong> Constant</p>
+                        <p><strong>Loss Weights:</strong> Physics=1.0, Boundary=1.0, Initial=1.0</p>
+                        <p><strong>Sampling:</strong> Interior=1000, Boundary=200, Initial=200</p>
+                        <p><strong>Notes:</strong> Standard PINN training with balanced loss weights</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Equation-specific parameters -->
@@ -285,368 +297,214 @@
                     {{ equation.name }} Parameters
                 </h3>
                 
-                {% if eq_type == "heat" %}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="thermal_diffusivity">Thermal Diffusivity (α)</label>
-                        <input type="number" id="thermal_diffusivity" name="thermal_diffusivity" 
-                               value="{{ default_params.thermal_diffusivity|default(0.1) }}" 
-                               step="0.01" min="0.01" max="1.0" required>
-                        <small class="form-text">Thermal diffusivity coefficient</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="domain_size">Domain Size (L)</label>
-                        <input type="number" id="domain_size" name="domain_size" 
-                               value="{{ default_params.domain_size|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Length of the spatial domain</small>
+                <!-- Dynamic equation-specific parameters in two columns -->
+                <div class="parameters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                    {% for param_id, param_info in parameters.items() %}
+                        {% if param_info is mapping and param_info.name and param_info.default is defined %}
+                        <div class="parameter-item" style="background: white; border: 1px solid #e9ecef; border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                            <label for="{{ param_id }}" style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem; font-size: 1rem; line-height: 1.3;">{{ param_info.name }}</label>
+                            <input type="number" id="{{ param_id }}" name="{{ param_id }}" 
+                                   value="{{ default_params[param_id]|default(param_info.default) }}" 
+                                   step="{{ param_info.step|default(0.01) }}" 
+                                   min="{{ param_info.range[0]|default(0.0) }}" 
+                                   max="{{ param_info.range[1]|default(10.0) }}" required
+                                   style="width: 100%; padding: 1rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; font-weight: 500; transition: all 0.3s ease; background: #f8f9fa; color: #2c3e50;">
+                            <small class="form-text" style="font-size: 0.875rem; color: #6c757d; margin-top: 0.5rem; line-height: 1.5; display: block;">{{ param_info.description }}</small>
+                            {% if param_info.unit %}
+                            <small class="form-text text-muted" style="color: #adb5bd; font-style: italic; font-size: 0.8rem; margin-top: 0.25rem;">Unit: {{ param_info.unit }}</small>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <!-- Time Parameters Section -->
+                <div class="time-parameters-section" style="margin-top: 2.5rem; padding-top: 2rem; border-top: 3px solid #e9ecef; background: #f8f9fa; border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+                    <h4 class="subsection-header" style="font-size: 1.25rem; font-weight: 700; color: #2c3e50; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; padding-bottom: 0.75rem; border-bottom: 2px solid #3498db;">
+                        <i class="fas fa-clock" style="color: #17a2b8; font-size: 1.1rem;"></i>
+                        Time Domain Parameters
+                    </h4>
+                    <div class="parameters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                        <div class="parameter-item" style="background: white; border: 1px solid #e9ecef; border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                            <label for="time_duration" style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem; font-size: 1rem; line-height: 1.3;">Time Duration (T)</label>
+                            <input type="number" id="time_duration" name="time_duration" 
+                                   value="{{ default_params.time_duration|default(1.0) }}" 
+                                   step="0.1" min="0.1" max="100.0" required
+                                   style="width: 100%; padding: 1rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; font-weight: 500; transition: all 0.3s ease; background: #f8f9fa; color: #2c3e50;">
+                            <small class="form-text" style="font-size: 0.875rem; color: #6c757d; margin-top: 0.5rem; line-height: 1.5; display: block;">Total simulation time (t ∈ [0, T])</small>
+                            <small class="form-text text-muted" style="color: #adb5bd; font-style: italic; font-size: 0.8rem; margin-top: 0.25rem;">Unit: s</small>
+                        </div>
+                        
+                        <div class="parameter-item" style="background: white; border: 1px solid #e9ecef; border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);">
+                            <label for="time_points" style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem; font-size: 1rem; line-height: 1.3;">Time Sampling Points (N_t)</label>
+                            <input type="number" id="time_points" name="time_points" 
+                                   value="{{ default_params.time_points|default(100) }}" 
+                                   min="10" max="1000" required
+                                   style="width: 100%; padding: 1rem; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1rem; font-weight: 500; transition: all 0.3s ease; background: #f8f9fa; color: #2c3e50;">
+                            <small class="form-text" style="font-size: 0.875rem; color: #6c757d; margin-top: 0.5rem; line-height: 1.5; display: block;">Number of time steps for collocation</small>
+                            <small class="form-text text-muted" style="color: #adb5bd; font-style: italic; font-size: 0.8rem; margin-top: 0.25rem;">Unit: dimensionless</small>
+                        </div>
                     </div>
                 </div>
-                {% endif %}
+            </div>
 
-                {% if eq_type == "wave" %}
+            <!-- Boundary and Initial Conditions -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-border-all"></i>
+                    Boundary & Initial Conditions
+                </h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="wave_speed">Wave Speed (c)</label>
-                        <input type="number" id="wave_speed" name="wave_speed" 
-                               value="{{ default_params.wave_speed|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Wave propagation speed</small>
+                        <label for="initial_condition">Initial Condition Type</label>
+                        <select id="initial_condition" name="initial_condition" required>
+                            <option value="sinusoidal" selected>Sinusoidal (sin(πx/L))</option>
+                            <option value="gaussian">Gaussian</option>
+                            <option value="step">Step Function</option>
+                            <option value="custom">Custom Function</option>
+                        </select>
+                        <small class="form-text">Initial condition u(x,0)</small>
                     </div>
                     
                     <div class="form-group">
-                        <label for="domain_size">Domain Size (L)</label>
-                        <input type="number" id="domain_size" name="domain_size" 
-                               value="{{ default_params.domain_size|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Length of the spatial domain</small>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if eq_type == "burgers" %}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="viscosity">Viscosity (ν)</label>
-                        <input type="number" id="viscosity" name="viscosity" 
-                               value="{{ default_params.viscosity|default(0.01) }}" 
-                               step="0.001" min="0.001" max="0.1" required>
-                        <small class="form-text">Viscosity coefficient</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="domain_size">Domain Size (L)</label>
-                        <input type="number" id="domain_size" name="domain_size" 
-                               value="{{ default_params.domain_size|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Length of the spatial domain</small>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if eq_type == "shm" %}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="frequency">Natural Frequency (ω)</label>
-                        <input type="number" id="frequency" name="frequency" 
-                               value="{{ default_params.frequency|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Natural frequency of oscillation</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="amplitude">Initial Amplitude (A)</label>
-                        <input type="number" id="amplitude" name="amplitude" 
-                               value="{{ default_params.amplitude|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Initial amplitude of oscillation</small>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if eq_type == "navier_stokes" %}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="reynolds">Reynolds Number (Re)</label>
-                        <input type="number" id="reynolds" name="reynolds" 
-                               value="{{ default_params.reynolds|default(100.0) }}" 
-                               step="1.0" min="1.0" max="1000.0" required>
-                        <small class="form-text">Reynolds number (Re = UL/ν)</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="domain_size">Domain Size (L)</label>
-                        <input type="number" id="domain_size" name="domain_size" 
-                               value="{{ default_params.domain_size|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Length of the spatial domain</small>
+                        <label for="boundary_condition">Boundary Condition Type</label>
+                        <select id="boundary_condition" name="boundary_condition" required>
+                            <option value="dirichlet" selected>Dirichlet (Fixed Values)</option>
+                            <option value="neumann">Neumann (Fixed Derivatives)</option>
+                            <option value="periodic">Periodic</option>
+                            <option value="mixed">Mixed</option>
+                        </select>
+                        <small class="form-text">Boundary conditions at x=0 and x=L</small>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="nx">Spatial Points X (Nx)</label>
-                        <input type="number" id="nx" name="nx" 
-                               value="{{ default_params.nx|default(128) }}" 
-                               min="32" max="512" required>
-                        <small class="form-text">Number of spatial points in x-direction</small>
+                        <label for="left_boundary_value">Left Boundary Value</label>
+                        <input type="number" id="left_boundary_value" name="left_boundary_value" 
+                               value="0.0" step="0.1" required>
+                        <small class="form-text">u(0,t) value</small>
                     </div>
                     
                     <div class="form-group">
-                        <label for="ny">Spatial Points Y (Ny)</label>
-                        <input type="number" id="ny" name="ny" 
-                               value="{{ default_params.ny|default(128) }}" 
-                               min="32" max="512" required>
-                        <small class="form-text">Number of spatial points in y-direction</small>
+                        <label for="right_boundary_value">Right Boundary Value</label>
+                        <input type="number" id="right_boundary_value" name="right_boundary_value" 
+                               value="0.0" step="0.1" required>
+                        <small class="form-text">u(L,t) value</small>
                     </div>
                 </div>
-                {% endif %}
-
-                {% if eq_type == "helmholtz" %}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="k">Wavenumber (k)</label>
-                        <input type="number" id="k" name="k" 
-                               value="{{ default_params.k|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Wavenumber (k = 2π/λ)</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="domain_size">Domain Size (L)</label>
-                        <input type="number" id="domain_size" name="domain_size" 
-                               value="{{ default_params.domain_size|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Length of the spatial domain</small>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if eq_type == "schrodinger" %}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="hbar">Planck's Constant (ℏ)</label>
-                        <input type="number" id="hbar" name="hbar" 
-                               value="{{ default_params.hbar|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Reduced Planck's constant</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="mass">Particle Mass (m)</label>
-                        <input type="number" id="mass" name="mass" 
-                               value="{{ default_params.mass|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Mass of the particle</small>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if eq_type == "maxwell" %}
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="epsilon">Permittivity (ε)</label>
-                        <input type="number" id="epsilon" name="epsilon" 
-                               value="{{ default_params.epsilon|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Electric permittivity</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="mu">Permeability (μ)</label>
-                        <input type="number" id="mu" name="mu" 
-                               value="{{ default_params.mu|default(1.0) }}" 
-                               step="0.1" min="0.1" max="10.0" required>
-                        <small class="form-text">Magnetic permeability</small>
-                    </div>
-                </div>
-                {% endif %}
             </div>
 
-            
-                <!-- Time Domain Configuration -->
-                <div class="config-section">
-                    <h3 class="section-header">
-                        <i class="fas fa-clock"></i>
-                        Time Domain Parameters
-                    </h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="time_duration">Time Duration (T)</label>
-                            <input type="number" id="time_duration" name="time_duration" 
-                                   value="{{ default_params.time_duration|default(1.0) }}" 
-                                   step="0.1" min="0.1" max="10.0" required>
-                            <small class="form-text">Total simulation time (t ∈ [0, T])</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="time_points">Time Sampling Points (N_t)</label>
-                            <input type="number" id="time_points" name="time_points" 
-                                   value="{{ default_params.time_points|default(100) }}" 
-                                   min="20" max="500" required>
-                            <small class="form-text">Number of time steps for collocation</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Boundary and Initial Conditions -->
-                <div class="config-section">
-                    <h3 class="section-header">
-                        <i class="fas fa-border-all"></i>
-                        Boundary & Initial Conditions
-                    </h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="initial_condition">Initial Condition Type</label>
-                            <select id="initial_condition" name="initial_condition" required>
-                                <option value="sinusoidal" selected>Sinusoidal (sin(πx/L))</option>
-                                <option value="gaussian">Gaussian</option>
-                                <option value="step">Step Function</option>
-                                <option value="custom">Custom Function</option>
-                            </select>
-                            <small class="form-text">Initial condition u(x,0)</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="boundary_condition">Boundary Condition Type</label>
-                            <select id="boundary_condition" name="boundary_condition" required>
-                                <option value="dirichlet" selected>Dirichlet (Fixed Values)</option>
-                                <option value="neumann">Neumann (Fixed Derivatives)</option>
-                                <option value="periodic">Periodic</option>
-                                <option value="mixed">Mixed</option>
-                            </select>
-                            <small class="form-text">Boundary conditions at x=0 and x=L</small>
-                        </div>
+            <!-- Sampling Strategy -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-dice"></i>
+                    Sampling Strategy
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sampling_method">Sampling Method</label>
+                        <select id="sampling_method" name="sampling_method" required>
+                            <option value="uniform" selected>Uniform Grid</option>
+                            <option value="random">Random Sampling</option>
+                            <option value="latin_hypercube">Latin Hypercube</option>
+                            <option value="sobol">Sobol Sequence</option>
+                            <option value="adaptive">Adaptive Sampling</option>
+                        </select>
+                        <small class="form-text">Method for generating collocation points</small>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="left_boundary_value">Left Boundary Value</label>
-                            <input type="number" id="left_boundary_value" name="left_boundary_value" 
-                                   value="0.0" step="0.1" required>
-                            <small class="form-text">u(0,t) value</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="right_boundary_value">Right Boundary Value</label>
-                            <input type="number" id="right_boundary_value" name="right_boundary_value" 
-                                   value="0.0" step="0.1" required>
-                            <small class="form-text">u(L,t) value</small>
-                        </div>
+                    <div class="form-group">
+                        <label for="adaptive_sampling">Adaptive Sampling</label>
+                        <select id="adaptive_sampling" name="adaptive_sampling" required>
+                            <option value="false" selected>Disabled</option>
+                            <option value="true">Enabled (Advanced)</option>
+                        </select>
+                        <small class="form-text">Dynamically adjust sampling based on error</small>
                     </div>
                 </div>
+            </div>
 
-                <!-- Sampling Strategy -->
-                <div class="config-section">
-                    <h3 class="section-header">
-                        <i class="fas fa-dice"></i>
-                        Sampling Strategy
-                    </h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="sampling_method">Sampling Method</label>
-                            <select id="sampling_method" name="sampling_method" required>
-                                <option value="uniform" selected>Uniform Grid</option>
-                                <option value="random">Random Sampling</option>
-                                <option value="latin_hypercube">Latin Hypercube</option>
-                                <option value="sobol">Sobol Sequence</option>
-                                <option value="adaptive">Adaptive Sampling</option>
-                            </select>
-                            <small class="form-text">Method for generating collocation points</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adaptive_sampling">Adaptive Sampling</label>
-                            <select id="adaptive_sampling" name="adaptive_sampling" required>
-                                <option value="false" selected>Disabled</option>
-                                <option value="true">Enabled (Advanced)</option>
-                            </select>
-                            <small class="form-text">Dynamically adjust sampling based on error</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Validation Configuration -->
-                <div class="config-section">
-                    <h3 class="section-header">
-                        <i class="fas fa-chart-line"></i>
-                        Validation & Testing
-                    </h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="validation_split">Validation Split (%)</label>
-                            <input type="number" id="validation_split" name="validation_split" 
-                                   value="20" min="5" max="50" required>
-                            <small class="form-text">Percentage of data for validation</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="test_points">Test Points</label>
-                            <input type="number" id="test_points" name="test_points" 
-                                   value="500" min="100" max="2000" required>
-                            <small class="form-text">Points for final error evaluation</small>
-                        </div>
+            <!-- Validation Configuration -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-chart-line"></i>
+                    Validation & Testing
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="validation_split">Validation Split (%)</label>
+                        <input type="number" id="validation_split" name="validation_split" 
+                               value="20" min="5" max="50" required>
+                        <small class="form-text">Percentage of data for validation</small>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="error_metrics">Error Metrics</label>
-                            <select id="error_metrics" name="error_metrics" multiple required>
-                                <option value="l2_norm" selected>L2 Norm</option>
-                                <option value="relative_error" selected>Relative Error</option>
-                                <option value="rmse">RMSE</option>
-                                <option value="mae">MAE</option>
-                                <option value="max_error">Maximum Error</option>
-                            </select>
-                            <small class="form-text">Metrics to compute for evaluation</small>
-                        </div>
+                    <div class="form-group">
+                        <label for="test_points">Test Points</label>
+                        <input type="number" id="test_points" name="test_points" 
+                               value="500" min="100" max="2000" required>
+                        <small class="form-text">Points for final error evaluation</small>
                     </div>
                 </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="error_metrics">Error Metrics</label>
+                        <select id="error_metrics" name="error_metrics" multiple required>
+                            <option value="l2_norm" selected>L2 Norm</option>
+                            <option value="relative_error" selected>Relative Error</option>
+                            <option value="rmse">RMSE</option>
+                            <option value="mae">MAE</option>
+                            <option value="max_error">Maximum Error</option>
+                        </select>
+                        <small class="form-text">Metrics to compute for evaluation</small>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Advanced Configuration -->
-                <div class="config-section">
-                    <h3 class="section-header">
-                        <i class="fas fa-cogs"></i>
-                        Advanced Configuration
-                    </h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="random_seed">Random Seed</label>
-                            <input type="number" id="random_seed" name="random_seed" 
-                                   value="42" min="0" max="999999">
-                            <small class="form-text">For reproducible results</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="checkpoint_frequency">Checkpoint Frequency</label>
-                            <input type="number" id="checkpoint_frequency" name="checkpoint_frequency" 
-                                   value="1000" min="100" max="10000">
-                            <small class="form-text">Save model every N epochs</small>
-                        </div>
+            <!-- Advanced Configuration -->
+            <div class="config-section">
+                <h3 class="section-header">
+                    <i class="fas fa-cogs"></i>
+                    Advanced Configuration
+                </h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="random_seed">Random Seed</label>
+                        <input type="number" id="random_seed" name="random_seed" 
+                               value="42" min="0" max="999999">
+                        <small class="form-text">For reproducible results</small>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="pde_residual_scaling">PDE Residual Scaling</label>
-                            <select id="pde_residual_scaling" name="pde_residual_scaling" required>
-                                <option value="none" selected>None</option>
-                                <option value="domain_size">Domain Size</option>
-                                <option value="adaptive">Adaptive</option>
-                            </select>
-                            <small class="form-text">Scale PDE residuals for better balance</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="multi_fidelity">Multi-Fidelity Training</label>
-                            <select id="multi_fidelity" name="multi_fidelity" required>
-                                <option value="false" selected>Single Fidelity</option>
-                                <option value="true">Multi-Fidelity (Advanced)</option>
-                            </select>
-                            <small class="form-text">Use multiple resolution levels</small>
-                        </div>
+                    <div class="form-group">
+                        <label for="checkpoint_frequency">Checkpoint Frequency</label>
+                        <input type="number" id="checkpoint_frequency" name="checkpoint_frequency" 
+                               value="1000" min="100" max="10000">
+                        <small class="form-text">Save model every N epochs</small>
                     </div>
                 </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pde_residual_scaling">PDE Residual Scaling</label>
+                        <select id="pde_residual_scaling" name="pde_residual_scaling" required>
+                            <option value="none" selected>None</option>
+                            <option value="domain_size">Domain Size</option>
+                            <option value="adaptive">Adaptive</option>
+                        </select>
+                        <small class="form-text">Scale PDE residuals for better balance</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="multi_fidelity">Multi-Fidelity Training</label>
+                        <select id="multi_fidelity" name="multi_fidelity" required>
+                            <option value="false" selected>Single Fidelity</option>
+                            <option value="true">Multi-Fidelity (Advanced)</option>
+                        </select>
+                        <small class="form-text">Use multiple resolution levels</small>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary btn-large">
