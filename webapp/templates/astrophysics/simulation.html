@@ -16,7 +16,7 @@
         
         <div class="simulation-title">
             <h1><i class="{{ equation.icon }}" style="color: {{ equation.color }};"></i> {{ equation.name }}</h1>
-            <p class="simulation-subtitle">Inverse Problem Simulation - {{ purpose.name }}</p>
+            <p class="simulation-subtitle">Control & Optimization - {{ purpose.name }}</p>
         </div>
     </div>
 
@@ -105,7 +105,7 @@
                         <p><strong>Hidden Activation:</strong> TANH</p>
                         <p><strong>Output Activation:</strong> LINEAR</p>
                         <p><strong>Optimizer:</strong> ADAM_LBFGS</p>
-                        <p><strong>Notes:</strong> Sensitive to optimizer tuning, Adam + L-BFGS ideal</p>
+                        <p><strong>Notes:</strong> Smooth activations for astrophysical PDEs with complex geometries</p>
                     </div>
                 </div>
             </div>
@@ -266,35 +266,34 @@
                     <h4><i class="fas fa-lightbulb"></i> Training Recommendations for {{ purpose.name }}</h4>
                     <div class="recommendation-content">
                         <p><strong>Learning Rate:</strong> 0.001</p>
-                        <p><strong>Scheduler:</strong> step</p>
+                        <p><strong>Scheduler:</strong> Constant</p>
                         <p><strong>Loss Weights:</strong> Physics=1.0, Boundary=1.0, Initial=1.0</p>
-                        <p><strong>Sampling:</strong> Interior=1000, Boundary=200, Initial=100</p>
-                        <p><strong>Notes:</strong> Higher data weight, step scheduler for fine-tuning</p>
+                        <p><strong>Sampling:</strong> Interior=1500, Boundary=300, Initial=300</p>
+                        <p><strong>Notes:</strong> Standard PINN setup for astrophysical problems</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Data Configuration -->
+            <!-- Purpose-specific Configuration -->
             <div class="config-section">
                 <h3 class="section-header">
-                    <i class="fas fa-database"></i>
-                    Observational Data Configuration
+                    <i class="fas fa-cog"></i>
+                    Control Configuration
                 </h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="data_points">Number of Data Points</label>
-                        <input type="number" id="data_points" name="data_points" 
-                               value="{{ default_params.data_points|default(100) }}" 
-                               min="10" max="1000" required>
-                        <small class="form-text">Number of observational data points</small>
+                        <label for="control_horizon">Control Horizon</label>
+                        <input type="number" id="control_horizon" name="control_horizon" 
+                               value="{{ default_params.control_horizon|default(10) }}" 
+                               step="0.01" min="1" max="50" required>
+                        <small class="form-text">Prediction horizon for control</small>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="noise_level">Noise Level</label>
-                        <input type="number" id="noise_level" name="noise_level" 
-                               value="{{ default_params.noise_level|default(0.01) }}" 
-                               step="0.001" min="0.0" max="0.1" required>
-                        <small class="form-text">Measurement noise level (0-0.1)</small>
+                        <label for="optimization_objective">Optimization Weight</label>
+                        <input type="number" id="optimization_objective" name="optimization_objective" 
+                               value="{{ default_params.optimization_objective|default(1.0) }}" 
+                               step="0.01" min="0.1" max="10.0" required>
+                        <small class="form-text">Weight for optimization objective</small>
                     </div>
                 </div>
             </div>
@@ -365,168 +364,168 @@
                 </div>
             </div>
 
-            <!-- Boundary and Initial Conditions -->
-            <div class="config-section">
-                <h3 class="section-header">
-                    <i class="fas fa-border-all"></i>
-                    Boundary & Initial Conditions
-                </h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="initial_condition">Initial Condition Type</label>
-                        <select id="initial_condition" name="initial_condition" required>
-                            <option value="sinusoidal" selected>Sinusoidal (sin(πx/L))</option>
-                            <option value="gaussian">Gaussian</option>
-                            <option value="step">Step Function</option>
-                            <option value="custom">Custom Function</option>
-                        </select>
-                        <small class="form-text">Initial condition u(x,0)</small>
+                <!-- Boundary and Initial Conditions -->
+                <div class="config-section">
+                    <h3 class="section-header">
+                        <i class="fas fa-border-all"></i>
+                        Boundary & Initial Conditions
+                    </h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="initial_condition">Initial Condition Type</label>
+                            <select id="initial_condition" name="initial_condition" required>
+                                <option value="sinusoidal" selected>Sinusoidal (sin(πx/L))</option>
+                                <option value="gaussian">Gaussian</option>
+                                <option value="step">Step Function</option>
+                                <option value="custom">Custom Function</option>
+                            </select>
+                            <small class="form-text">Initial condition u(x,0)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="boundary_condition">Boundary Condition Type</label>
+                            <select id="boundary_condition" name="boundary_condition" required>
+                                <option value="dirichlet" selected>Dirichlet (Fixed Values)</option>
+                                <option value="neumann">Neumann (Fixed Derivatives)</option>
+                                <option value="periodic">Periodic</option>
+                                <option value="mixed">Mixed</option>
+                            </select>
+                            <small class="form-text">Boundary conditions at x=0 and x=L</small>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="boundary_condition">Boundary Condition Type</label>
-                        <select id="boundary_condition" name="boundary_condition" required>
-                            <option value="dirichlet" selected>Dirichlet (Fixed Values)</option>
-                            <option value="neumann">Neumann (Fixed Derivatives)</option>
-                            <option value="periodic">Periodic</option>
-                            <option value="mixed">Mixed</option>
-                        </select>
-                        <small class="form-text">Boundary conditions at x=0 and x=L</small>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="left_boundary_value">Left Boundary Value</label>
+                            <input type="number" id="left_boundary_value" name="left_boundary_value" 
+                                   value="0.0" step="0.1" required>
+                            <small class="form-text">u(0,t) value</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="right_boundary_value">Right Boundary Value</label>
+                            <input type="number" id="right_boundary_value" name="right_boundary_value" 
+                                   value="0.0" step="0.1" required>
+                            <small class="form-text">u(L,t) value</small>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="left_boundary_value">Left Boundary Value</label>
-                        <input type="number" id="left_boundary_value" name="left_boundary_value" 
-                               value="0.0" step="0.1" required>
-                        <small class="form-text">u(0,t) value</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="right_boundary_value">Right Boundary Value</label>
-                        <input type="number" id="right_boundary_value" name="right_boundary_value" 
-                               value="0.0" step="0.1" required>
-                        <small class="form-text">u(L,t) value</small>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Sampling Strategy -->
-            <div class="config-section">
-                <h3 class="section-header">
-                    <i class="fas fa-dice"></i>
-                    Sampling Strategy
-                </h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="sampling_method">Sampling Method</label>
-                        <select id="sampling_method" name="sampling_method" required>
-                            <option value="uniform" selected>Uniform Grid</option>
-                            <option value="random">Random Sampling</option>
-                            <option value="latin_hypercube">Latin Hypercube</option>
-                            <option value="sobol">Sobol Sequence</option>
-                            <option value="adaptive">Adaptive Sampling</option>
-                        </select>
-                        <small class="form-text">Method for generating collocation points</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="adaptive_sampling">Adaptive Sampling</label>
-                        <select id="adaptive_sampling" name="adaptive_sampling" required>
-                            <option value="false" selected>Disabled</option>
-                            <option value="true">Enabled (Advanced)</option>
-                        </select>
-                        <small class="form-text">Dynamically adjust sampling based on error</small>
+                <!-- Sampling Strategy -->
+                <div class="config-section">
+                    <h3 class="section-header">
+                        <i class="fas fa-dice"></i>
+                        Sampling Strategy
+                    </h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sampling_method">Sampling Method</label>
+                            <select id="sampling_method" name="sampling_method" required>
+                                <option value="uniform" selected>Uniform Grid</option>
+                                <option value="random">Random Sampling</option>
+                                <option value="latin_hypercube">Latin Hypercube</option>
+                                <option value="sobol">Sobol Sequence</option>
+                                <option value="adaptive">Adaptive Sampling</option>
+                            </select>
+                            <small class="form-text">Method for generating collocation points</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adaptive_sampling">Adaptive Sampling</label>
+                            <select id="adaptive_sampling" name="adaptive_sampling" required>
+                                <option value="false" selected>Disabled</option>
+                                <option value="true">Enabled (Advanced)</option>
+                            </select>
+                            <small class="form-text">Dynamically adjust sampling based on error</small>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Validation Configuration -->
-            <div class="config-section">
-                <h3 class="section-header">
-                    <i class="fas fa-chart-line"></i>
-                    Validation & Testing
-                </h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="validation_split">Validation Split (%)</label>
-                        <input type="number" id="validation_split" name="validation_split" 
-                               value="20" min="5" max="50" required>
-                        <small class="form-text">Percentage of data for validation</small>
+                <!-- Validation Configuration -->
+                <div class="config-section">
+                    <h3 class="section-header">
+                        <i class="fas fa-chart-line"></i>
+                        Validation & Testing
+                    </h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="validation_split">Validation Split (%)</label>
+                            <input type="number" id="validation_split" name="validation_split" 
+                                   value="20" min="5" max="50" required>
+                            <small class="form-text">Percentage of data for validation</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="test_points">Test Points</label>
+                            <input type="number" id="test_points" name="test_points" 
+                                   value="500" min="100" max="2000" required>
+                            <small class="form-text">Points for final error evaluation</small>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="test_points">Test Points</label>
-                        <input type="number" id="test_points" name="test_points" 
-                               value="500" min="100" max="2000" required>
-                        <small class="form-text">Points for final error evaluation</small>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="error_metrics">Error Metrics</label>
+                            <select id="error_metrics" name="error_metrics" multiple required>
+                                <option value="l2_norm" selected>L2 Norm</option>
+                                <option value="relative_error" selected>Relative Error</option>
+                                <option value="rmse">RMSE</option>
+                                <option value="mae">MAE</option>
+                                <option value="max_error">Maximum Error</option>
+                            </select>
+                            <small class="form-text">Metrics to compute for evaluation</small>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="error_metrics">Error Metrics</label>
-                        <select id="error_metrics" name="error_metrics" multiple required>
-                            <option value="l2_norm" selected>L2 Norm</option>
-                            <option value="relative_error" selected>Relative Error</option>
-                            <option value="rmse">RMSE</option>
-                            <option value="mae">MAE</option>
-                            <option value="max_error">Maximum Error</option>
-                        </select>
-                        <small class="form-text">Metrics to compute for evaluation</small>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Advanced Configuration -->
-            <div class="config-section">
-                <h3 class="section-header">
-                    <i class="fas fa-cogs"></i>
-                    Advanced Configuration
-                </h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="random_seed">Random Seed</label>
-                        <input type="number" id="random_seed" name="random_seed" 
-                               value="42" min="0" max="999999">
-                        <small class="form-text">For reproducible results</small>
+                <!-- Advanced Configuration -->
+                <div class="config-section">
+                    <h3 class="section-header">
+                        <i class="fas fa-cogs"></i>
+                        Advanced Configuration
+                    </h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="random_seed">Random Seed</label>
+                            <input type="number" id="random_seed" name="random_seed" 
+                                   value="42" min="0" max="999999">
+                            <small class="form-text">For reproducible results</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="checkpoint_frequency">Checkpoint Frequency</label>
+                            <input type="number" id="checkpoint_frequency" name="checkpoint_frequency" 
+                                   value="1000" min="100" max="10000">
+                            <small class="form-text">Save model every N epochs</small>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="checkpoint_frequency">Checkpoint Frequency</label>
-                        <input type="number" id="checkpoint_frequency" name="checkpoint_frequency" 
-                               value="1000" min="100" max="10000">
-                        <small class="form-text">Save model every N epochs</small>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pde_residual_scaling">PDE Residual Scaling</label>
+                            <select id="pde_residual_scaling" name="pde_residual_scaling" required>
+                                <option value="none" selected>None</option>
+                                <option value="domain_size">Domain Size</option>
+                                <option value="adaptive">Adaptive</option>
+                            </select>
+                            <small class="form-text">Scale PDE residuals for better balance</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="multi_fidelity">Multi-Fidelity Training</label>
+                            <select id="multi_fidelity" name="multi_fidelity" required>
+                                <option value="false" selected>Single Fidelity</option>
+                                <option value="true">Multi-Fidelity (Advanced)</option>
+                            </select>
+                            <small class="form-text">Use multiple resolution levels</small>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="pde_residual_scaling">PDE Residual Scaling</label>
-                        <select id="pde_residual_scaling" name="pde_residual_scaling" required>
-                            <option value="none" selected>None</option>
-                            <option value="domain_size">Domain Size</option>
-                            <option value="adaptive">Adaptive</option>
-                        </select>
-                        <small class="form-text">Scale PDE residuals for better balance</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="multi_fidelity">Multi-Fidelity Training</label>
-                        <select id="multi_fidelity" name="multi_fidelity" required>
-                            <option value="false" selected>Single Fidelity</option>
-                            <option value="true">Multi-Fidelity (Advanced)</option>
-                        </select>
-                        <small class="form-text">Use multiple resolution levels</small>
-                    </div>
-                </div>
-            </div>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary btn-large">
-                    <i class="fas fa-search"></i>
-                    Start Inverse Problem Training
+                    <i class="fas fa-cogs"></i>
+                    Start Astrophysical Simulation
                 </button>
                 <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
                     <i class="fas fa-undo"></i>
@@ -554,10 +553,6 @@
                 <span id="physics-loss" class="loss-value">-</span>
             </div>
             <div class="loss-item">
-                <span class="loss-label">Data Loss:</span>
-                <span id="data-loss" class="loss-value">-</span>
-            </div>
-            <div class="loss-item">
                 <span class="loss-label">Total Loss:</span>
                 <span id="total-loss" class="loss-value">-</span>
             </div>
@@ -573,8 +568,8 @@
                 <div id="loss-chart" class="chart-container"></div>
             </div>
             <div class="result-card">
-                <h4>Parameter Estimation</h4>
-                <div id="parameter-chart" class="chart-container"></div>
+                <h4>Solution Analysis</h4>
+                <div id="solution-chart" class="chart-container"></div>
             </div>
         </div>
         <div class="results-actions">
@@ -602,4 +597,4 @@
     // Initialize simulation with purpose context
     initializeSimulation(purposeKey, purposeName, equationType);
 </script>
-{% endblock %} 
+{% endblock %}

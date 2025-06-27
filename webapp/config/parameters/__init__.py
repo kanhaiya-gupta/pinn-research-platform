@@ -13,6 +13,7 @@ from .multiphysics import MULTIPHYSICS_PARAMETERS_DICT
 from .efficiency import EFFICIENCY_PARAMETERS_DICT
 from .generalization import GENERALIZATION_PARAMETERS_DICT
 from .scientific_discovery import SCIENTIFIC_DISCOVERY_PARAMETERS_DICT
+from .astrophysics import ASTROPHYSICS_PARAMETERS_DICT, ASTROPHYSICS_EQUATION_PARAMETERS
 
 # Combine all parameters into a single dictionary
 ALL_PURPOSE_PARAMETERS = {
@@ -25,7 +26,8 @@ ALL_PURPOSE_PARAMETERS = {
     'multiphysics': MULTIPHYSICS_PARAMETERS_DICT,
     'efficiency': EFFICIENCY_PARAMETERS_DICT,
     'generalization': GENERALIZATION_PARAMETERS_DICT,
-    'scientific_discovery': SCIENTIFIC_DISCOVERY_PARAMETERS_DICT
+    'scientific_discovery': SCIENTIFIC_DISCOVERY_PARAMETERS_DICT,
+    'astrophysics': ASTROPHYSICS_PARAMETERS_DICT
 }
 
 # Create a flat dictionary of all parameters
@@ -52,4 +54,7 @@ def get_purpose_equations(purpose):
         return list(INVERSE_PROBLEMS_EQUATION_PARAMETERS.keys())
     else:
         # For other purposes, return empty list for now
-        return [] 
+        return []
+
+ALL_PURPOSE_PARAMETERS['astrophysics'] = ASTROPHYSICS_PARAMETERS_DICT
+SUPPORTED_PARAMETERS.update(ASTROPHYSICS_PARAMETERS_DICT) 

@@ -13,6 +13,7 @@ from .multiphysics import MULTIPHYSICS_EQUATIONS_DICT
 from .efficiency import EFFICIENCY_EQUATIONS_DICT
 from .generalization import GENERALIZATION_EQUATIONS_DICT
 from .scientific_discovery import SCIENTIFIC_DISCOVERY_EQUATIONS_DICT
+from .astrophysics import ASTROPHYSICS_EQUATIONS
 
 # Combine all equations into a single dictionary
 ALL_PURPOSE_EQUATIONS = {
@@ -25,10 +26,13 @@ ALL_PURPOSE_EQUATIONS = {
     'multiphysics': MULTIPHYSICS_EQUATIONS_DICT,
     'efficiency': EFFICIENCY_EQUATIONS_DICT,
     'generalization': GENERALIZATION_EQUATIONS_DICT,
-    'scientific_discovery': SCIENTIFIC_DISCOVERY_EQUATIONS_DICT
+    'scientific_discovery': SCIENTIFIC_DISCOVERY_EQUATIONS_DICT,
+    'astrophysics': ASTROPHYSICS_EQUATIONS
 }
 
 # Create a flat dictionary of all equations
 SUPPORTED_EQUATIONS = {}
 for purpose, equations in ALL_PURPOSE_EQUATIONS.items():
-    SUPPORTED_EQUATIONS.update(equations) 
+    SUPPORTED_EQUATIONS.update(equations)
+    if purpose == 'astrophysics':
+        SUPPORTED_EQUATIONS.update(ASTROPHYSICS_EQUATIONS) 

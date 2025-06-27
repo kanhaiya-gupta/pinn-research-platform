@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="simulation-container">
+    <!-- Simulation Header -->
+    <div class="simulation-header">
+        <h1><i class="fas fa-star"></i> {{ equation.name }}</h1>
+        <p class="equation-description">{{ equation.description }}</p>
+        <div class="equation-formula">
+            <strong>Equation:</strong> {{ equation.formula }}
+        </div>
+    </div>
+
+    <!-- Parameter Configuration -->
+    <div class="parameter-section">
+        <h2><i class="fas fa-cogs"></i> Simulation Parameters</h2>
+        
+        <form id="simulation-form" method="post">
+            <!-- Neural Network Architecture -->
+            <div class="config-section">
+                <h3>Neural Network Architecture</h3>
+                <div class="parameter-grid">
+                    <div class="parameter-group">
+                        <label for="hidden_layers">Hidden Layers:</label>
+                        <input type="number" id="hidden_layers" name="hidden_layers" 
+                               value="{{ default_params.hidden_layers }}" min="1" max="10">
+                    </div>
+                    <div class="parameter-group">
+                        <label for="neurons_per_layer">Neurons per Layer:</label>
+                        <input type="number" id="neurons_per_layer" name="neurons_per_layer" 
+                               value="{{ default_params.neurons_per_layer }}" min="5" max="200">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Parameters -->
+            <div class="config-section">
+                <h3>Training Parameters</h3>
+                <div class="parameter-grid">
+                    <div class="parameter-group">
+                        <label for="learning_rate">Learning Rate:</label>
+                        <input type="number" id="learning_rate" name="learning_rate" 
+                               value="{{ default_params.learning_rate }}" step="0.0001" min="0.0001" max="0.1">
+                    </div>
+                    <div class="parameter-group">
+                        <label for="epochs">Training Epochs:</label>
+                        <input type="number" id="epochs" name="epochs" 
+                               value="{{ default_params.epochs }}" min="1000" max="100000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time Domain Parameters -->
+            <div class="config-section">
+                <h3>Time Domain Parameters</h3>
+                <div class="parameter-grid">
+                    <div class="parameter-group">
+                        <label for="time_start">Start Time:</label>
+                        <input type="number" id="time_start" name="time_start" value="0.0" step="0.1">
+                    </div>
+                    <div class="parameter-group">
+                        <label for="time_end">End Time:</label>
+                        <input type="number" id="time_end" name="time_end" value="1.0" step="0.1">
+                    </div>
+                    <div class="parameter-group">
+                        <label for="time_steps">Time Steps:</label>
+                        <input type="number" id="time_steps" name="time_steps" value="100" min="10" max="1000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spatial Domain Parameters -->
+            <div class="config-section">
+                <h3>Spatial Domain Parameters</h3>
+                <div class="parameter-grid">
+                    <div class="parameter-group">
+                        <label for="spatial_start">Start Position:</label>
+                        <input type="number" id="spatial_start" name="spatial_start" value="-1.0" step="0.1">
+                    </div>
+                    <div class="parameter-group">
+                        <label for="spatial_end">End Position:</label>
+                        <input type="number" id="spatial_end" name="spatial_end" value="1.0" step="0.1">
+                    </div>
+                    <div class="parameter-group">
+                        <label for="spatial_points">Spatial Points:</label>
+                        <input type="number" id="spatial_points" name="spatial_points" value="100" min="10" max="1000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equation-Specific Parameters -->
+            {% if parameters %}
+            <div class="config-section">
+                <h3>Equation-Specific Parameters</h3>
+                <div class="parameter-grid">
+                    {% for param_id, param_info in parameters.items() %}
+                    <div class="parameter-group">
+                        <label for="{{ param_id }}">{{ param_info.name }}:</label>
+                        <input type="number" id="{{ param_id }}" name="{{ param_id }}" 
+                               value="{{ param_info.default }}" 
+                               step="{{ (param_info.range[1] - param_info.range[0]) / 100 if param_info.range else 0.01 }}"
+                               min="{{ param_info.range[0] if param_info.range else '' }}"
+                               max="{{ param_info.range[1] if param_info.range else '' }}">
+                        {% if param_info.unit %}
+                        <small class="parameter-unit">({{ param_info.unit }})</small>
+                        {% endif %}
+                        {% if param_info.description %}
+                        <small class="parameter-description">{{ param_info.description }}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Control Buttons -->
+            <div class="control-section">
+                <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-play"></i> Start Simulation
+                </button>
+                <button type="button" class="btn btn-secondary btn-large" onclick="resetForm()">
+                    <i class="fas fa-undo"></i> Reset Parameters
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section" class="results-section" style="display: none;">
+        <h2><i class="fas fa-chart-line"></i> Simulation Results</h2>
+        <div id="results-content">
+            <!-- Results will be loaded here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/simulation.js"></script>
+<script>
+    // Form submission handler
+    document.getElementById('simulation-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const params = Object.fromEntries(formData.entries());
+        
+        // Convert numeric values
+        for (let key in params) {
+            if (!isNaN(params[key])) {
+                params[key] = parseFloat(params[key]);
+            }
+        }
+        
+        try {
+            const response = await fetch(`/api/simulate/{{ purpose_name }}/{{ eq_id }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params)
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                document.getElementById('results-section').style.display = 'block';
+                document.getElementById('results-content').innerHTML = 
+                    `<div class="alert alert-success">
+                        <h4>Simulation Completed!</h4>
+                        <p>Training completed in ${result.training_time || 'N/A'} seconds</p>
+                        <p>Final loss: ${result.final_loss || 'N/A'}</p>
+                    </div>`;
+            } else {
+                throw new Error('Simulation failed');
+            }
+        } catch (error) {
+            document.getElementById('results-section').style.display = 'block';
+            document.getElementById('results-content').innerHTML = 
+                `<div class="alert alert-danger">
+                    <h4>Simulation Error</h4>
+                    <p>${error.message}</p>
+                </div>`;
+        }
+    });
+    
+    function resetForm() {
+        document.getElementById('simulation-form').reset();
+    }
+</script>
+{% endblock %} 

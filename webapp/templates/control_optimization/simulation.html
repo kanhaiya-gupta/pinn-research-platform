@@ -102,10 +102,10 @@
                 <div class="recommendation-box">
                     <h4><i class="fas fa-lightbulb"></i> Architecture Recommendations for {{ purpose.name }}</h4>
                     <div class="recommendation-content">
-                        <p><strong>Hidden Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].hidden_activation|upper }}</p>
-                        <p><strong>Output Activation:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].output_activation|upper }}</p>
-                        <p><strong>Optimizer:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].optimizer|upper }}</p>
-                        <p><strong>Notes:</strong> {{ config.ARCHITECTURE_RECOMMENDATIONS[purpose_key].notes }}</p>
+                        <p><strong>Hidden Activation:</strong> TANH</p>
+                        <p><strong>Output Activation:</strong> LINEAR</p>
+                        <p><strong>Optimizer:</strong> ADAM_LBFGS</p>
+                        <p><strong>Notes:</strong> Differentiable models needed → smooth activations</p>
                     </div>
                 </div>
             </div>
@@ -265,15 +265,11 @@
                 <div class="recommendation-box">
                     <h4><i class="fas fa-lightbulb"></i> Training Recommendations for {{ purpose.name }}</h4>
                     <div class="recommendation-content">
-                        <p><strong>Learning Rate:</strong> {{ config.TRAINING_RECOMMENDATIONS[purpose_key].learning_rate }}</p>
-                        <p><strong>Scheduler:</strong> {{ config.TRAINING_RECOMMENDATIONS[purpose_key].scheduler|title }}</p>
-                        <p><strong>Loss Weights:</strong> Physics={{ config.TRAINING_RECOMMENDATIONS[purpose_key].loss_weights.physics }}, 
-                           Boundary={{ config.TRAINING_RECOMMENDATIONS[purpose_key].loss_weights.boundary }}, 
-                           Initial={{ config.TRAINING_RECOMMENDATIONS[purpose_key].loss_weights.initial }}</p>
-                        <p><strong>Sampling:</strong> Interior={{ config.TRAINING_RECOMMENDATIONS[purpose_key].sampling.interior }}, 
-                           Boundary={{ config.TRAINING_RECOMMENDATIONS[purpose_key].sampling.boundary }}, 
-                           Initial={{ config.TRAINING_RECOMMENDATIONS[purpose_key].sampling.initial }}</p>
-                        <p><strong>Notes:</strong> {{ config.TRAINING_RECOMMENDATIONS[purpose_key].notes }}</p>
+                        <p><strong>Learning Rate:</strong> 0.001</p>
+                        <p><strong>Scheduler:</strong> step</p>
+                        <p><strong>Loss Weights:</strong> Physics=1.0, Boundary=1.0, Control=1.0</p>
+                        <p><strong>Sampling:</strong> Interior=1000, Boundary=200, Initial=200</p>
+                        <p><strong>Notes:</strong> Step scheduler for control optimization convergence</p>
                     </div>
                 </div>
             </div>

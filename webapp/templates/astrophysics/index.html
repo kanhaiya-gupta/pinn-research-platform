@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="purpose-detail-container">
+    <!-- Purpose Header -->
+    <div class="purpose-header-section" style="border-left: 4px solid {{ purpose.color }}">
+        <div class="purpose-header-content">
+            <div class="purpose-icon-large" style="color: {{ purpose.color }}">
+                <i class="{{ purpose.icon }}"></i>
+            </div>
+            <div class="purpose-info">
+                <h1 class="purpose-title">{{ purpose.name }}</h1>
+                <p class="purpose-description-large">{{ purpose.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section">
+        <h2 class="section-title">
+            <i class="fas fa-info-circle"></i>
+            Overview
+        </h2>
+        <div class="overview-content">
+            <p>Astrophysics PINNs enable the solution of complex astrophysical and cosmological equations using Physics-Informed Neural Networks. These methods are particularly valuable for gravitational wave physics, cosmology, stellar evolution, and particle astrophysics where traditional numerical methods face computational challenges.</p>
+            
+            <div class="key-features">
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Gravitational Physics:</strong> Solve Einstein field equations and spacetime metrics</li>
+                    <li><strong>Cosmology:</strong> Model universe expansion and dark energy effects</li>
+                    <li><strong>Stellar Physics:</strong> Simulate stellar evolution and compact objects</li>
+                    <li><strong>Particle Astrophysics:</strong> Model neutrino transport and cosmic rays</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Equations -->
+    <div class="equations-section">
+        <h2 class="section-title">
+            <i class="fas fa-calculator"></i>
+            Supported Astrophysical Equations
+        </h2>
+        <div class="equations-grid">
+            {% for eq_key, eq_info in equations.items() %}
+            <div class="equation-card" data-equation="{{ eq_key }}">
+                <div class="equation-header" style="border-left: 4px solid {{ eq_info.color }}">
+                    <div class="equation-icon">
+                        <i class="{{ eq_info.icon }}"></i>
+                    </div>
+                    <div class="equation-title">
+                        <h3>{{ eq_info.name }}</h3>
+                        <p class="equation-formula">{{ eq_info.formula }}</p>
+                    </div>
+                </div>
+                <div class="equation-body">
+                    <p class="equation-description">{{ eq_info.description }}</p>
+                    
+                    <!-- Applications -->
+                    {% if eq_info.applications %}
+                    <div class="equation-applications">
+                        <strong>Applications:</strong>
+                        <ul>
+                            {% for app in eq_info.applications %}
+                            <li>{{ app }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="equation-actions">
+                        <a href="/purpose/{{ purpose_name }}/simulation/{{ eq_key }}" class="btn btn-primary">
+                            <i class="fas fa-star"></i>
+                            Start Astrophysical Simulation
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Research Applications -->
+    <div class="research-section">
+        <h2 class="section-title">
+            <i class="fas fa-microscope"></i>
+            Research Applications
+        </h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <h4><i class="fas fa-grav"></i> Gravitational Wave Physics</h4>
+                <p>Model gravitational wave signals from binary mergers and extreme mass ratio inspirals.</p>
+                <ul>
+                    <li>Binary black hole mergers</li>
+                    <li>Neutron star binaries</li>
+                    <li>Extreme mass ratio inspirals</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-universe"></i> Cosmology</h4>
+                <p>Study universe expansion, dark energy, and cosmic microwave background evolution.</p>
+                <ul>
+                    <li>Dark energy models</li>
+                    <li>Inflationary cosmology</li>
+                    <li>Large-scale structure</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-star"></i> Stellar Evolution</h4>
+                <p>Model stellar interiors, supernovae explosions, and compact object formation.</p>
+                <ul>
+                    <li>Stellar structure</li>
+                    <li>Supernova dynamics</li>
+                    <li>Neutron star physics</li>
+                </ul>
+            </div>
+            
+            <div class="research-card">
+                <h4><i class="fas fa-atom"></i> Particle Astrophysics</h4>
+                <p>Study neutrino transport, cosmic ray propagation, and dark matter interactions.</p>
+                <ul>
+                    <li>Neutrino oscillations</li>
+                    <li>Cosmic ray transport</li>
+                    <li>Dark matter detection</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advantages of PINNs for Astrophysics -->
+    <div class="advantages-section">
+        <h2 class="section-title">
+            <i class="fas fa-star"></i>
+            Advantages of PINNs for Astrophysics
+        </h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-grav"></i>
+                </div>
+                <h4>Complex Spacetime</h4>
+                <p>Handle irregular domains and complex geometries common in astrophysical problems.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>High Dimensions</h4>
+                <p>Scale well with dimensions, avoiding the curse of dimensionality in cosmological simulations.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4>Physics-Informed</h4>
+                <p>Embed physical laws directly into the loss function for physically consistent solutions.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h4>Sparse Data</h4>
+                <p>Work effectively with limited observational data common in astrophysics.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/" class="btn btn-outline-primary btn-large">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+            <a href="#equations-section" class="btn btn-primary btn-large">
+                <i class="fas fa-star"></i>
+                Start Astrophysical Simulation
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/purpose-detail.js"></script>
+{% endblock %} 

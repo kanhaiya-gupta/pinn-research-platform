@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <!-- Results Header -->
+    <div class="results-header">
+        <h1><i class="fas fa-chart-line"></i> Simulation Results</h1>
+        <p class="equation-info">
+            <strong>Equation:</strong> {{ equation.name }}<br>
+            <strong>Category:</strong> {{ equation.category }}
+        </p>
+    </div>
+
+    <!-- Results Content -->
+    <div class="results-content">
+        <div class="results-section">
+            <h2><i class="fas fa-chart-bar"></i> Training Metrics</h2>
+            <div id="training-metrics">
+                <!-- Training metrics will be loaded here -->
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h2><i class="fas fa-chart-area"></i> Solution Plots</h2>
+            <div id="solution-plots">
+                <!-- Solution plots will be loaded here -->
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h2><i class="fas fa-table"></i> Numerical Results</h2>
+            <div id="numerical-results">
+                <!-- Numerical results will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+        <div class="action-buttons">
+            <a href="/purpose/{{ purpose_name }}/simulation/{{ eq_id }}" class="btn btn-primary">
+                <i class="fas fa-redo"></i> Run New Simulation
+            </a>
+            <a href="/purpose/{{ purpose_name }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to {{ purpose.name }}
+            </a>
+            <a href="/" class="btn btn-outline-primary">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Load results when page loads
+    document.addEventListener('DOMContentLoaded', async function() {
+        try {
+            const response = await fetch(`/api/results/{{ purpose_name }}/{{ eq_id }}`);
+            if (response.ok) {
+                const results = await response.json();
+                displayResults(results);
+            } else {
+                document.getElementById('training-metrics').innerHTML = 
+                    '<div class="alert alert-warning">No results available for this simulation.</div>';
+            }
+        } catch (error) {
+            document.getElementById('training-metrics').innerHTML = 
+                '<div class="alert alert-danger">Error loading results.</div>';
+        }
+    });
+    
+    function displayResults(results) {
+        // Display training metrics
+        const metricsHtml = `
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Final Loss</h4>
+                    <p>${results.final_loss || 'N/A'}</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Training Time</h4>
+                    <p>${results.training_time || 'N/A'} seconds</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Convergence</h4>
+                    <p>${results.converged ? 'Yes' : 'No'}</p>
+                </div>
+            </div>
+        `;
+        document.getElementById('training-metrics').innerHTML = metricsHtml;
+        
+        // Display solution plots if available
+        if (results.plots) {
+            document.getElementById('solution-plots').innerHTML = 
+                '<div class="plot-container">Plots would be displayed here</div>';
+        }
+        
+        // Display numerical results if available
+        if (results.numerical_results) {
+            document.getElementById('numerical-results').innerHTML = 
+                '<div class="table-container">Numerical results would be displayed here</div>';
+        }
+    }
+</script>
+{% endblock %} 

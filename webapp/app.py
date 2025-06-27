@@ -132,6 +132,9 @@ def get_equation_specific_parameters(purpose_name: str, eq_id: str) -> Dict[str,
         elif purpose_name == 'scientific_discovery':
             from config.parameters.scientific_discovery import SCIENTIFIC_DISCOVERY_EQUATION_PARAMETERS
             return SCIENTIFIC_DISCOVERY_EQUATION_PARAMETERS.get(eq_id, {})
+        elif purpose_name == 'astrophysics':
+            from config.parameters.astrophysics import ASTROPHYSICS_EQUATION_PARAMETERS
+            return ASTROPHYSICS_EQUATION_PARAMETERS.get(eq_id, {})
         else:
             return {}
     except ImportError:
