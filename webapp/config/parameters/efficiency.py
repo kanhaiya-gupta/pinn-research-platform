@@ -4,111 +4,6 @@ Parameters for optimizing computational efficiency and performance.
 """
 
 EFFICIENCY_PARAMETERS_DICT = {
-    # Computational Parameters
-    'time_step': {
-        'name': 'Time Step',
-        'description': 'Time step for numerical integration',
-        'unit': 's',
-        'default': 1e-3,
-        'range': [1e-6, 1e-1],
-        'category': 'computational_parameters',
-        'optimization_target': 'accuracy'
-    },
-    'spatial_discretization': {
-        'name': 'Spatial Discretization',
-        'description': 'Spatial discretization parameter',
-        'unit': 'm',
-        'default': 1e-2,
-        'range': [1e-4, 1e-1],
-        'category': 'computational_parameters',
-        'optimization_target': 'accuracy'
-    },
-    'tolerance': {
-        'name': 'Solver Tolerance',
-        'description': 'Tolerance for iterative solvers',
-        'unit': 'dimensionless',
-        'default': 1e-6,
-        'range': [1e-12, 1e-3],
-        'category': 'computational_parameters',
-        'optimization_target': 'convergence'
-    },
-    'max_iterations': {
-        'name': 'Maximum Iterations',
-        'description': 'Maximum iterations for solvers',
-        'unit': 'dimensionless',
-        'default': 1000,
-        'range': [100, 10000],
-        'category': 'computational_parameters',
-        'optimization_target': 'convergence'
-    },
-    
-    # Neural Network Parameters
-    'network_depth': {
-        'name': 'Network Depth',
-        'description': 'Number of hidden layers',
-        'unit': 'dimensionless',
-        'default': 4,
-        'range': [1, 20],
-        'category': 'neural_network_parameters',
-        'optimization_target': 'expressiveness'
-    },
-    'network_width': {
-        'name': 'Network Width',
-        'description': 'Number of neurons per layer',
-        'unit': 'dimensionless',
-        'default': 50,
-        'range': [10, 500],
-        'category': 'neural_network_parameters',
-        'optimization_target': 'expressiveness'
-    },
-    'learning_rate': {
-        'name': 'Learning Rate',
-        'description': 'Learning rate for training',
-        'unit': 'dimensionless',
-        'default': 0.001,
-        'range': [1e-6, 1e-1],
-        'category': 'neural_network_parameters',
-        'optimization_target': 'convergence'
-    },
-    'batch_size': {
-        'name': 'Batch Size',
-        'description': 'Batch size for training',
-        'unit': 'dimensionless',
-        'default': 32,
-        'range': [1, 1000],
-        'category': 'neural_network_parameters',
-        'optimization_target': 'memory'
-    },
-    
-    # Training Parameters
-    'epochs': {
-        'name': 'Training Epochs',
-        'description': 'Number of training epochs',
-        'unit': 'dimensionless',
-        'default': 1000,
-        'range': [100, 10000],
-        'category': 'training_parameters',
-        'optimization_target': 'accuracy'
-    },
-    'early_stopping_patience': {
-        'name': 'Early Stopping Patience',
-        'description': 'Patience for early stopping',
-        'unit': 'dimensionless',
-        'default': 100,
-        'range': [10, 1000],
-        'category': 'training_parameters',
-        'optimization_target': 'efficiency'
-    },
-    'validation_split': {
-        'name': 'Validation Split',
-        'description': 'Fraction of data for validation',
-        'unit': 'dimensionless',
-        'default': 0.2,
-        'range': [0.1, 0.5],
-        'category': 'training_parameters',
-        'optimization_target': 'generalization'
-    },
-    
     # Sampling Parameters
     'collocation_points': {
         'name': 'Collocation Points',
@@ -144,6 +39,24 @@ EFFICIENCY_PARAMETERS_DICT = {
         'default': 100,
         'range': [10, 10000],
         'category': 'sampling_parameters',
+        'optimization_target': 'accuracy'
+    },
+    'spatial_discretization': {
+        'name': 'Spatial Discretization',
+        'description': 'Spatial discretization step size',
+        'unit': 'm',
+        'default': 1e-2,
+        'range': [1e-4, 1e-1],
+        'category': 'discretization_parameters',
+        'optimization_target': 'accuracy'
+    },
+    'tolerance': {
+        'name': 'Convergence Tolerance',
+        'description': 'Tolerance for convergence criteria',
+        'unit': 'dimensionless',
+        'default': 1e-6,
+        'range': [1e-12, 1e-3],
+        'category': 'convergence_parameters',
         'optimization_target': 'accuracy'
     },
     
@@ -316,290 +229,240 @@ EFFICIENCY_PARAMETERS_DICT = {
 # Equation-specific parameters for efficiency optimization
 EFFICIENCY_EQUATION_PARAMETERS = {
     'efficiency_burgers': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_heat': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_wave': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_shm': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'collocation_points': {'default': 500, 'range': [100, 10000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]},
-        'tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 500, 'range': [100, 10000]},
+        'tolerance': {**EFFICIENCY_PARAMETERS_DICT['tolerance'], 'default': 1e-6, 'range': [1e-12, 1e-3]}
     },
     'efficiency_helmholtz': {
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']},
-        'tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']},
+        'tolerance': {**EFFICIENCY_PARAMETERS_DICT['tolerance'], 'default': 1e-6, 'range': [1e-12, 1e-3]}
     },
     'efficiency_navier_stokes': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 2000, 'range': [500, 50000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 2000, 'range': [500, 50000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_schrodinger': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_maxwell': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_heat_transfer': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_elastic': {
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']},
-        'tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']},
+        'tolerance': {**EFFICIENCY_PARAMETERS_DICT['tolerance'], 'default': 1e-6, 'range': [1e-12, 1e-3]}
     },
     'efficiency_phase_field': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_reaction_diffusion': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_poroelasticity': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_viscoelasticity': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]},
-        'tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]},
+        'tolerance': {**EFFICIENCY_PARAMETERS_DICT['tolerance'], 'default': 1e-6, 'range': [1e-12, 1e-3]}
     },
     'efficiency_radiative_transfer': {
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]},
-        'num_processes': {'default': 4, 'range': [1, 100]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'num_processes': {**EFFICIENCY_PARAMETERS_DICT['num_processes'], 'default': 4, 'range': [1, 100]}
     },
     'efficiency_shallow_water': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_magnetohydrodynamics': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 2000, 'range': [500, 50000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 2000, 'range': [500, 50000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_thermoelasticity': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_advection_diffusion': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_elastic_wave': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_fluid_structure_interaction': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 2000, 'range': [500, 50000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 2000, 'range': [500, 50000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_electromagnetic_thermal': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_biomechanical_transport': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_geophysical_flow': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_atmospheric_oceanic': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 2000, 'range': [500, 50000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'num_processes': {'default': 8, 'range': [1, 100]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 2000, 'range': [500, 50000]},
+        'num_processes': {**EFFICIENCY_PARAMETERS_DICT['num_processes'], 'default': 8, 'range': [1, 100]}
     },
     'efficiency_nuclear_thermal': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_quantum_mechanical': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_phase_field_allen_cahn': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_phase_field_cahn_hilliard': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_solidification_stefan': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_ginzburg_landau': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_swift_hohenberg': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_kuramoto_sivashinsky': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_benard_marangoni': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_hele_shaw': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_mullins_sekerka': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_ostwald_ripening': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_coarsening': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_grain_growth': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_dendritic_growth': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_eutectic_solidification': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_peritectic_solidification': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
+    },
+    'efficiency_phase_field_monotectic_solidification': {
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_grain_growth': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_sintering': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_laser_heat_source': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_melt_pool_dynamics': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     },
     'efficiency_crystal_plasticity': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_diffusion_solids': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]}
     },
     'efficiency_precipitation_nucleation': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'collocation_points': {'default': 1000, 'range': [100, 100000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'adaptive_sampling': {'default': True, 'range': [True, False]},
-        'tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1000, 'range': [100, 100000]},
+        'tolerance': {**EFFICIENCY_PARAMETERS_DICT['tolerance'], 'default': 1e-6, 'range': [1e-12, 1e-3]}
     },
     'efficiency_residual_stress': {
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']},
-        'tolerance': {'default': 1e-6, 'range': [1e-12, 1e-3]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']},
+        'tolerance': {**EFFICIENCY_PARAMETERS_DICT['tolerance'], 'default': 1e-6, 'range': [1e-12, 1e-3]}
     },
     'efficiency_microstructure_evolution': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 2000, 'range': [500, 50000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'num_processes': {'default': 4, 'range': [1, 100]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 2000, 'range': [500, 50000]},
+        'num_processes': {**EFFICIENCY_PARAMETERS_DICT['num_processes'], 'default': 4, 'range': [1, 100]}
     },
     'efficiency_additive_manufacturing': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 2000, 'range': [500, 50000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'num_processes': {'default': 8, 'range': [1, 100]}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 2000, 'range': [500, 50000]},
+        'num_processes': {**EFFICIENCY_PARAMETERS_DICT['num_processes'], 'default': 8, 'range': [1, 100]}
     },
     'efficiency_material_processing': {
-        'time_step': {'default': 1e-3, 'range': [1e-6, 1e-1]},
-        'spatial_discretization': {'default': 1e-2, 'range': [1e-4, 1e-1]},
-        'collocation_points': {'default': 1500, 'range': [500, 20000]},
-        'optimization_algorithm': {'default': 'adam', 'range': ['sgd', 'adam', 'lbfgs', 'rmsprop']},
-        'preconditioner': {'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
+        'spatial_discretization': {**EFFICIENCY_PARAMETERS_DICT['spatial_discretization'], 'default': 1e-2, 'range': [1e-4, 1e-1]},
+        'collocation_points': {**EFFICIENCY_PARAMETERS_DICT['collocation_points'], 'default': 1500, 'range': [500, 20000]},
+        'preconditioner': {**EFFICIENCY_PARAMETERS_DICT['preconditioner'], 'default': 'ilu', 'range': ['none', 'ilu', 'amg', 'jacobi']}
     }
 } 

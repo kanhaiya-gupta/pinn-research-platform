@@ -304,279 +304,950 @@ UNCERTAINTY_PARAMETERS_DICT = {
     }
 }
 
-# Equation-specific parameters for uncertainty quantification
+# Equation-specific parameter mappings for uncertainty quantification
 UNCERTAINTY_EQUATION_PARAMETERS = {
     'uncertainty_burgers': {
-        'viscosity_uncertainty': {'default': 0.1, 'range': [0.0, 0.5]},
-        'initial_condition_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'boundary_condition_uncertainty': {'default': 0.02, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'parameter_uncertainty': {
+            'name': 'Parameter Uncertainty',
+            'description': 'Uncertainty in viscosity and initial conditions',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'uncertainty_sources',
+            'propagation_method': 'monte_carlo'
+        },
+        'viscosity_uncertainty': {
+            'name': 'Viscosity Uncertainty',
+            'description': 'Uncertainty in dynamic viscosity',
+            'unit': 'dimensionless',
+            'default': 0.15,
+            'range': [0.0, 1.0],
+            'category': 'fluid_properties',
+            'propagation_method': 'statistical'
+        },
+        'initial_condition_uncertainty': {
+            'name': 'Initial Condition Uncertainty',
+            'description': 'Uncertainty in initial velocity field',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'initial_conditions',
+            'propagation_method': 'bayesian'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_heat': {
-        'thermal_diffusivity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
-        'initial_temperature_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'thermal_diffusivity_uncertainty': {
+            'name': 'Thermal Diffusivity Uncertainty',
+            'description': 'Uncertainty in thermal diffusivity',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'thermal_properties',
+            'propagation_method': 'statistical'
+        },
+        'boundary_condition_uncertainty': {
+            'name': 'Boundary Condition Uncertainty',
+            'description': 'Uncertainty in boundary conditions',
+            'unit': 'dimensionless',
+            'default': 0.05,
+            'range': [0.0, 1.0],
+            'category': 'boundary_conditions',
+            'propagation_method': 'bayesian'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_wave': {
-        'wave_speed_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'initial_condition_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'boundary_condition_uncertainty': {'default': 0.02, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'wave_speed_uncertainty': {
+            'name': 'Wave Speed Uncertainty',
+            'description': 'Uncertainty in wave speed',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'wave_properties',
+            'propagation_method': 'statistical'
+        },
+        'initial_condition_uncertainty': {
+            'name': 'Initial Condition Uncertainty',
+            'description': 'Uncertainty in initial wave field',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'initial_conditions',
+            'propagation_method': 'bayesian'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_shm': {
-        'frequency_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'damping_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'initial_amplitude_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'frequency_uncertainty': {
+            'name': 'Frequency Uncertainty',
+            'description': 'Uncertainty in natural frequency',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'damping_uncertainty': {
+            'name': 'Damping Uncertainty',
+            'description': 'Uncertainty in damping ratio',
+            'unit': 'dimensionless',
+            'default': 0.15,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_helmholtz': {
-        'wavenumber_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
-        'medium_property_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'wavenumber_uncertainty': {
+            'name': 'Wavenumber Uncertainty',
+            'description': 'Uncertainty in wavenumber',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'wave_properties',
+            'propagation_method': 'statistical'
+        },
+        'boundary_condition_uncertainty': {
+            'name': 'Boundary Condition Uncertainty',
+            'description': 'Uncertainty in boundary conditions',
+            'unit': 'dimensionless',
+            'default': 0.05,
+            'range': [0.0, 1.0],
+            'category': 'boundary_conditions',
+            'propagation_method': 'bayesian'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_navier_stokes': {
-        'viscosity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'density_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
-        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'viscosity_uncertainty': {
+            'name': 'Viscosity Uncertainty',
+            'description': 'Uncertainty in dynamic viscosity',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'fluid_properties',
+            'propagation_method': 'statistical'
+        },
+        'boundary_condition_uncertainty': {
+            'name': 'Boundary Condition Uncertainty',
+            'description': 'Uncertainty in boundary conditions',
+            'unit': 'dimensionless',
+            'default': 0.05,
+            'range': [0.0, 1.0],
+            'category': 'boundary_conditions',
+            'propagation_method': 'bayesian'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_schrodinger': {
-        'potential_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'initial_state_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'hamiltonian_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'potential_uncertainty': {
+            'name': 'Potential Uncertainty',
+            'description': 'Uncertainty in potential energy',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'quantum_properties',
+            'propagation_method': 'statistical'
+        },
+        'initial_state_uncertainty': {
+            'name': 'Initial State Uncertainty',
+            'description': 'Uncertainty in initial wave function',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'quantum_properties',
+            'propagation_method': 'bayesian'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_maxwell': {
-        'permittivity_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'permeability_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'electromagnetic_uncertainty': {
+            'name': 'Electromagnetic Uncertainty',
+            'description': 'Uncertainty in electromagnetic properties',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'electromagnetic_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_heat_transfer': {
-        'thermal_conductivity_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'heat_capacity_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'heat_source_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'thermal_property_uncertainty': {
+            'name': 'Thermal Property Uncertainty',
+            'description': 'Uncertainty in thermal conductivity and heat capacity',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'thermal_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_elastic': {
-        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'poisson_ratio_uncertainty': {'default': 0.1, 'range': [0.0, 0.3]},
-        'boundary_condition_uncertainty': {'default': 0.03, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'elastic_modulus_uncertainty': {
+            'name': 'Elastic Modulus Uncertainty',
+            'description': 'Uncertainty in elastic moduli',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_phase_field': {
-        'mobility_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'free_energy_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'interface_thickness_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'mobility_uncertainty': {
+            'name': 'Mobility Uncertainty',
+            'description': 'Uncertainty in phase field mobility',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'phase_field_properties',
+            'propagation_method': 'statistical'
+        },
+        'free_energy_uncertainty': {
+            'name': 'Free Energy Uncertainty',
+            'description': 'Uncertainty in free energy functional',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'phase_field_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_reaction_diffusion': {
-        'diffusion_coefficient_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'reaction_rate_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'initial_concentration_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'diffusion_uncertainty': {
+            'name': 'Diffusion Uncertainty',
+            'description': 'Uncertainty in diffusion coefficient',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'transport_properties',
+            'propagation_method': 'statistical'
+        },
+        'reaction_uncertainty': {
+            'name': 'Reaction Uncertainty',
+            'description': 'Uncertainty in reaction function',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'chemical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_poroelasticity': {
-        'permeability_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'fluid_viscosity_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'permeability_uncertainty': {
+            'name': 'Permeability Uncertainty',
+            'description': 'Uncertainty in permeability',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'poroelastic_properties',
+            'propagation_method': 'statistical'
+        },
+        'elastic_modulus_uncertainty': {
+            'name': 'Elastic Modulus Uncertainty',
+            'description': 'Uncertainty in elastic moduli',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_viscoelasticity': {
-        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'relaxation_time_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'viscosity_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'elastic_modulus_uncertainty': {
+            'name': 'Elastic Modulus Uncertainty',
+            'description': 'Uncertainty in elastic modulus',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'relaxation_time_uncertainty': {
+            'name': 'Relaxation Time Uncertainty',
+            'description': 'Uncertainty in relaxation time',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'viscoelastic_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_radiative_transfer': {
-        'absorption_coefficient_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'scattering_coefficient_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'phase_function_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'optical_property_uncertainty': {
+            'name': 'Optical Property Uncertainty',
+            'description': 'Uncertainty in absorption and scattering coefficients',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'radiation_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_shallow_water': {
-        'bathymetry_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'friction_coefficient_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'initial_condition_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'bathymetry_uncertainty': {
+            'name': 'Bathymetry Uncertainty',
+            'description': 'Uncertainty in bottom topography',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'geometric_parameters',
+            'propagation_method': 'statistical'
+        },
+        'friction_uncertainty': {
+            'name': 'Friction Uncertainty',
+            'description': 'Uncertainty in friction coefficient',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'geophysical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_magnetohydrodynamics': {
-        'plasma_density_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'magnetic_field_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'temperature_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'plasma_parameter_uncertainty': {
+            'name': 'Plasma Parameter Uncertainty',
+            'description': 'Uncertainty in plasma parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'plasma_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_thermoelasticity': {
-        'thermal_expansion_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'elastic_modulus_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'thermal_conductivity_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'coupled_parameter_uncertainty': {
+            'name': 'Coupled Parameter Uncertainty',
+            'description': 'Uncertainty in thermoelastic coupling parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'thermoelastic_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_advection_diffusion': {
-        'velocity_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'diffusion_coefficient_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'initial_concentration_uncertainty': {'default': 0.05, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'velocity_uncertainty': {
+            'name': 'Velocity Uncertainty',
+            'description': 'Uncertainty in velocity field',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'transport_properties',
+            'propagation_method': 'statistical'
+        },
+        'diffusivity_uncertainty': {
+            'name': 'Diffusivity Uncertainty',
+            'description': 'Uncertainty in diffusion coefficient',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'transport_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_elastic_wave': {
-        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'density_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'damping_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'elastic_modulus_uncertainty': {
+            'name': 'Elastic Modulus Uncertainty',
+            'description': 'Uncertainty in elastic moduli',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_fluid_structure_interaction': {
-        'fluid_viscosity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'elastic_modulus_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'coupling_parameter_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'fsi_parameter_uncertainty': {
+            'name': 'FSI Parameter Uncertainty',
+            'description': 'Uncertainty in fluid-structure interaction parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'coupling_parameters',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_electromagnetic_thermal': {
-        'electromagnetic_property_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'thermal_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'coupling_coefficient_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'em_thermal_parameter_uncertainty': {
+            'name': 'EM-Thermal Parameter Uncertainty',
+            'description': 'Uncertainty in electromagnetic-thermal coupling parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'coupling_parameters',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_biomechanical_transport': {
-        'elastic_modulus_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'diffusion_coefficient_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'biological_parameter_uncertainty': {'default': 0.25, 'range': [0.0, 0.7]},
-        'monte_carlo_samples': {'default': 1500, 'range': [500, 15000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'biological_parameter_uncertainty': {
+            'name': 'Biological Parameter Uncertainty',
+            'description': 'Uncertainty in biological parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'biological_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_geophysical_flow': {
-        'coriolis_parameter_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
-        'friction_parameter_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'topography_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'geophysical_parameter_uncertainty': {
+            'name': 'Geophysical Parameter Uncertainty',
+            'description': 'Uncertainty in geophysical parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'geophysical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_atmospheric_oceanic': {
-        'atmospheric_parameter_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'oceanic_parameter_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'coupling_parameter_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 3000, 'range': [1000, 30000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'atmospheric_oceanic_parameter_uncertainty': {
+            'name': 'Atmospheric-Oceanic Parameter Uncertainty',
+            'description': 'Uncertainty in atmospheric-oceanic coupling parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'coupling_parameters',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_nuclear_thermal': {
-        'nuclear_cross_section_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'thermal_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'neutron_flux_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'nuclear_parameter_uncertainty': {
+            'name': 'Nuclear Parameter Uncertainty',
+            'description': 'Uncertainty in nuclear parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'nuclear_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_quantum_mechanical': {
-        'potential_energy_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'wave_function_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'quantum_number_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'quantum_parameter_uncertainty': {
+            'name': 'Quantum Parameter Uncertainty',
+            'description': 'Uncertainty in quantum mechanical parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'quantum_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_phase_field_allen_cahn': {
-        'mobility_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'free_energy_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'interface_energy_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'allen_cahn_parameter_uncertainty': {
+            'name': 'Allen-Cahn Parameter Uncertainty',
+            'description': 'Uncertainty in Allen-Cahn equation parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'phase_field_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_phase_field_cahn_hilliard': {
-        'mobility_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'free_energy_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'gradient_energy_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'cahn_hilliard_parameter_uncertainty': {
+            'name': 'Cahn-Hilliard Parameter Uncertainty',
+            'description': 'Uncertainty in Cahn-Hilliard equation parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'phase_field_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_solidification_stefan': {
-        'thermal_diffusivity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'latent_heat_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'phase_change_temperature_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'stefan_parameter_uncertainty': {
+            'name': 'Stefan Parameter Uncertainty',
+            'description': 'Uncertainty in Stefan solidification parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'thermal_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_grain_growth': {
-        'mobility_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'grain_boundary_energy_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'initial_grain_size_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'grain_growth_parameter_uncertainty': {
+            'name': 'Grain Growth Parameter Uncertainty',
+            'description': 'Uncertainty in grain growth parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'material_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_sintering': {
-        'diffusion_coefficient_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'sintering_mechanism_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'powder_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'sintering_parameter_uncertainty': {
+            'name': 'Sintering Parameter Uncertainty',
+            'description': 'Uncertainty in sintering parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'material_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_laser_heat_source': {
-        'laser_power_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'beam_radius_uncertainty': {'default': 0.08, 'range': [0.0, 0.3]},
-        'absorption_coefficient_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'laser_parameter_uncertainty': {
+            'name': 'Laser Parameter Uncertainty',
+            'description': 'Uncertainty in laser heat source parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'am_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_melt_pool_dynamics': {
-        'fluid_viscosity_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'surface_tension_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'thermal_property_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'melt_pool_parameter_uncertainty': {
+            'name': 'Melt Pool Parameter Uncertainty',
+            'description': 'Uncertainty in melt pool dynamics parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'am_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_crystal_plasticity': {
-        'critical_resolved_shear_stress_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'hardening_parameter_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'dislocation_density_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'plasticity_parameter_uncertainty': {
+            'name': 'Plasticity Parameter Uncertainty',
+            'description': 'Uncertainty in crystal plasticity parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_diffusion_solids': {
-        'diffusion_coefficient_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'activation_energy_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'temperature_uncertainty': {'default': 0.05, 'range': [0.0, 0.2]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'solid_diffusion_parameter_uncertainty': {
+            'name': 'Solid Diffusion Parameter Uncertainty',
+            'description': 'Uncertainty in solid diffusion parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'transport_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_precipitation_nucleation': {
-        'nucleation_rate_uncertainty': {'default': 0.25, 'range': [0.0, 0.7]},
-        'activation_energy_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'supersaturation_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'precipitation_parameter_uncertainty': {
+            'name': 'Precipitation Parameter Uncertainty',
+            'description': 'Uncertainty in precipitation nucleation parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'kinetic_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_residual_stress': {
-        'elastic_modulus_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'thermal_expansion_uncertainty': {'default': 0.12, 'range': [0.0, 0.4]},
-        'temperature_gradient_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 1000, 'range': [100, 10000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'residual_stress_parameter_uncertainty': {
+            'name': 'Residual Stress Parameter Uncertainty',
+            'description': 'Uncertainty in residual stress parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'mechanical_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     },
+    
     'uncertainty_microstructure_evolution': {
-        'evolution_parameter_uncertainty': {'default': 0.2, 'range': [0.0, 0.6]},
-        'phase_field_parameter_uncertainty': {'default': 0.15, 'range': [0.0, 0.5]},
-        'initial_microstructure_uncertainty': {'default': 0.1, 'range': [0.0, 0.4]},
-        'monte_carlo_samples': {'default': 2000, 'range': [500, 20000]},
-        'uncertainty_distribution': {'default': 'normal', 'range': ['normal', 'uniform', 'lognormal']}
+        'microstructure_parameter_uncertainty': {
+            'name': 'Microstructure Parameter Uncertainty',
+            'description': 'Uncertainty in microstructure evolution parameters',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'kinetic_properties',
+            'propagation_method': 'statistical'
+        },
+        'monte_carlo_samples': {
+            'name': 'Monte Carlo Samples',
+            'description': 'Number of Monte Carlo samples',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 100000],
+            'category': 'monte_carlo_parameters',
+            'propagation_method': 'monte_carlo'
+        }
     }
-} 
+}

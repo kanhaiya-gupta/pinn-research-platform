@@ -3,8 +3,8 @@ Parameter definitions for all PINN purposes.
 This module imports parameter dictionaries from separate files for each purpose.
 """
 
-from .forward_problems import FORWARD_PROBLEMS_PARAMETERS_DICT, FORWARD_PROBLEMS_EQUATION_PARAMETERS
-from .inverse_problems import INVERSE_PROBLEMS_PARAMETERS_DICT, INVERSE_PROBLEMS_EQUATION_PARAMETERS
+from .forward_problems import FORWARD_PROBLEMS_PARAMETERS_DICT
+from .inverse_problems import INVERSE_PROBLEMS_PARAMETERS_DICT
 from .data_assimilation import DATA_ASSIMILATION_PARAMETERS_DICT
 from .control_optimization import CONTROL_OPTIMIZATION_PARAMETERS_DICT
 from .sparse_data import SPARSE_DATA_PARAMETERS_DICT

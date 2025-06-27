@@ -345,290 +345,1930 @@ SCIENTIFIC_DISCOVERY_PARAMETERS_DICT = {
 # Equation-specific parameters for scientific discovery equations
 SCIENTIFIC_DISCOVERY_EQUATION_PARAMETERS = {
     'discovery_burgers': {
-        'viscosity': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm²/s'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'data_points': {'default': 1000, 'range': [100, 10000], 'unit': 'dimensionless'}
+        'viscosity': {
+            'name': 'Viscosity (ν)',
+            'description': 'Kinematic viscosity for Burgers equation discovery',
+            'unit': 'm²/s',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'fluid_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Burgers equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for Burgers equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Burgers equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'data_points': {
+            'name': 'Data Points',
+            'description': 'Number of data points for Burgers equation discovery',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 10000],
+            'category': 'sampling_parameters',
+            'discovery_type': 'data_requirements'
+        }
     },
     'discovery_heat': {
-        'thermal_diffusivity': {'default': 1e-5, 'range': [1e-6, 1e-4], 'unit': 'm²/s'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'data_points': {'default': 1000, 'range': [100, 10000], 'unit': 'dimensionless'}
+        'thermal_diffusivity': {
+            'name': 'Thermal Diffusivity (α)',
+            'description': 'Thermal diffusivity for heat equation discovery',
+            'unit': 'm²/s',
+            'default': 1e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for heat equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for heat equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for heat equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'data_points': {
+            'name': 'Data Points',
+            'description': 'Number of data points for heat equation discovery',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 10000],
+            'category': 'sampling_parameters',
+            'discovery_type': 'data_requirements'
+        }
     },
     'discovery_wave': {
-        'wave_speed': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm/s'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 2.0, 'range': [0.5, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'data_points': {'default': 1000, 'range': [100, 10000], 'unit': 'dimensionless'}
+        'wave_speed': {
+            'name': 'Wave Speed (c)',
+            'description': 'Wave propagation speed for wave equation discovery',
+            'unit': 'm/s',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'wave_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for wave equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for wave equation discovery',
+            'unit': 's',
+            'default': 2.0,
+            'range': [0.5, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for wave equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'data_points': {
+            'name': 'Data Points',
+            'description': 'Number of data points for wave equation discovery',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 10000],
+            'category': 'sampling_parameters',
+            'discovery_type': 'data_requirements'
+        }
     },
     'discovery_shm': {
-        'natural_frequency': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'rad/s'},
-        'damping_ratio': {'default': 0.1, 'range': [0.0, 1.0], 'unit': 'dimensionless'},
-        'time_duration': {'default': 10.0, 'range': [1.0, 100.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'data_points': {'default': 1000, 'range': [100, 10000], 'unit': 'dimensionless'}
+        'natural_frequency': {
+            'name': 'Natural Frequency (ω₀)',
+            'description': 'Natural frequency for simple harmonic motion discovery',
+            'unit': 'rad/s',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'oscillatory_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'damping_ratio': {
+            'name': 'Damping Ratio (ζ)',
+            'description': 'Damping ratio for simple harmonic motion discovery',
+            'unit': 'dimensionless',
+            'default': 0.1,
+            'range': [0.0, 1.0],
+            'category': 'oscillatory_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for simple harmonic motion discovery',
+            'unit': 's',
+            'default': 10.0,
+            'range': [1.0, 100.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for simple harmonic motion discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'data_points': {
+            'name': 'Data Points',
+            'description': 'Number of data points for simple harmonic motion discovery',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 10000],
+            'category': 'sampling_parameters',
+            'discovery_type': 'data_requirements'
+        }
     },
     'discovery_helmholtz': {
-        'wavenumber': {'default': 1.0, 'range': [0.1, 10.0], 'unit': '1/m'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'data_points': {'default': 1000, 'range': [100, 10000], 'unit': 'dimensionless'},
-        'source_strength': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'dimensionless'}
+        'wavenumber': {
+            'name': 'Wavenumber (k)',
+            'description': 'Wavenumber for Helmholtz equation discovery',
+            'unit': '1/m',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'wave_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Helmholtz equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Helmholtz equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'data_points': {
+            'name': 'Data Points',
+            'description': 'Number of data points for Helmholtz equation discovery',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 10000],
+            'category': 'sampling_parameters',
+            'discovery_type': 'data_requirements'
+        },
+        'source_strength': {
+            'name': 'Source Strength',
+            'description': 'Strength of source term for Helmholtz equation discovery',
+            'unit': 'dimensionless',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'source_terms',
+            'discovery_type': 'parameter_identification'
+        }
     },
     'discovery_navier_stokes': {
-        'reynolds_number': {'default': 100.0, 'range': [1.0, 1000.0], 'unit': 'dimensionless'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'data_points': {'default': 1000, 'range': [100, 10000], 'unit': 'dimensionless'}
+        'reynolds_number': {
+            'name': 'Reynolds Number (Re)',
+            'description': 'Reynolds number for Navier-Stokes equation discovery',
+            'unit': 'dimensionless',
+            'default': 100.0,
+            'range': [1.0, 1000.0],
+            'category': 'flow_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Navier-Stokes equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for Navier-Stokes equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Navier-Stokes equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'data_points': {
+            'name': 'Data Points',
+            'description': 'Number of data points for Navier-Stokes equation discovery',
+            'unit': 'dimensionless',
+            'default': 1000,
+            'range': [100, 10000],
+            'category': 'sampling_parameters',
+            'discovery_type': 'data_requirements'
+        }
     },
     'discovery_schrodinger': {
-        'planck_constant': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'J·s'},
-        'mass': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'kg'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'planck_constant': {
+            'name': 'Planck Constant (ℏ)',
+            'description': 'Reduced Planck constant for Schrödinger equation discovery',
+            'unit': 'J·s',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'quantum_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'mass': {
+            'name': 'Particle Mass (m)',
+            'description': 'Mass of particle for Schrödinger equation discovery',
+            'unit': 'kg',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'quantum_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Schrödinger equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for Schrödinger equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Schrödinger equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_maxwell': {
-        'permittivity': {'default': 8.85e-12, 'range': [1e-12, 1e-10], 'unit': 'F/m'},
-        'permeability': {'default': 1.26e-6, 'range': [1e-7, 1e-5], 'unit': 'H/m'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'permittivity': {
+            'name': 'Permittivity (ε)',
+            'description': 'Electric permittivity for Maxwell equations discovery',
+            'unit': 'F/m',
+            'default': 8.85e-12,
+            'range': [1e-12, 1e-10],
+            'category': 'electromagnetic_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'permeability': {
+            'name': 'Permeability (μ)',
+            'description': 'Magnetic permeability for Maxwell equations discovery',
+            'unit': 'H/m',
+            'default': 1.26e-6,
+            'range': [1e-7, 1e-5],
+            'category': 'electromagnetic_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Maxwell equations discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for Maxwell equations discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Maxwell equations discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_heat_transfer': {
-        'thermal_conductivity': {'default': 50.0, 'range': [1.0, 500.0], 'unit': 'W/(m·K)'},
-        'density': {'default': 2700.0, 'range': [100.0, 10000.0], 'unit': 'kg/m³'},
-        'specific_heat': {'default': 900.0, 'range': [100.0, 5000.0], 'unit': 'J/(kg·K)'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity for heat transfer equation discovery',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [1.0, 500.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'density': {
+            'name': 'Material Density (ρ)',
+            'description': 'Material density for heat transfer equation discovery',
+            'unit': 'kg/m³',
+            'default': 2700.0,
+            'range': [100.0, 10000.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'specific_heat': {
+            'name': 'Specific Heat (c)',
+            'description': 'Specific heat capacity for heat transfer equation discovery',
+            'unit': 'J/(kg·K)',
+            'default': 900.0,
+            'range': [100.0, 5000.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for heat transfer equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for heat transfer equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_elastic': {
-        'young_modulus': {'default': 200e9, 'range': [1e9, 1000e9], 'unit': 'Pa'},
-        'poisson_ratio': {'default': 0.3, 'range': [0.0, 0.5], 'unit': 'dimensionless'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'applied_force': {'default': 1000.0, 'range': [100.0, 10000.0], 'unit': 'N'}
+        'young_modulus': {
+            'name': "Young's Modulus (E)",
+            'description': "Young's modulus for elastic equation discovery",
+            'unit': 'Pa',
+            'default': 200e9,
+            'range': [1e9, 1000e9],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'poisson_ratio': {
+            'name': 'Poisson Ratio (ν)',
+            'description': 'Poisson ratio for elastic equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.3,
+            'range': [0.0, 0.5],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for elastic equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for elastic equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'applied_force': {
+            'name': 'Applied Force',
+            'description': 'Applied force for elastic equation discovery',
+            'unit': 'N',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'boundary_conditions',
+            'discovery_type': 'parameter_identification'
+        }
     },
     'discovery_phase_field': {
-        'mobility': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm²/(J·s)'},
-        'interface_thickness': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'mobility': {
+            'name': 'Phase Field Mobility (M)',
+            'description': 'Mobility parameter for phase field equation discovery',
+            'unit': 'm²/(J·s)',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'interface_thickness': {
+            'name': 'Interface Thickness (ε)',
+            'description': 'Interface thickness parameter for phase field equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for phase field equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for phase field equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for phase field equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_reaction_diffusion': {
-        'diffusion_coefficient': {'default': 1e-9, 'range': [1e-10, 1e-8], 'unit': 'm²/s'},
-        'reaction_rate': {'default': 1.0, 'range': [0.1, 10.0], 'unit': '1/s'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for reaction-diffusion equation discovery',
+            'unit': 'm²/s',
+            'default': 1e-9,
+            'range': [1e-10, 1e-8],
+            'category': 'transport_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'reaction_rate': {
+            'name': 'Reaction Rate (k)',
+            'description': 'Reaction rate constant for reaction-diffusion equation discovery',
+            'unit': '1/s',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'reaction_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for reaction-diffusion equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for reaction-diffusion equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for reaction-diffusion equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_poroelasticity': {
-        'permeability': {'default': 1e-12, 'range': [1e-15, 1e-9], 'unit': 'm²'},
-        'porosity': {'default': 0.2, 'range': [0.01, 0.5], 'unit': 'dimensionless'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'permeability': {
+            'name': 'Permeability (k)',
+            'description': 'Permeability for poroelasticity equation discovery',
+            'unit': 'm²',
+            'default': 1e-12,
+            'range': [1e-15, 1e-9],
+            'category': 'porous_media_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'porosity': {
+            'name': 'Porosity (φ)',
+            'description': 'Porosity for poroelasticity equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.2,
+            'range': [0.01, 0.5],
+            'category': 'porous_media_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for poroelasticity equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for poroelasticity equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for poroelasticity equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_viscoelasticity': {
-        'elastic_modulus': {'default': 1e9, 'range': [1e8, 1e10], 'unit': 'Pa'},
-        'viscosity': {'default': 1e6, 'range': [1e5, 1e7], 'unit': 'Pa·s'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'relaxation_time': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'}
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Elastic modulus for viscoelasticity equation discovery',
+            'unit': 'Pa',
+            'default': 1e9,
+            'range': [1e8, 1e10],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'viscosity': {
+            'name': 'Viscosity (η)',
+            'description': 'Viscosity for viscoelasticity equation discovery',
+            'unit': 'Pa·s',
+            'default': 1e6,
+            'range': [1e5, 1e7],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for viscoelasticity equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for viscoelasticity equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'relaxation_time': {
+            'name': 'Relaxation Time (τ)',
+            'description': 'Relaxation time for viscoelasticity equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        }
     },
     'discovery_radiative_transfer': {
-        'absorption_coefficient': {'default': 1.0, 'range': [0.1, 10.0], 'unit': '1/m'},
-        'scattering_coefficient': {'default': 0.1, 'range': [0.01, 1.0], 'unit': '1/m'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'source_intensity': {'default': 1000.0, 'range': [100.0, 10000.0], 'unit': 'W/m²'}
+        'absorption_coefficient': {
+            'name': 'Absorption Coefficient (μa)',
+            'description': 'Absorption coefficient for radiative transfer equation discovery',
+            'unit': '1/m',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'optical_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'scattering_coefficient': {
+            'name': 'Scattering Coefficient (μs)',
+            'description': 'Scattering coefficient for radiative transfer equation discovery',
+            'unit': '1/m',
+            'default': 0.1,
+            'range': [0.01, 1.0],
+            'category': 'optical_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for radiative transfer equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for radiative transfer equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'source_intensity': {
+            'name': 'Source Intensity (I₀)',
+            'description': 'Source intensity for radiative transfer equation discovery',
+            'unit': 'W/m²',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'source_terms',
+            'discovery_type': 'parameter_identification'
+        }
     },
     'discovery_shallow_water': {
-        'gravity': {'default': 9.81, 'range': [1.0, 20.0], 'unit': 'm/s²'},
-        'water_depth': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'domain_size': {'default': 100.0, 'range': [10.0, 1000.0], 'unit': 'm'},
-        'time_duration': {'default': 10.0, 'range': [1.0, 100.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'gravity': {
+            'name': 'Gravitational Acceleration (g)',
+            'description': 'Gravitational acceleration for shallow water equation discovery',
+            'unit': 'm/s²',
+            'default': 9.81,
+            'range': [1.0, 20.0],
+            'category': 'gravitational_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'water_depth': {
+            'name': 'Water Depth (h)',
+            'description': 'Water depth for shallow water equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'flow_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for shallow water equation discovery',
+            'unit': 'm',
+            'default': 100.0,
+            'range': [10.0, 1000.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for shallow water equation discovery',
+            'unit': 's',
+            'default': 10.0,
+            'range': [1.0, 100.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for shallow water equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_magnetohydrodynamics': {
-        'magnetic_field': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'T'},
-        'plasma_density': {'default': 1e19, 'range': [1e18, 1e20], 'unit': '1/m³'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1e-6, 'range': [1e-7, 1e-5], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'magnetic_field': {
+            'name': 'Magnetic Field (B)',
+            'description': 'Magnetic field strength for magnetohydrodynamics equation discovery',
+            'unit': 'T',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'electromagnetic_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'plasma_density': {
+            'name': 'Plasma Density (ρ)',
+            'description': 'Plasma density for magnetohydrodynamics equation discovery',
+            'unit': '1/m³',
+            'default': 1e19,
+            'range': [1e18, 1e20],
+            'category': 'plasma_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for magnetohydrodynamics equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for magnetohydrodynamics equation discovery',
+            'unit': 's',
+            'default': 1e-6,
+            'range': [1e-7, 1e-5],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for magnetohydrodynamics equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_thermoelasticity': {
-        'thermal_expansion': {'default': 2.3e-5, 'range': [1e-6, 1e-4], 'unit': '1/K'},
-        'thermal_conductivity': {'default': 50.0, 'range': [1.0, 500.0], 'unit': 'W/(m·K)'},
-        'elastic_modulus': {'default': 200e9, 'range': [1e9, 1000e9], 'unit': 'Pa'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'thermal_expansion': {
+            'name': 'Thermal Expansion (α)',
+            'description': 'Thermal expansion coefficient for thermoelasticity equation discovery',
+            'unit': '1/K',
+            'default': 2.3e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity for thermoelasticity equation discovery',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [1.0, 500.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Elastic modulus for thermoelasticity equation discovery',
+            'unit': 'Pa',
+            'default': 200e9,
+            'range': [1e9, 1000e9],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for thermoelasticity equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for thermoelasticity equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_advection_diffusion': {
-        'velocity': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm/s'},
-        'diffusion_coefficient': {'default': 1e-9, 'range': [1e-10, 1e-8], 'unit': 'm²/s'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'velocity': {
+            'name': 'Flow Velocity (v)',
+            'description': 'Flow velocity for advection-diffusion equation discovery',
+            'unit': 'm/s',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'flow_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for advection-diffusion equation discovery',
+            'unit': 'm²/s',
+            'default': 1e-9,
+            'range': [1e-10, 1e-8],
+            'category': 'transport_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for advection-diffusion equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for advection-diffusion equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for advection-diffusion equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_elastic_wave': {
-        'p_wave_speed': {'default': 5000.0, 'range': [1000.0, 10000.0], 'unit': 'm/s'},
-        's_wave_speed': {'default': 3000.0, 'range': [500.0, 6000.0], 'unit': 'm/s'},
-        'domain_size': {'default': 1000.0, 'range': [100.0, 10000.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'p_wave_speed': {
+            'name': 'P-Wave Speed (cp)',
+            'description': 'P-wave speed for elastic wave equation discovery',
+            'unit': 'm/s',
+            'default': 5000.0,
+            'range': [1000.0, 10000.0],
+            'category': 'wave_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        's_wave_speed': {
+            'name': 'S-Wave Speed (cs)',
+            'description': 'S-wave speed for elastic wave equation discovery',
+            'unit': 'm/s',
+            'default': 3000.0,
+            'range': [500.0, 6000.0],
+            'category': 'wave_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for elastic wave equation discovery',
+            'unit': 'm',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for elastic wave equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for elastic wave equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_fluid_structure_interaction': {
-        'fluid_density': {'default': 1000.0, 'range': [100.0, 2000.0], 'unit': 'kg/m³'},
-        'fluid_viscosity': {'default': 1e-3, 'range': [1e-4, 1e-2], 'unit': 'Pa·s'},
-        'structure_modulus': {'default': 200e9, 'range': [1e9, 1000e9], 'unit': 'Pa'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'fluid_density': {
+            'name': 'Fluid Density (ρf)',
+            'description': 'Fluid density for fluid-structure interaction equation discovery',
+            'unit': 'kg/m³',
+            'default': 1000.0,
+            'range': [100.0, 2000.0],
+            'category': 'fluid_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'fluid_viscosity': {
+            'name': 'Fluid Viscosity (μf)',
+            'description': 'Fluid viscosity for fluid-structure interaction equation discovery',
+            'unit': 'Pa·s',
+            'default': 1e-3,
+            'range': [1e-4, 1e-2],
+            'category': 'fluid_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'structure_modulus': {
+            'name': 'Structure Modulus (Es)',
+            'description': 'Structure elastic modulus for fluid-structure interaction equation discovery',
+            'unit': 'Pa',
+            'default': 200e9,
+            'range': [1e9, 1000e9],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for fluid-structure interaction equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for fluid-structure interaction equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_electromagnetic_thermal': {
-        'electrical_conductivity': {'default': 1e7, 'range': [1e6, 1e8], 'unit': 'S/m'},
-        'thermal_conductivity': {'default': 50.0, 'range': [1.0, 500.0], 'unit': 'W/(m·K)'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'applied_current': {'default': 100.0, 'range': [10.0, 1000.0], 'unit': 'A'}
+        'electrical_conductivity': {
+            'name': 'Electrical Conductivity (σ)',
+            'description': 'Electrical conductivity for electromagnetic-thermal equation discovery',
+            'unit': 'S/m',
+            'default': 1e7,
+            'range': [1e6, 1e8],
+            'category': 'electrical_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity for electromagnetic-thermal equation discovery',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [1.0, 500.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for electromagnetic-thermal equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for electromagnetic-thermal equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'applied_current': {
+            'name': 'Applied Current (I)',
+            'description': 'Applied current for electromagnetic-thermal equation discovery',
+            'unit': 'A',
+            'default': 100.0,
+            'range': [10.0, 1000.0],
+            'category': 'boundary_conditions',
+            'discovery_type': 'parameter_identification'
+        }
     },
     'discovery_biomechanical_transport': {
-        'tissue_modulus': {'default': 1e6, 'range': [1e5, 1e7], 'unit': 'Pa'},
-        'diffusion_coefficient': {'default': 1e-9, 'range': [1e-10, 1e-8], 'unit': 'm²/s'},
-        'domain_size': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'time_duration': {'default': 3600.0, 'range': [100.0, 10000.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'tissue_modulus': {
+            'name': 'Tissue Modulus (Et)',
+            'description': 'Tissue elastic modulus for biomechanical transport equation discovery',
+            'unit': 'Pa',
+            'default': 1e6,
+            'range': [1e5, 1e7],
+            'category': 'biological_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for biomechanical transport equation discovery',
+            'unit': 'm²/s',
+            'default': 1e-9,
+            'range': [1e-10, 1e-8],
+            'category': 'transport_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for biomechanical transport equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for biomechanical transport equation discovery',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 10000.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for biomechanical transport equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_geophysical_flow': {
-        'coriolis_parameter': {'default': 1e-4, 'range': [1e-5, 1e-3], 'unit': '1/s'},
-        'gravity': {'default': 9.81, 'range': [1.0, 20.0], 'unit': 'm/s²'},
-        'domain_size': {'default': 1000000.0, 'range': [100000.0, 10000000.0], 'unit': 'm'},
-        'time_duration': {'default': 86400.0, 'range': [3600.0, 604800.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'coriolis_parameter': {
+            'name': 'Coriolis Parameter (f)',
+            'description': 'Coriolis parameter for geophysical flow equation discovery',
+            'unit': '1/s',
+            'default': 1e-4,
+            'range': [1e-5, 1e-3],
+            'category': 'geophysical_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'gravity': {
+            'name': 'Gravitational Acceleration (g)',
+            'description': 'Gravitational acceleration for geophysical flow equation discovery',
+            'unit': 'm/s²',
+            'default': 9.81,
+            'range': [1.0, 20.0],
+            'category': 'gravitational_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for geophysical flow equation discovery',
+            'unit': 'm',
+            'default': 1000000.0,
+            'range': [100000.0, 10000000.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for geophysical flow equation discovery',
+            'unit': 's',
+            'default': 86400.0,
+            'range': [3600.0, 604800.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for geophysical flow equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_atmospheric_oceanic': {
-        'atmospheric_pressure': {'default': 101325.0, 'range': [50000.0, 200000.0], 'unit': 'Pa'},
-        'ocean_depth': {'default': 1000.0, 'range': [100.0, 10000.0], 'unit': 'm'},
-        'domain_size': {'default': 1000000.0, 'range': [100000.0, 10000000.0], 'unit': 'm'},
-        'time_duration': {'default': 86400.0, 'range': [3600.0, 604800.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'atmospheric_pressure': {
+            'name': 'Atmospheric Pressure (P)',
+            'description': 'Atmospheric pressure for atmospheric-oceanic equation discovery',
+            'unit': 'Pa',
+            'default': 101325.0,
+            'range': [50000.0, 200000.0],
+            'category': 'atmospheric_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'ocean_depth': {
+            'name': 'Ocean Depth (h)',
+            'description': 'Ocean depth for atmospheric-oceanic equation discovery',
+            'unit': 'm',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'oceanic_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for atmospheric-oceanic equation discovery',
+            'unit': 'm',
+            'default': 1000000.0,
+            'range': [100000.0, 10000000.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for atmospheric-oceanic equation discovery',
+            'unit': 's',
+            'default': 86400.0,
+            'range': [3600.0, 604800.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for atmospheric-oceanic equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_nuclear_thermal': {
-        'fission_rate': {'default': 1e18, 'range': [1e17, 1e19], 'unit': '1/(m³·s)'},
-        'thermal_conductivity': {'default': 50.0, 'range': [1.0, 500.0], 'unit': 'W/(m·K)'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'fission_rate': {
+            'name': 'Fission Rate (Rf)',
+            'description': 'Fission rate for nuclear-thermal equation discovery',
+            'unit': '1/(m³·s)',
+            'default': 1e18,
+            'range': [1e17, 1e19],
+            'category': 'nuclear_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'thermal_conductivity': {
+            'name': 'Thermal Conductivity (k)',
+            'description': 'Thermal conductivity for nuclear-thermal equation discovery',
+            'unit': 'W/(m·K)',
+            'default': 50.0,
+            'range': [1.0, 500.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for nuclear-thermal equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for nuclear-thermal equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for nuclear-thermal equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_quantum_mechanical': {
-        'planck_constant': {'default': 1.055e-34, 'range': [1e-35, 1e-33], 'unit': 'J·s'},
-        'mass': {'default': 9.11e-31, 'range': [1e-32, 1e-29], 'unit': 'kg'},
-        'domain_size': {'default': 1e-9, 'range': [1e-10, 1e-8], 'unit': 'm'},
-        'time_duration': {'default': 1e-12, 'range': [1e-13, 1e-11], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'planck_constant': {
+            'name': 'Planck Constant (ℏ)',
+            'description': 'Reduced Planck constant for quantum mechanical equation discovery',
+            'unit': 'J·s',
+            'default': 1.055e-34,
+            'range': [1e-35, 1e-33],
+            'category': 'quantum_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'mass': {
+            'name': 'Particle Mass (m)',
+            'description': 'Particle mass for quantum mechanical equation discovery',
+            'unit': 'kg',
+            'default': 9.11e-31,
+            'range': [1e-32, 1e-29],
+            'category': 'quantum_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for quantum mechanical equation discovery',
+            'unit': 'm',
+            'default': 1e-9,
+            'range': [1e-10, 1e-8],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for quantum mechanical equation discovery',
+            'unit': 's',
+            'default': 1e-12,
+            'range': [1e-13, 1e-11],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for quantum mechanical equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_phase_field_allen_cahn': {
-        'mobility': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm²/(J·s)'},
-        'interface_thickness': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'mobility': {
+            'name': 'Phase Field Mobility (M)',
+            'description': 'Mobility parameter for Allen-Cahn equation discovery',
+            'unit': 'm²/(J·s)',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'interface_thickness': {
+            'name': 'Interface Thickness (ε)',
+            'description': 'Interface thickness parameter for Allen-Cahn equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Allen-Cahn equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for Allen-Cahn equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Allen-Cahn equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_phase_field_cahn_hilliard': {
-        'mobility': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm²/(J·s)'},
-        'interface_thickness': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'mobility': {
+            'name': 'Phase Field Mobility (M)',
+            'description': 'Mobility parameter for Cahn-Hilliard equation discovery',
+            'unit': 'm²/(J·s)',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'interface_thickness': {
+            'name': 'Interface Thickness (ε)',
+            'description': 'Interface thickness parameter for Cahn-Hilliard equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Cahn-Hilliard equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for Cahn-Hilliard equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Cahn-Hilliard equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_solidification_stefan': {
-        'thermal_diffusivity': {'default': 1e-5, 'range': [1e-6, 1e-4], 'unit': 'm²/s'},
-        'latent_heat': {'default': 3.34e5, 'range': [1e5, 1e6], 'unit': 'J/kg'},
-        'domain_size': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'thermal_diffusivity': {
+            'name': 'Thermal Diffusivity (α)',
+            'description': 'Thermal diffusivity for Stefan solidification equation discovery',
+            'unit': 'm²/s',
+            'default': 1e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'latent_heat': {
+            'name': 'Latent Heat (L)',
+            'description': 'Latent heat for Stefan solidification equation discovery',
+            'unit': 'J/kg',
+            'default': 3.34e5,
+            'range': [1e5, 1e6],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for Stefan solidification equation discovery',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for Stefan solidification equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for Stefan solidification equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_grain_growth': {
-        'mobility': {'default': 1e-12, 'range': [1e-13, 1e-11], 'unit': 'm²/(J·s)'},
-        'grain_boundary_energy': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'J/m²'},
-        'domain_size': {'default': 1e-3, 'range': [1e-4, 1e-2], 'unit': 'm'},
-        'time_duration': {'default': 3600.0, 'range': [100.0, 10000.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'mobility': {
+            'name': 'Grain Growth Mobility (M)',
+            'description': 'Mobility parameter for grain growth equation discovery',
+            'unit': 'm²/(J·s)',
+            'default': 1e-12,
+            'range': [1e-13, 1e-11],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'grain_boundary_energy': {
+            'name': 'Grain Boundary Energy (γ)',
+            'description': 'Grain boundary energy for grain growth equation discovery',
+            'unit': 'J/m²',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for grain growth equation discovery',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-4, 1e-2],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for grain growth equation discovery',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 10000.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for grain growth equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_sintering': {
-        'diffusion_coefficient': {'default': 1e-15, 'range': [1e-16, 1e-14], 'unit': 'm²/s'},
-        'surface_energy': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'J/m²'},
-        'domain_size': {'default': 1e-3, 'range': [1e-4, 1e-2], 'unit': 'm'},
-        'time_duration': {'default': 3600.0, 'range': [100.0, 10000.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for sintering equation discovery',
+            'unit': 'm²/s',
+            'default': 1e-15,
+            'range': [1e-16, 1e-14],
+            'category': 'transport_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'surface_energy': {
+            'name': 'Surface Energy (γ)',
+            'description': 'Surface energy for sintering equation discovery',
+            'unit': 'J/m²',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for sintering equation discovery',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-4, 1e-2],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for sintering equation discovery',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 10000.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for sintering equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_laser_heat_source': {
-        'laser_power': {'default': 1000.0, 'range': [100.0, 10000.0], 'unit': 'W'},
-        'beam_radius': {'default': 0.001, 'range': [1e-4, 1e-2], 'unit': 'm'},
-        'absorption_coefficient': {'default': 0.8, 'range': [0.1, 1.0], 'unit': 'dimensionless'},
-        'domain_size': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'laser_power': {
+            'name': 'Laser Power (P)',
+            'description': 'Laser power for laser heat source equation discovery',
+            'unit': 'W',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'source_terms',
+            'discovery_type': 'parameter_identification'
+        },
+        'beam_radius': {
+            'name': 'Beam Radius (r)',
+            'description': 'Laser beam radius for laser heat source equation discovery',
+            'unit': 'm',
+            'default': 0.001,
+            'range': [1e-4, 1e-2],
+            'category': 'source_terms',
+            'discovery_type': 'parameter_identification'
+        },
+        'absorption_coefficient': {
+            'name': 'Absorption Coefficient (α)',
+            'description': 'Absorption coefficient for laser heat source equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.8,
+            'range': [0.1, 1.0],
+            'category': 'optical_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for laser heat source equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for laser heat source equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_melt_pool_dynamics': {
-        'surface_tension': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'N/m'},
-        'viscosity': {'default': 1e-3, 'range': [1e-4, 1e-2], 'unit': 'Pa·s'},
-        'domain_size': {'default': 0.001, 'range': [1e-4, 1e-2], 'unit': 'm'},
-        'time_duration': {'default': 0.001, 'range': [1e-4, 1e-2], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'surface_tension': {
+            'name': 'Surface Tension (σ)',
+            'description': 'Surface tension for melt pool dynamics equation discovery',
+            'unit': 'N/m',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'fluid_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'viscosity': {
+            'name': 'Viscosity (μ)',
+            'description': 'Viscosity for melt pool dynamics equation discovery',
+            'unit': 'Pa·s',
+            'default': 1e-3,
+            'range': [1e-4, 1e-2],
+            'category': 'fluid_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for melt pool dynamics equation discovery',
+            'unit': 'm',
+            'default': 0.001,
+            'range': [1e-4, 1e-2],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for melt pool dynamics equation discovery',
+            'unit': 's',
+            'default': 0.001,
+            'range': [1e-4, 1e-2],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for melt pool dynamics equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_crystal_plasticity': {
-        'critical_resolved_shear_stress': {'default': 1e6, 'range': [1e5, 1e7], 'unit': 'Pa'},
-        'shear_modulus': {'default': 80e9, 'range': [10e9, 500e9], 'unit': 'Pa'},
-        'domain_size': {'default': 1e-5, 'range': [1e-6, 1e-4], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'applied_strain_rate': {'default': 1e-3, 'range': [1e-4, 1e-2], 'unit': '1/s'}
+        'critical_resolved_shear_stress': {
+            'name': 'Critical Resolved Shear Stress (τc)',
+            'description': 'Critical resolved shear stress for crystal plasticity equation discovery',
+            'unit': 'Pa',
+            'default': 1e6,
+            'range': [1e5, 1e7],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'shear_modulus': {
+            'name': 'Shear Modulus (G)',
+            'description': 'Shear modulus for crystal plasticity equation discovery',
+            'unit': 'Pa',
+            'default': 80e9,
+            'range': [10e9, 500e9],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for crystal plasticity equation discovery',
+            'unit': 'm',
+            'default': 1e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for crystal plasticity equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'applied_strain_rate': {
+            'name': 'Applied Strain Rate (ε̇)',
+            'description': 'Applied strain rate for crystal plasticity equation discovery',
+            'unit': '1/s',
+            'default': 1e-3,
+            'range': [1e-4, 1e-2],
+            'category': 'boundary_conditions',
+            'discovery_type': 'parameter_identification'
+        }
     },
     'discovery_diffusion_solids': {
-        'diffusion_coefficient': {'default': 1e-15, 'range': [1e-16, 1e-14], 'unit': 'm²/s'},
-        'activation_energy': {'default': 1e5, 'range': [1e4, 1e6], 'unit': 'J/mol'},
-        'domain_size': {'default': 1e-3, 'range': [1e-4, 1e-2], 'unit': 'm'},
-        'time_duration': {'default': 3600.0, 'range': [100.0, 10000.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'diffusion_coefficient': {
+            'name': 'Diffusion Coefficient (D)',
+            'description': 'Diffusion coefficient for solid diffusion equation discovery',
+            'unit': 'm²/s',
+            'default': 1e-15,
+            'range': [1e-16, 1e-14],
+            'category': 'transport_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'activation_energy': {
+            'name': 'Activation Energy (Ea)',
+            'description': 'Activation energy for solid diffusion equation discovery',
+            'unit': 'J/mol',
+            'default': 1e5,
+            'range': [1e4, 1e6],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for solid diffusion equation discovery',
+            'unit': 'm',
+            'default': 1e-3,
+            'range': [1e-4, 1e-2],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for solid diffusion equation discovery',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 10000.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for solid diffusion equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_precipitation_nucleation': {
-        'nucleation_rate': {'default': 1e12, 'range': [1e11, 1e13], 'unit': '1/(m³·s)'},
-        'critical_radius': {'default': 1e-9, 'range': [1e-10, 1e-8], 'unit': 'm'},
-        'domain_size': {'default': 1e-6, 'range': [1e-7, 1e-5], 'unit': 'm'},
-        'time_duration': {'default': 3600.0, 'range': [100.0, 10000.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'nucleation_rate': {
+            'name': 'Nucleation Rate (J)',
+            'description': 'Nucleation rate for precipitation equation discovery',
+            'unit': '1/(m³·s)',
+            'default': 1e12,
+            'range': [1e11, 1e13],
+            'category': 'nucleation_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'critical_radius': {
+            'name': 'Critical Radius (rc)',
+            'description': 'Critical radius for precipitation equation discovery',
+            'unit': 'm',
+            'default': 1e-9,
+            'range': [1e-10, 1e-8],
+            'category': 'nucleation_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for precipitation equation discovery',
+            'unit': 'm',
+            'default': 1e-6,
+            'range': [1e-7, 1e-5],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for precipitation equation discovery',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 10000.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for precipitation equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_residual_stress': {
-        'thermal_expansion': {'default': 2.3e-5, 'range': [1e-6, 1e-4], 'unit': '1/K'},
-        'elastic_modulus': {'default': 200e9, 'range': [1e9, 1000e9], 'unit': 'Pa'},
-        'domain_size': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'},
-        'temperature_gradient': {'default': 100.0, 'range': [10.0, 1000.0], 'unit': 'K/m'}
+        'thermal_expansion': {
+            'name': 'Thermal Expansion (α)',
+            'description': 'Thermal expansion coefficient for residual stress equation discovery',
+            'unit': '1/K',
+            'default': 2.3e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'elastic_modulus': {
+            'name': 'Elastic Modulus (E)',
+            'description': 'Elastic modulus for residual stress equation discovery',
+            'unit': 'Pa',
+            'default': 200e9,
+            'range': [1e9, 1000e9],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for residual stress equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for residual stress equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        },
+        'temperature_gradient': {
+            'name': 'Temperature Gradient (∇T)',
+            'description': 'Temperature gradient for residual stress equation discovery',
+            'unit': 'K/m',
+            'default': 100.0,
+            'range': [10.0, 1000.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        }
     },
     'discovery_microstructure_evolution': {
-        'phase_field_mobility': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'm²/(J·s)'},
-        'interface_energy': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 'J/m²'},
-        'domain_size': {'default': 1e-5, 'range': [1e-6, 1e-4], 'unit': 'm'},
-        'time_duration': {'default': 3600.0, 'range': [100.0, 10000.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'phase_field_mobility': {
+            'name': 'Phase Field Mobility (M)',
+            'description': 'Phase field mobility for microstructure evolution equation discovery',
+            'unit': 'm²/(J·s)',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'interface_energy': {
+            'name': 'Interface Energy (γ)',
+            'description': 'Interface energy for microstructure evolution equation discovery',
+            'unit': 'J/m²',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'material_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for microstructure evolution equation discovery',
+            'unit': 'm',
+            'default': 1e-5,
+            'range': [1e-6, 1e-4],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for microstructure evolution equation discovery',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 10000.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for microstructure evolution equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_additive_manufacturing': {
-        'laser_power': {'default': 1000.0, 'range': [100.0, 10000.0], 'unit': 'W'},
-        'scan_speed': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm/s'},
-        'domain_size': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'time_duration': {'default': 1.0, 'range': [0.1, 10.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'laser_power': {
+            'name': 'Laser Power (P)',
+            'description': 'Laser power for additive manufacturing equation discovery',
+            'unit': 'W',
+            'default': 1000.0,
+            'range': [100.0, 10000.0],
+            'category': 'source_terms',
+            'discovery_type': 'parameter_identification'
+        },
+        'scan_speed': {
+            'name': 'Scan Speed (v)',
+            'description': 'Scan speed for additive manufacturing equation discovery',
+            'unit': 'm/s',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'source_terms',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for additive manufacturing equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for additive manufacturing equation discovery',
+            'unit': 's',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for additive manufacturing equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     },
     'discovery_material_processing': {
-        'heating_rate': {'default': 10.0, 'range': [1.0, 100.0], 'unit': 'K/s'},
-        'cooling_rate': {'default': 5.0, 'range': [0.5, 50.0], 'unit': 'K/s'},
-        'domain_size': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'm'},
-        'time_duration': {'default': 3600.0, 'range': [100.0, 10000.0], 'unit': 's'},
-        'noise_level': {'default': 0.01, 'range': [0.001, 0.1], 'unit': 'dimensionless'}
+        'heating_rate': {
+            'name': 'Heating Rate (Ṫ)',
+            'description': 'Heating rate for material processing equation discovery',
+            'unit': 'K/s',
+            'default': 10.0,
+            'range': [1.0, 100.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'cooling_rate': {
+            'name': 'Cooling Rate (Ṫ)',
+            'description': 'Cooling rate for material processing equation discovery',
+            'unit': 'K/s',
+            'default': 5.0,
+            'range': [0.5, 50.0],
+            'category': 'thermal_properties',
+            'discovery_type': 'parameter_identification'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain length for material processing equation discovery',
+            'unit': 'm',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'domain_properties',
+            'discovery_type': 'spatial_scaling'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration for material processing equation discovery',
+            'unit': 's',
+            'default': 3600.0,
+            'range': [100.0, 10000.0],
+            'category': 'temporal_properties',
+            'discovery_type': 'temporal_scaling'
+        },
+        'noise_level': {
+            'name': 'Noise Level',
+            'description': 'Level of noise in data for material processing equation discovery',
+            'unit': 'dimensionless',
+            'default': 0.01,
+            'range': [0.001, 0.1],
+            'category': 'data_quality',
+            'discovery_type': 'robustness_testing'
+        }
     }
 } 
