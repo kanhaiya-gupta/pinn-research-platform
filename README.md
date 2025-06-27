@@ -9,23 +9,23 @@ A comprehensive, research-grade platform for Physics-Informed Neural Networks (P
 
 ## 🎯 Platform Overview
 
-The PINN platform is a complete ecosystem for physics-informed machine learning research and applications. It provides 10 specialized modules covering all major PINN purposes, with 200+ equations, 100+ research applications, and 150+ loss function components.
+The PINN platform is a complete ecosystem for physics-informed machine learning research and applications. It provides 11 specialized modules covering all major PINN purposes, with 200+ equations, 100+ research applications, and 150+ loss function components.
 
 ### 🏗️ Architecture
 - **Frontend**: Modern web interface with real-time interaction
 - **Backend**: FastAPI-based API with comprehensive endpoints
-- **Modules**: 10 specialized PINN purpose modules
+- **Modules**: 11 specialized PINN purpose modules
 - **Documentation**: Complete research and implementation guides
 
 ## 📊 Platform Statistics
 
 | Component | Count | Description |
 |-----------|-------|-------------|
-| **Modules** | 10 | Complete PINN purpose coverage |
+| **Modules** | 11 | Complete PINN purpose coverage |
 | **Equations** | 200+ | Comprehensive equation library |
 | **Applications** | 100+ | Domain-specific research applications |
 | **Loss Components** | 150+ | Advanced loss function components |
-| **Documentation** | 12+ | Detailed README files |
+| **Documentation** | 13+ | Detailed README files |
 
 ## 🚀 Quick Start
 
@@ -134,6 +134,13 @@ python run_frontend.py
 - **⚖️ Loss Components**: Efficiency losses, computational constraints, performance
 - **[📖 Detailed Documentation](docs/EFFICIENCY_README.md)**
 
+### 11. Astrophysics
+**Purpose**: Modeling astrophysical phenomena and phenomena
+- **📊 15+ Equations**: Astrophysical phenomena, gravitational waves, cosmology
+- **🔬 Applications**: Astronomy, astrophysics, cosmology
+- **⚖️ Loss Components**: Astrophysical losses, cosmology, gravitational waves
+- **[📖 Detailed Documentation](docs/ASTROPHYSICS_README.md)**
+
 ## 🔧 Technical Implementation
 
 ### Frontend Architecture
@@ -190,7 +197,7 @@ python run_frontend.py
 ## 🚀 Getting Started
 
 ### Basic Usage
-1. **Select a Purpose**: Choose from 10 PINN purposes
+1. **Select a Purpose**: Choose from 11 PINN purposes
 2. **Configure Parameters**: Set equation parameters and training options
 3. **Train Model**: Start PINN training with real-time monitoring
 4. **Analyze Results**: View plots, metrics, and performance data
@@ -325,7 +332,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🎉 Conclusion
 
-The PINN platform represents a comprehensive, state-of-the-art system for physics-informed machine learning research and applications. With 10 specialized modules, 200+ equations, and 100+ research applications, it provides researchers, engineers, and students with a powerful tool for exploring the intersection of physics and artificial intelligence.
+The PINN platform represents a comprehensive, state-of-the-art system for physics-informed machine learning research and applications. With 11 specialized modules, 200+ equations, and 100+ research applications, it provides researchers, engineers, and students with a powerful tool for exploring the intersection of physics and artificial intelligence.
 
 The platform's modular design, comprehensive documentation, and user-friendly interface make it accessible to users at all levels, from beginners learning about PINNs to advanced researchers pushing the boundaries of the field. Its extensible architecture ensures that it can grow and adapt to new research directions and emerging applications.
 

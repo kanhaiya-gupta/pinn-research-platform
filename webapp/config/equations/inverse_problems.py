@@ -38,11 +38,14 @@ INVERSE_PROBLEMS_EQUATIONS_DICT = {
     },
     'inverse_helmholtz': {
         'name': 'Inverse Helmholtz',
-        'description': 'Identify wavenumber and boundary conditions',
+        'description': 'Identify medium properties from frequency domain measurements',
         'icon': 'fas fa-search',
         'color': '#e74c3c',
-        'formula': '∇²u + k²u = 0 (k unknown)',
-        'applications': ['Acoustic impedance identification', 'Electromagnetic property estimation', 'Quantum well characterization']
+        'formula': '∇²E + k²E = 0 (k, medium properties unknown)',
+        'variables': ['E', 'k', 'ε', 'μ'],
+        'category': 'electromagnetism',
+        'difficulty': 'intermediate',
+        'applications': ['Frequency domain EM tomography', 'Antenna parameter identification', 'Scattering problem inversion']
     },
     'inverse_navier_stokes': {
         'name': 'Inverse Navier-Stokes',
@@ -62,11 +65,14 @@ INVERSE_PROBLEMS_EQUATIONS_DICT = {
     },
     'inverse_maxwell': {
         'name': 'Inverse Maxwell',
-        'description': 'Identify electromagnetic properties',
+        'description': 'Identify electromagnetic properties from field measurements',
         'icon': 'fas fa-search',
         'color': '#e74c3c',
-        'formula': '∇·E = ρ/ε₀, ∇×E = -∂B/∂t (ε, μ unknown)',
-        'applications': ['Electromagnetic property identification', 'Antenna design', 'Material characterization']
+        'formula': '∇·E = ρ/ε₀, ∇×E = -∂B/∂t (ε, μ, σ unknown)',
+        'variables': ['E', 'B', 'ε', 'μ', 'σ'],
+        'category': 'electromagnetism',
+        'difficulty': 'advanced',
+        'applications': ['Electromagnetic property identification', 'Antenna design', 'Material characterization', 'EM tomography']
     },
     'inverse_heat_transfer': {
         'name': 'Inverse Heat Transfer',
@@ -315,5 +321,38 @@ INVERSE_PROBLEMS_EQUATIONS_DICT = {
         'color': '#e74c3c',
         'formula': 'Multiple phase field equations (evolution parameters unknown)',
         'applications': ['Microstructure parameter identification', 'Evolution mechanism determination', 'Material design optimization']
+    },
+    'inverse_poisson': {
+        'name': 'Inverse Poisson',
+        'description': 'Identify charge distribution from potential measurements',
+        'icon': 'fas fa-search',
+        'color': '#e74c3c',
+        'formula': '∇²φ = -ρ/ε₀ (ρ, ε unknown)',
+        'variables': ['φ', 'ρ', 'ε'],
+        'category': 'electromagnetism',
+        'difficulty': 'intermediate',
+        'applications': ['Charge distribution reconstruction', 'Electrostatic tomography', 'Capacitor design optimization']
+    },
+    'inverse_wave_equation': {
+        'name': 'Inverse Wave Equation',
+        'description': 'Identify wave speed and medium properties from wave propagation data',
+        'icon': 'fas fa-search',
+        'color': '#e74c3c',
+        'formula': '∇²E - (1/c²)∂²E/∂t² = 0 (c, medium properties unknown)',
+        'variables': ['E', 'c', 'ε', 'μ'],
+        'category': 'electromagnetism',
+        'difficulty': 'advanced',
+        'applications': ['Wave speed tomography', 'Medium property identification', 'Wave propagation inversion']
+    },
+    'inverse_telegraph': {
+        'name': 'Inverse Telegraph',
+        'description': 'Identify transmission line parameters from voltage/current measurements',
+        'icon': 'fas fa-search',
+        'color': '#e74c3c',
+        'formula': '∂²V/∂x² = LC∂²V/∂t² + (RC+GL)∂V/∂t + RGV (L, C, R, G unknown)',
+        'variables': ['V', 'L', 'C', 'R', 'G'],
+        'category': 'electromagnetism',
+        'difficulty': 'intermediate',
+        'applications': ['Transmission line characterization', 'Cable parameter identification', 'Signal integrity analysis']
     }
 } 

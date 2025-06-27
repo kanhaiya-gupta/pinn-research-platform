@@ -198,7 +198,7 @@ FORWARD_PROBLEMS_PARAMETERS_DICT = {
         'description': 'Coriolis parameter for geophysical flows',
         'unit': '1/s',
         'default': 1e-4,
-        'range': [1e-5, 1e-3],
+        'range': [1e-6, 1e-2],
         'category': 'geophysical_properties'
     },
     
@@ -342,6 +342,216 @@ FORWARD_PROBLEMS_PARAMETERS_DICT = {
         'default': 0.0,
         'range': [-500.0, 500.0],
         'category': 'am_properties'
+    },
+    
+    # Electrodynamics Parameters
+    'permittivity_vacuum': {
+        'name': 'Vacuum Permittivity (ε₀)',
+        'description': 'Electric constant (vacuum permittivity)',
+        'unit': 'F/m',
+        'default': 8.854e-12,
+        'range': [8.85e-12, 8.86e-12],
+        'category': 'electromagnetic_properties'
+    },
+    'permeability_vacuum': {
+        'name': 'Vacuum Permeability (μ₀)',
+        'description': 'Magnetic constant (vacuum permeability)',
+        'unit': 'H/m',
+        'default': 1.257e-6,
+        'range': [1.256e-6, 1.258e-6],
+        'category': 'electromagnetic_properties'
+    },
+    'speed_of_light': {
+        'name': 'Speed of Light (c)',
+        'description': 'Speed of light in vacuum',
+        'unit': 'm/s',
+        'default': 2.998e8,
+        'range': [2.997e8, 2.999e8],
+        'category': 'electromagnetic_properties'
+    },
+    'relative_permittivity': {
+        'name': 'Relative Permittivity (εr)',
+        'description': 'Relative permittivity of medium',
+        'unit': 'dimensionless',
+        'default': 1.0,
+        'range': [1.0, 100.0],
+        'category': 'electromagnetic_properties'
+    },
+    'relative_permeability': {
+        'name': 'Relative Permeability (μr)',
+        'description': 'Relative permeability of medium',
+        'unit': 'dimensionless',
+        'default': 1.0,
+        'range': [1.0, 10000.0],
+        'category': 'electromagnetic_properties'
+    },
+    'conductivity': {
+        'name': 'Electrical Conductivity (σ)',
+        'description': 'Electrical conductivity of material',
+        'unit': 'S/m',
+        'default': 1e-6,
+        'range': [1e-12, 1e8],
+        'category': 'electromagnetic_properties'
+    },
+    'charge_density': {
+        'name': 'Charge Density (ρ)',
+        'description': 'Volume charge density',
+        'unit': 'C/m³',
+        'default': 1e-6,
+        'range': [1e-12, 1e-3],
+        'category': 'electromagnetic_properties'
+    },
+    'current_density': {
+        'name': 'Current Density (J)',
+        'description': 'Volume current density',
+        'unit': 'A/m²',
+        'default': 1e-3,
+        'range': [1e-9, 1e6],
+        'category': 'electromagnetic_properties'
+    },
+    'electric_field': {
+        'name': 'Electric Field (E)',
+        'description': 'Electric field strength',
+        'unit': 'V/m',
+        'default': 1e3,
+        'range': [1e-3, 1e9],
+        'category': 'electromagnetic_properties'
+    },
+    'magnetic_field': {
+        'name': 'Magnetic Field (B)',
+        'description': 'Magnetic flux density',
+        'unit': 'T',
+        'default': 1e-6,
+        'range': [1e-12, 1e3],
+        'category': 'electromagnetic_properties'
+    },
+    'electric_potential': {
+        'name': 'Electric Potential (φ)',
+        'description': 'Scalar electric potential',
+        'unit': 'V',
+        'default': 1.0,
+        'range': [1e-6, 1e6],
+        'category': 'electromagnetic_properties'
+    },
+    'vector_potential': {
+        'name': 'Vector Potential (A)',
+        'description': 'Magnetic vector potential',
+        'unit': 'Wb/m',
+        'default': 1e-9,
+        'range': [1e-15, 1e-3],
+        'category': 'electromagnetic_properties'
+    },
+    'angular_frequency': {
+        'name': 'Angular Frequency (ω)',
+        'description': 'Angular frequency of electromagnetic wave',
+        'unit': 'rad/s',
+        'default': 1e9,
+        'range': [1e6, 1e15],
+        'category': 'electromagnetic_properties'
+    },
+    'wavenumber_em': {
+        'name': 'Electromagnetic Wavenumber (k)',
+        'description': 'Wavenumber for electromagnetic waves',
+        'unit': '1/m',
+        'default': 1.0,
+        'range': [1e-3, 1e6],
+        'category': 'electromagnetic_properties'
+    },
+    'wavelength': {
+        'name': 'Wavelength (λ)',
+        'description': 'Wavelength of electromagnetic wave',
+        'unit': 'm',
+        'default': 1.0,
+        'range': [1e-9, 1e3],
+        'category': 'electromagnetic_properties'
+    },
+    'frequency': {
+        'name': 'Frequency (f)',
+        'description': 'Frequency of electromagnetic wave',
+        'unit': 'Hz',
+        'default': 1e9,
+        'range': [1e6, 1e15],
+        'category': 'electromagnetic_properties'
+    },
+    'impedance': {
+        'name': 'Characteristic Impedance (Z₀)',
+        'description': 'Characteristic impedance of medium',
+        'unit': 'Ω',
+        'default': 377.0,
+        'range': [1.0, 1000.0],
+        'category': 'electromagnetic_properties'
+    },
+    'refractive_index': {
+        'name': 'Refractive Index (n)',
+        'description': 'Refractive index of medium',
+        'unit': 'dimensionless',
+        'default': 1.0,
+        'range': [1.0, 10.0],
+        'category': 'electromagnetic_properties'
+    },
+    'skin_depth': {
+        'name': 'Skin Depth (δ)',
+        'description': 'Electromagnetic skin depth',
+        'unit': 'm',
+        'default': 1e-3,
+        'range': [1e-9, 1e0],
+        'category': 'electromagnetic_properties'
+    },
+    'poynting_vector': {
+        'name': 'Poynting Vector (S)',
+        'description': 'Power flux density',
+        'unit': 'W/m²',
+        'default': 1e3,
+        'range': [1e-9, 1e12],
+        'category': 'electromagnetic_properties'
+    },
+    'energy_density': {
+        'name': 'Energy Density (u)',
+        'description': 'Electromagnetic energy density',
+        'unit': 'J/m³',
+        'default': 1e-6,
+        'range': [1e-12, 1e3],
+        'category': 'electromagnetic_properties'
+    },
+    'power_density': {
+        'name': 'Power Density (P)',
+        'description': 'Electromagnetic power density',
+        'unit': 'W/m³',
+        'default': 1e-3,
+        'range': [1e-12, 1e6],
+        'category': 'electromagnetic_properties'
+    },
+    'transmission_line_impedance': {
+        'name': 'Transmission Line Impedance (Z)',
+        'description': 'Characteristic impedance of transmission line',
+        'unit': 'Ω',
+        'default': 50.0,
+        'range': [1.0, 1000.0],
+        'category': 'electromagnetic_properties'
+    },
+    'propagation_constant': {
+        'name': 'Propagation Constant (γ)',
+        'description': 'Complex propagation constant',
+        'unit': '1/m',
+        'default': 1e-3,
+        'range': [1e-6, 1e3],
+        'category': 'electromagnetic_properties'
+    },
+    'attenuation_constant': {
+        'name': 'Attenuation Constant (α)',
+        'description': 'Attenuation constant for electromagnetic waves',
+        'unit': '1/m',
+        'default': 1e-3,
+        'range': [1e-6, 1e3],
+        'category': 'electromagnetic_properties'
+    },
+    'phase_constant': {
+        'name': 'Phase Constant (β)',
+        'description': 'Phase constant for electromagnetic waves',
+        'unit': '1/m',
+        'default': 1.0,
+        'range': [1e-3, 1e6],
+        'category': 'electromagnetic_properties'
     }
 }
 
@@ -558,20 +768,36 @@ FORWARD_PROBLEMS_EQUATION_PARAMETERS = {
     },
     
     'maxwell': {
-        'permittivity': {
-            'name': 'Permittivity (ε)',
-            'description': 'Electric permittivity',
+        'permittivity_vacuum': {
+            'name': 'Vacuum Permittivity (ε₀)',
+            'description': 'Electric constant in Maxwell equations',
             'unit': 'F/m',
             'default': 8.854e-12,
-            'range': [1e-13, 1e-10],
+            'range': [8.85e-12, 8.86e-12],
             'category': 'electromagnetic_properties'
         },
-        'magnetic_permeability': {
-            'name': 'Magnetic Permeability (μ)',
-            'description': 'Magnetic permeability',
+        'permeability_vacuum': {
+            'name': 'Vacuum Permeability (μ₀)',
+            'description': 'Magnetic constant in Maxwell equations',
             'unit': 'H/m',
             'default': 1.257e-6,
-            'range': [1e-7, 1e-5],
+            'range': [1.256e-6, 1.258e-6],
+            'category': 'electromagnetic_properties'
+        },
+        'charge_density': {
+            'name': 'Charge Density (ρ)',
+            'description': 'Volume charge density',
+            'unit': 'C/m³',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'electromagnetic_properties'
+        },
+        'current_density': {
+            'name': 'Current Density (J)',
+            'description': 'Volume current density',
+            'unit': 'A/m²',
+            'default': 1e-3,
+            'range': [1e-9, 1e6],
             'category': 'electromagnetic_properties'
         },
         'domain_size': {
@@ -1959,6 +2185,264 @@ FORWARD_PROBLEMS_EQUATION_PARAMETERS = {
             'unit': 's',
             'default': 1.0,
             'range': [0.1, 10.0],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'electromagnetic_wave': {
+        'speed_of_light': {
+            'name': 'Speed of Light (c)',
+            'description': 'Speed of light in vacuum',
+            'unit': 'm/s',
+            'default': 2.998e8,
+            'range': [2.997e8, 2.999e8],
+            'category': 'electromagnetic_properties'
+        },
+        'angular_frequency': {
+            'name': 'Angular Frequency (ω)',
+            'description': 'Angular frequency of electromagnetic wave',
+            'unit': 'rad/s',
+            'default': 1e9,
+            'range': [1e6, 1e15],
+            'category': 'electromagnetic_properties'
+        },
+        'wavenumber_em': {
+            'name': 'Electromagnetic Wavenumber (k)',
+            'description': 'Wavenumber for electromagnetic waves',
+            'unit': '1/m',
+            'default': 1.0,
+            'range': [1e-3, 1e6],
+            'category': 'electromagnetic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1e-9,
+            'range': [1e-12, 1e-6],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'helmholtz_equation': {
+        'angular_frequency': {
+            'name': 'Angular Frequency (ω)',
+            'description': 'Angular frequency for Helmholtz equation',
+            'unit': 'rad/s',
+            'default': 1e9,
+            'range': [1e6, 1e15],
+            'category': 'electromagnetic_properties'
+        },
+        'speed_of_light': {
+            'name': 'Speed of Light (c)',
+            'description': 'Speed of light in medium',
+            'unit': 'm/s',
+            'default': 2.998e8,
+            'range': [2.997e8, 2.999e8],
+            'category': 'electromagnetic_properties'
+        },
+        'wavenumber_em': {
+            'name': 'Electromagnetic Wavenumber (k)',
+            'description': 'Wavenumber k = ω/c',
+            'unit': '1/m',
+            'default': 1.0,
+            'range': [1e-3, 1e6],
+            'category': 'electromagnetic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        }
+    },
+    
+    'poisson_equation': {
+        'permittivity_vacuum': {
+            'name': 'Vacuum Permittivity (ε₀)',
+            'description': 'Electric constant in Poisson equation',
+            'unit': 'F/m',
+            'default': 8.854e-12,
+            'range': [8.85e-12, 8.86e-12],
+            'category': 'electromagnetic_properties'
+        },
+        'charge_density': {
+            'name': 'Charge Density (ρ)',
+            'description': 'Volume charge density',
+            'unit': 'C/m³',
+            'default': 1e-6,
+            'range': [1e-12, 1e-3],
+            'category': 'electromagnetic_properties'
+        },
+        'electric_potential': {
+            'name': 'Electric Potential (φ)',
+            'description': 'Scalar electric potential',
+            'unit': 'V',
+            'default': 1.0,
+            'range': [1e-6, 1e6],
+            'category': 'electromagnetic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        }
+    },
+    
+    'vector_potential': {
+        'permeability_vacuum': {
+            'name': 'Vacuum Permeability (μ₀)',
+            'description': 'Magnetic constant in vector potential equation',
+            'unit': 'H/m',
+            'default': 1.257e-6,
+            'range': [1.256e-6, 1.258e-6],
+            'category': 'electromagnetic_properties'
+        },
+        'permittivity_vacuum': {
+            'name': 'Vacuum Permittivity (ε₀)',
+            'description': 'Electric constant in vector potential equation',
+            'unit': 'F/m',
+            'default': 8.854e-12,
+            'range': [8.85e-12, 8.86e-12],
+            'category': 'electromagnetic_properties'
+        },
+        'current_density': {
+            'name': 'Current Density (J)',
+            'description': 'Volume current density',
+            'unit': 'A/m²',
+            'default': 1e-3,
+            'range': [1e-9, 1e6],
+            'category': 'electromagnetic_properties'
+        },
+        'vector_potential': {
+            'name': 'Vector Potential (A)',
+            'description': 'Magnetic vector potential',
+            'unit': 'Wb/m',
+            'default': 1e-9,
+            'range': [1e-15, 1e-3],
+            'category': 'electromagnetic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1e-9,
+            'range': [1e-12, 1e-6],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'telegraph_equation': {
+        'transmission_line_impedance': {
+            'name': 'Transmission Line Impedance (Z)',
+            'description': 'Characteristic impedance of transmission line',
+            'unit': 'Ω',
+            'default': 50.0,
+            'range': [1.0, 1000.0],
+            'category': 'electromagnetic_properties'
+        },
+        'propagation_constant': {
+            'name': 'Propagation Constant (γ)',
+            'description': 'Complex propagation constant',
+            'unit': '1/m',
+            'default': 1e-3,
+            'range': [1e-6, 1e3],
+            'category': 'electromagnetic_properties'
+        },
+        'attenuation_constant': {
+            'name': 'Attenuation Constant (α)',
+            'description': 'Attenuation constant for electromagnetic waves',
+            'unit': '1/m',
+            'default': 1e-3,
+            'range': [1e-6, 1e3],
+            'category': 'electromagnetic_properties'
+        },
+        'phase_constant': {
+            'name': 'Phase Constant (β)',
+            'description': 'Phase constant for electromagnetic waves',
+            'unit': '1/m',
+            'default': 1.0,
+            'range': [1e-3, 1e6],
+            'category': 'electromagnetic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Transmission line length',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1e-9,
+            'range': [1e-12, 1e-6],
+            'category': 'temporal_properties'
+        }
+    },
+    
+    'scalar_wave': {
+        'speed_of_light': {
+            'name': 'Speed of Light (c)',
+            'description': 'Speed of light in medium',
+            'unit': 'm/s',
+            'default': 2.998e8,
+            'range': [2.997e8, 2.999e8],
+            'category': 'electromagnetic_properties'
+        },
+        'angular_frequency': {
+            'name': 'Angular Frequency (ω)',
+            'description': 'Angular frequency of scalar wave',
+            'unit': 'rad/s',
+            'default': 1e9,
+            'range': [1e6, 1e15],
+            'category': 'electromagnetic_properties'
+        },
+        'wavenumber_em': {
+            'name': 'Electromagnetic Wavenumber (k)',
+            'description': 'Wavenumber for scalar wave',
+            'unit': '1/m',
+            'default': 1.0,
+            'range': [1e-3, 1e6],
+            'category': 'electromagnetic_properties'
+        },
+        'domain_size': {
+            'name': 'Domain Size',
+            'description': 'Spatial domain dimensions',
+            'unit': 'm',
+            'default': 1.0,
+            'range': [0.1, 10.0],
+            'category': 'domain_properties'
+        },
+        'time_duration': {
+            'name': 'Time Duration',
+            'description': 'Simulation time duration',
+            'unit': 's',
+            'default': 1e-9,
+            'range': [1e-12, 1e-6],
             'category': 'temporal_properties'
         }
     }

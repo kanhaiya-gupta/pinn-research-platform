@@ -75,80 +75,111 @@ The Forward Problems module provides comprehensive capabilities for solving well
     - Applications: Structural analysis, material deformation, geomechanics
     - Features: Linear elasticity, stress-strain relationships
 
+### Electrodynamics
+11. **Electromagnetic Wave Equation**
+    - Formula: `∇²E - (1/c²)∂²E/∂t² = 0, ∇²B - (1/c²)∂²B/∂t² = 0`
+    - Applications: Optics, radio waves, light propagation, waveguides
+    - Features: Wave propagation in vacuum, electromagnetic fields
+
+12. **Helmholtz Equation (Time-Harmonic)**
+    - Formula: `∇²E + k²E = 0, where k = ω/c`
+    - Applications: Frequency domain EM, antenna analysis, scattering problems
+    - Features: Time-harmonic electromagnetic fields, frequency domain analysis
+
+13. **Poisson Equation (Electrostatics)**
+    - Formula: `∇²φ = -ρ/ε₀`
+    - Applications: Electrostatics, capacitor design, electric field calculation
+    - Features: Electrostatic potential, charge distribution
+
+14. **Vector Potential Equation**
+    - Formula: `∇²A - μ₀ε₀∂²A/∂t² = -μ₀J`
+    - Applications: Magnetostatics, induction problems, magnetic field calculation
+    - Features: Magnetic vector potential, current distribution
+
+15. **Telegraph Equation**
+    - Formula: `∂²V/∂x² = LC∂²V/∂t² + (RC+GL)∂V/∂t + RGV`
+    - Applications: Transmission lines, cable analysis, signal propagation
+    - Features: Transmission line theory, signal distortion
+
+16. **Scalar Wave Equation**
+    - Formula: `∇²ψ - (1/c²)∂²ψ/∂t² = 0`
+    - Applications: Acoustic waves, scalar EM approximation, wave propagation
+    - Features: Simplified wave equation, scalar field approximation
+
 ### Additive Manufacturing
-11. **Heat Transfer with Phase Change**
+17. **Heat Transfer with Phase Change**
     - Formula: `ρc_p∂T/∂t = ∇·(k∇T) + Q - L∂f_s/∂t`
     - Applications: Melt pool dynamics, thermal history, solidification
     - Features: Phase change, latent heat effects
 
-12. **Stefan Condition**
+18. **Stefan Condition**
     - Formula: `k_s∇T_s·n - k_l∇T_l·n = ρLv_n`
     - Applications: Melt pool boundary tracking, solidification rate
     - Features: Interface conditions, phase boundaries
 
-13. **Navier-Stokes with Free Surface**
+19. **Navier-Stokes with Free Surface**
     - Formula: `ρ(∂v/∂t + v·∇v) = -∇p + μ∇²v + f_surface, ∇·v = 0`
     - Applications: Melt pool dynamics, keyhole formation
     - Features: Free surface flow, surface tension
 
-14. **Thermal Stress**
+20. **Thermal Stress**
     - Formula: `∇·σ = 0, σ = C:(ε - ε_th)`
     - Applications: Residual stress, warping analysis
     - Features: Thermal-mechanical coupling
 
 ### Material Science
-15. **Phase-Field Equation**
+21. **Phase-Field Equation**
     - Formula: `∂φ/∂t = -M δF/δφ`
     - Applications: Grain growth, phase transformation, crystal growth
     - Features: Phase transitions, microstructure evolution
 
-16. **Cahn-Hilliard Equation**
+22. **Cahn-Hilliard Equation**
     - Formula: `∂c/∂t = ∇·(M∇μ), μ = δF/δc`
     - Applications: Spinodal decomposition, thin film growth
     - Features: Concentration evolution, chemical potential
 
-17. **Fick's Second Law**
+23. **Fick's Second Law**
     - Formula: `∂c/∂t = ∇·(D∇c)`
     - Applications: Dopant diffusion, hydrogen diffusion, mass transport
     - Features: Diffusion processes, concentration gradients
 
-18. **Crystal Plasticity**
+24. **Crystal Plasticity**
     - Formula: `ε̇^p = Σ_α γ̇^α m^α, γ̇^α = f(τ^α, s^α)`
     - Applications: Deformation modeling, fatigue analysis, material behavior
     - Features: Plastic deformation, slip systems
 
 ### Advanced Systems
-19. **Helmholtz Equation**
+25. **Helmholtz Equation**
     - Formula: `∇²u + k²u = f`
     - Applications: Acoustics, electromagnetics, quantum mechanics
     - Features: Eigenvalue problems, wave phenomena
 
-20. **Poisson Equation**
+26. **Poisson Equation**
     - Formula: `∇²u = f`
     - Applications: Electrostatics, fluid pressure, heat conduction
     - Features: Elliptic PDE, boundary value problems
 
-21. **Advection-Diffusion**
+27. **Advection-Diffusion**
     - Formula: `∂c/∂t + v·∇c = ∇·(D∇c)`
     - Applications: Atmospheric transport, ocean currents, pollutant dispersion
     - Features: Transport phenomena, convection-diffusion
 
-22. **Reaction-Diffusion**
+28. **Reaction-Diffusion**
     - Formula: `∂u/∂t = D∇²u + f(u)`
     - Applications: Chemical kinetics, pattern formation, biological systems
     - Features: Chemical reactions, pattern formation
 
-23. **Optimal Control**
+29. **Optimal Control**
     - Formula: `dx/dt = f(x,u,t), J = ∫ L(x,u,t)dt`
     - Applications: Control systems, trajectory optimization, robotics
     - Features: Control theory, optimization
 
-24. **Linear Dynamics**
+30. **Linear Dynamics**
     - Formula: `dx/dt = Ax + Bu, y = Cx + Du`
     - Applications: State-space modeling, control design, system analysis
     - Features: Linear systems, input-output relationships
 
-25. **Nonlinear Dynamics**
+31. **Nonlinear Dynamics**
     - Formula: `dx/dt = f(x,u,t), y = h(x,u,t)`
     - Applications: Nonlinear systems, chaos, complex dynamics
     - Features: Nonlinear behavior, complex interactions

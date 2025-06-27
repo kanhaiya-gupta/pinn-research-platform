@@ -62,11 +62,14 @@ FORWARD_PROBLEMS_EQUATIONS_DICT = {
     },
     'maxwell': {
         'name': 'Maxwell Equations',
-        'description': 'System of partial differential equations for electromagnetism',
+        'description': 'Complete system of Maxwell equations for electromagnetism',
         'icon': 'fas fa-bolt',
         'color': '#f1c40f',
-        'formula': '∇·E = ρ/ε₀, ∇×E = -∂B/∂t',
-        'applications': ['Electromagnetism', 'Optics', 'Antenna design']
+        'formula': '∇·E = ρ/ε₀, ∇×E = -∂B/∂t, ∇·B = 0, ∇×B = μ₀J + μ₀ε₀∂E/∂t',
+        'variables': ['E', 'B', 'ρ', 'J', 'ε₀', 'μ₀'],
+        'category': 'electromagnetism',
+        'difficulty': 'intermediate',
+        'applications': ['Electromagnetism', 'Optics', 'Antenna design', 'Wave propagation']
     },
     'heat_transfer': {
         'name': 'Heat Transfer Equation',
@@ -332,5 +335,71 @@ FORWARD_PROBLEMS_EQUATIONS_DICT = {
         'color': '#3498db',
         'formula': 'Multiple phase field equations',
         'applications': ['Material science', 'Phase transformations', 'Microstructure design']
+    },
+    'electromagnetic_wave': {
+        'name': 'Electromagnetic Wave Equation',
+        'description': 'Wave equation for electromagnetic fields in vacuum',
+        'icon': 'fas fa-wave-square',
+        'color': '#9b59b6',
+        'formula': '∇²E - (1/c²)∂²E/∂t² = 0, ∇²B - (1/c²)∂²B/∂t² = 0',
+        'variables': ['E', 'B', 'c'],
+        'category': 'electromagnetism',
+        'difficulty': 'intermediate',
+        'applications': ['Optics', 'Radio waves', 'Light propagation', 'Waveguides']
+    },
+    'helmholtz_equation': {
+        'name': 'Helmholtz Equation',
+        'description': 'Time-harmonic wave equation for electromagnetic fields',
+        'icon': 'fas fa-sync',
+        'color': '#3498db',
+        'formula': '∇²E + k²E = 0, where k = ω/c',
+        'variables': ['E', 'k', 'ω', 'c'],
+        'category': 'electromagnetism',
+        'difficulty': 'intermediate',
+        'applications': ['Frequency domain EM', 'Antenna analysis', 'Scattering problems']
+    },
+    'poisson_equation': {
+        'name': 'Poisson Equation',
+        'description': 'Electrostatic potential equation',
+        'icon': 'fas fa-charging-station',
+        'color': '#e74c3c',
+        'formula': '∇²φ = -ρ/ε₀',
+        'variables': ['φ', 'ρ', 'ε₀'],
+        'category': 'electromagnetism',
+        'difficulty': 'basic',
+        'applications': ['Electrostatics', 'Capacitor design', 'Electric field calculation']
+    },
+    'vector_potential': {
+        'name': 'Vector Potential Equation',
+        'description': 'Magnetic vector potential formulation',
+        'icon': 'fas fa-magnet',
+        'color': '#2c3e50',
+        'formula': '∇²A - μ₀ε₀∂²A/∂t² = -μ₀J',
+        'variables': ['A', 'J', 'μ₀', 'ε₀'],
+        'category': 'electromagnetism',
+        'difficulty': 'advanced',
+        'applications': ['Magnetostatics', 'Induction problems', 'Magnetic field calculation']
+    },
+    'telegraph_equation': {
+        'name': 'Telegraph Equation',
+        'description': 'Transmission line equation for electromagnetic waves',
+        'icon': 'fas fa-broadcast-tower',
+        'color': '#f39c12',
+        'formula': '∂²V/∂x² = LC∂²V/∂t² + (RC+GL)∂V/∂t + RGV',
+        'variables': ['V', 'L', 'C', 'R', 'G'],
+        'category': 'electromagnetism',
+        'difficulty': 'intermediate',
+        'applications': ['Transmission lines', 'Cable analysis', 'Signal propagation']
+    },
+    'scalar_wave': {
+        'name': 'Scalar Wave Equation',
+        'description': 'Simplified wave equation for scalar electromagnetic fields',
+        'icon': 'fas fa-wave-square',
+        'color': '#1abc9c',
+        'formula': '∇²ψ - (1/c²)∂²ψ/∂t² = 0',
+        'variables': ['ψ', 'c'],
+        'category': 'electromagnetism',
+        'difficulty': 'basic',
+        'applications': ['Acoustic waves', 'Scalar EM approximation', 'Wave propagation']
     }
 } 

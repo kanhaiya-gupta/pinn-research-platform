@@ -121,6 +121,63 @@ The neural network simultaneously approximates the solution $u(x, t)$ and the un
 - **Inverse Problem**: Infer plasma properties from diagnostic data
 - **Applications**: Plasma property inference, magnetic field parameter estimation
 
+#### Heat Transfer with Phase Change (Inverse)
+- **Equation**: $\rho c_p \frac{\partial T}{\partial t} = \nabla \cdot (k \nabla T) + Q - L \frac{\partial f_s}{\partial t}$
+- **Inverse Problem**: Infer $k$, $\rho c_p$, $Q$, or $L$ from temperature measurements
+- **Applications**: Material characterization, heat source identification, phase change modeling
+
+#### Stefan Condition (Inverse)
+- **Equation**: $k_s \nabla T_s \cdot \mathbf{n} - k_l \nabla T_l \cdot \mathbf{n} = \rho L v_n$
+- **Inverse Problem**: Infer $k_s$, $k_l$, $L$, or $v_n$ from boundary temperature data
+- **Applications**: Melt pool boundary tracking, solidification rate inference
+
+#### Navier-Stokes with Free Surface (Inverse)
+- **Equation**: $\rho \left( \frac{\partial \mathbf{v}}{\partial t} + \mathbf{v} \cdot \nabla \mathbf{v} \right) = -\nabla p + \mu \nabla^2 \mathbf{v} + \mathbf{f}_{\text{surface}}$
+- **Inverse Problem**: Infer $\mu$, $\mathbf{f}_{\text{surface}}$, or boundary conditions from velocity data
+- **Applications**: Melt pool dynamics, keyhole formation, surface tension estimation
+
+#### Thermal Stress Equation (Inverse)
+- **Equation**: $\nabla \cdot \boldsymbol{\sigma} = 0, \quad \boldsymbol{\sigma} = \mathbf{C} : (\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_{\text{th}})$
+- **Inverse Problem**: Infer $\mathbf{C}$ or $\boldsymbol{\epsilon}_{\text{th}}$ from stress or displacement data
+- **Applications**: Material characterization, residual stress analysis
+
+### 7. Electrodynamics
+
+#### Maxwell Equations (Inverse)
+- **Equation**: $\nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0}, \quad \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}, \quad \nabla \cdot \mathbf{B} = 0, \quad \nabla \times \mathbf{B} = \mu_0 \mathbf{J} + \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}$
+- **Inverse Problem**: Infer electromagnetic properties (ε, μ, σ) from field measurements
+- **Applications**: Electromagnetic property identification, antenna design, material characterization, EM tomography
+
+#### Electromagnetic Wave Equation (Inverse)
+- **Equation**: $\nabla^2 \mathbf{E} - \frac{1}{c^2} \frac{\partial^2 \mathbf{E}}{\partial t^2} = 0, \quad \nabla^2 \mathbf{B} - \frac{1}{c^2} \frac{\partial^2 \mathbf{B}}{\partial t^2} = 0$
+- **Inverse Problem**: Infer wave speed and medium properties from wave field measurements
+- **Applications**: Optics, radio wave propagation, waveguide analysis, electromagnetic imaging
+
+#### Helmholtz Equation (Inverse)
+- **Equation**: $\nabla^2 \mathbf{E} + k^2 \mathbf{E} = 0, \quad \text{where } k = \frac{\omega}{c}$
+- **Inverse Problem**: Infer wavenumber and frequency-dependent properties from field measurements
+- **Applications**: Frequency domain EM analysis, antenna characterization, scattering parameter estimation
+
+#### Poisson Equation - Electrostatics (Inverse)
+- **Equation**: $\nabla^2 \phi = -\frac{\rho}{\epsilon_0}$
+- **Inverse Problem**: Infer charge distribution and permittivity from potential measurements
+- **Applications**: Electrostatic field reconstruction, charge density estimation, capacitor design
+
+#### Vector Potential Equation (Inverse)
+- **Equation**: $\nabla^2 \mathbf{A} - \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{A}}{\partial t^2} = -\mu_0 \mathbf{J}$
+- **Inverse Problem**: Infer current distribution and magnetic properties from vector potential measurements
+- **Applications**: Magnetostatics, induction problem analysis, magnetic field reconstruction
+
+#### Telegraph Equation (Inverse)
+- **Equation**: $\frac{\partial^2 V}{\partial x^2} = LC \frac{\partial^2 V}{\partial t^2} + (RC + GL) \frac{\partial V}{\partial t} + RGV$
+- **Inverse Problem**: Infer transmission line parameters (L, C, R, G) from voltage measurements
+- **Applications**: Transmission line characterization, cable analysis, signal integrity assessment
+
+#### Electromagnetic-Thermal Coupling (Inverse)
+- **Equation**: Maxwell equations + Heat equation with coupled parameters
+- **Inverse Problem**: Infer electromagnetic and thermal parameters simultaneously
+- **Applications**: EM-thermal parameter identification, electromagnetic property estimation, thermal property identification
+
 ## Research Applications
 
 ### 1. Additive Manufacturing Parameter Inference
@@ -158,6 +215,12 @@ The neural network simultaneously approximates the solution $u(x, t)$ and the un
 - **Equations**: Magnetohydrodynamics, heat transfer with phase change, Maxwell equations
 - **Challenges**: High-dimensional systems, complex physics, safety requirements
 - **Benefits**: Fusion reactor design, plasma control, energy production
+
+### 7. Electrodynamics Parameter Inference
+- **Description**: Infer electromagnetic properties and field parameters from measurements
+- **Equations**: Maxwell equations, electromagnetic wave equation, Helmholtz equation, Poisson equation, vector potential equation, telegraph equation
+- **Challenges**: Multi-scale electromagnetic phenomena, frequency-dependent properties, complex boundary conditions
+- **Benefits**: Antenna design optimization, material characterization, electromagnetic imaging, transmission line analysis
 
 ## Loss Function Components
 
@@ -225,6 +288,7 @@ Choose from the comprehensive set of inverse problem equations:
 - Energy systems equations
 - Biomechanics and geophysics equations
 - Fusion energy equations
+- Electrodynamics equations (Maxwell, EM wave, Helmholtz, Poisson, Vector potential, Telegraph)
 
 ### 3. Parameter Configuration
 - Set unknown parameters to be inferred
