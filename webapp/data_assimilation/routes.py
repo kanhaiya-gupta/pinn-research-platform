@@ -3,7 +3,6 @@ Routes for Data Assimilation PINN Application
 """
 
 from fastapi import APIRouter, Request, HTTPException
-from config.equations import ALL_PURPOSE_EQUATIONS
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 import httpx
@@ -28,101 +27,14 @@ config = Config()
 DATA_ASSIMILATION_EQUATIONS = ALL_PURPOSE_EQUATIONS.get('data_assimilation', {})
 DATA_ASSIMILATION_PARAMETERS = ALL_PURPOSE_PARAMETERS.get('data_assimilation', {})
 
-@router.get("/", response_class=HTMLResponse)
-async def data_assimilation_page(request: Request):
-    """Data Assimilation main page"""
+# API endpoints for data assimilation
+@router.post("/api/simulate/{eq_id}")
+async def data_assimilation_simulate(eq_id: str, request: Request):
+    """Submit training request for data assimilation"""
     purpose_info = config.get_purpose_info("data_assimilation")
     equations = config.get_equations_by_purpose("data_assimilation")
-    parameters = config.get_parameters_by_purpose("data_assimilation")
-    
-    # Get equations that support data_assimilation using modular structure
-    supported_equations = {}
-    for eq_key in DATA_ASSIMILATION_EQUATIONS:
-        if eq_key in config.SUPPORTED_EQUATIONS:
-            supported_equations[eq_key] = equations[eq_key]
-    
-    return templates.TemplateResponse(
-        "data_assimilation/index.html",
-        {
-            "request": request,
-            "purpose": purpose_info,
-            "purpose_key": "data_assimilation",
-            "equations": equations,
-            "parameters": parameters,
-            "config": config,
-            "title": f"{purpose_info['name']} - PINN Applications"
-        }
-    )
-
-@router.get("/simulation/{eq_id}", response_class=HTMLResponse)
-async def data_assimilation_simulation(request: Request, eq_id: str):
-    """Simulation page for data assimilation and specific equation"""
-    purpose_info = config.get_purpose_info("data_assimilation")
-    equations = config.get_equations_by_purpose("data_assimilation")
-    parameters = config.get_parameters_by_purpose("data_assimilation")
     
     if eq_id not in equations:
-        raise HTTPException(status_code=404, detail="Equation not found")
-    
-    equation_info = equations[eq_id]
-    
-    # Create default parameters for the template
-    default_params = {
-        "hidden_layers": 4,
-        "neurons_per_layer": 20,
-        "learning_rate": 0.001,
-        "epochs": 10000
-    }
-    
-    # Add equation-specific default parameters
-    for param_id, param_info in parameters.items():
-        if isinstance(param_info, dict) and 'default' in param_info:
-            default_params[param_id] = param_info['default']
-    
-    return templates.TemplateResponse(
-        "data_assimilation/simulation.html",
-        {
-            "request": request,
-            "purpose": purpose_info,
-            "purpose_key": "data_assimilation",
-            "equation": equation_info,
-            "eq_id": eq_id,
-            "parameters": parameters,
-            "default_params": default_params,
-            "config": config,
-            "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
-        }
-    )
-
-@router.get("/results/{eq_type}", response_class=HTMLResponse)
-async def data_assimilation_results(request: Request, eq_type: str):
-    """Results page for data assimilation and specific equation"""
-    if eq_type not in config.SUPPORTED_EQUATIONS:
-        raise HTTPException(status_code=404, detail="Equation not found")
-    
-    purpose_info = config.get_purpose_info("data_assimilation")
-    equations = config.get_equations_by_purpose("data_assimilation")
-    parameters = config.get_parameters_by_purpose("data_assimilation")
-    equation_info = equations[eq_type]
-    
-    return templates.TemplateResponse(
-        "data_assimilation/results.html",
-        {
-            "request": request,
-            "purpose": purpose_info,
-            "purpose_key": "data_assimilation",
-            "equation": equation_info,
-            "eq_type": eq_type,
-            "config": config,
-            "title": f"Results - {equation_info['name']} - {purpose_info['name']}"
-        }
-    )
-
-# API endpoints for data assimilation
-@router.post("/api/simulate/{eq_type}")
-async def data_assimilation_simulate(eq_type: str, request: Request):
-    """Submit training request for data assimilation"""
-    if eq_type not in config.SUPPORTED_EQUATIONS:
         raise HTTPException(status_code=404, detail="Equation not found")
     
     try:
@@ -130,9 +42,10 @@ async def data_assimilation_simulate(eq_type: str, request: Request):
         
         # Add data_assimilation specific parameters
         body["purpose"] = "data_assimilation"
+        body["equation_id"] = eq_id
         
         # Map frontend parameters to backend format
-        backend_params = map_parameters_to_backend(eq_type, body)
+        backend_params = map_parameters_to_backend(eq_id, body)
         
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -152,10 +65,13 @@ async def data_assimilation_simulate(eq_type: str, request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
 
-@router.get("/api/results/{eq_type}")
-async def data_assimilation_get_results(eq_type: str):
+@router.get("/api/results/{eq_id}")
+async def data_assimilation_get_results(eq_id: str):
     """Get results for data assimilation simulation"""
-    if eq_type not in config.SUPPORTED_EQUATIONS:
+    purpose_info = config.get_purpose_info("data_assimilation")
+    equations = config.get_equations_by_purpose("data_assimilation")
+    
+    if eq_id not in equations:
         raise HTTPException(status_code=404, detail="Equation not found")
     
     try:
@@ -185,126 +101,141 @@ def map_parameters_to_backend(eq_id: str, frontend_params: dict) -> dict:
         "equation_id": eq_id
     }
     
-    # Add purpose-specific parameters
-    backend_params["observation_frequency"] = frontend_params.get("observation_frequency", 0.1)  # Frequency of observations
-    backend_params["assimilation_window"] = frontend_params.get("assimilation_window", 1.0)  # Time window for assimilation
-    
-    # Add equation-specific parameters
-    if eq_id == "heat":
-        backend_params.update({
-            "thermal_diffusivity": frontend_params.get("thermal_diffusivity", 0.1),
-            "domain_size": frontend_params.get("domain_size", 1.0)
-        })
-    elif eq_id == "wave":
-        backend_params.update({
-            "wave_speed": frontend_params.get("wave_speed", 1.0),
-            "domain_size": frontend_params.get("domain_size", 1.0)
-        })
-    elif eq_id == "burgers":
-        backend_params.update({
-            "viscosity": frontend_params.get("viscosity", 0.01),
-            "domain_size": frontend_params.get("domain_size", 1.0)
-        })
-    elif eq_id == "shm":
-        backend_params.update({
-            "frequency": frontend_params.get("frequency", 1.0),
-            "amplitude": frontend_params.get("amplitude", 1.0)
-        })
+    # Add equation-specific parameters from the modular structure
+    parameters = config.get_parameters_by_purpose("data_assimilation")
+    for param_id, param_info in parameters.items():
+        if isinstance(param_info, dict) and 'default' in param_info:
+            if param_id in frontend_params:
+                backend_params[param_id] = frontend_params[param_id]
+            else:
+                backend_params[param_id] = param_info['default']
     
     return backend_params
 
-
+# Comprehensive parameter endpoints
 @router.get("/comprehensive-parameters")
 async def get_comprehensive_parameters():
-    """Get comprehensive parameter options and recommendations."""
+    """Get comprehensive parameters for data assimilation"""
+    parameters = config.get_parameters_by_purpose("data_assimilation")
+    equations = config.get_equations_by_purpose("data_assimilation")
+    
     return {
-        "sampling_methods": [method.value for method in SamplingMethod],
-        "boundary_conditions": [bc.value for bc in BoundaryConditionType],
-        "initial_conditions": [ic.value for ic in InitialConditionType],
-        "activation_functions": {
-            "hidden": ["tanh", "sin", "softplus", "sigmoid", "relu"],
-            "output": ["linear", "tanh", "sigmoid", "softplus"]
-        },
-        "optimizers": ["adam", "lbfgs", "adam_lbfgs", "sgd"],
-        "weight_inits": ["xavier", "normal", "uniform", "he"],
-        "schedulers": ["constant", "step", "cosine", "exponential"],
-        "error_metrics": ["l2_norm", "relative_error", "rmse", "mae", "max_error"],
-        "scaling_methods": ["none", "domain_size", "adaptive"]
+        "parameters": parameters,
+        "equations": equations,
+        "purpose": "data_assimilation"
     }
 
 @router.get("/parameter-recommendations")
 async def get_parameter_recommendations(equation: str = "burgers"):
-    """Get parameter recommendations for specific equations."""
-    recommendations = {
-        "burgers": {
-            "hidden_activation": "tanh",
-            "output_activation": "linear",
-            "optimizer": "adam_lbfgs",
-            "time_duration": 1.0,
-            "time_points": 100,
-            "n_interior_points": 1000,
-            "n_boundary_points": 200,
-            "physics_weight": 1.0,
-            "boundary_weight": 1.0,
-            "initial_weight": 1.0,
-            "notes": "Burgers equation benefits from smooth activations and careful loss balancing"
-        },
-        "heat": {
-            "hidden_activation": "tanh",
-            "output_activation": "linear",
-            "optimizer": "adam_lbfgs",
-            "time_duration": 1.0,
-            "time_points": 100,
-            "n_interior_points": 800,
-            "n_boundary_points": 150,
-            "physics_weight": 1.0,
-            "boundary_weight": 1.0,
-            "initial_weight": 1.0,
-            "notes": "Heat equation is well-behaved, standard parameters work well"
-        },
-        "wave": {
-            "hidden_activation": "sin",
-            "output_activation": "linear",
-            "optimizer": "adam_lbfgs",
-            "time_duration": 2.0,
-            "time_points": 200,
-            "n_interior_points": 1200,
-            "n_boundary_points": 300,
-            "physics_weight": 1.0,
-            "boundary_weight": 1.0,
-            "initial_weight": 1.0,
-            "notes": "Wave equation benefits from sin activation for oscillatory behavior"
-        }
-    }
+    """Get parameter recommendations for specific equation"""
+    equations = config.get_equations_by_purpose("data_assimilation")
+    parameters = config.get_parameters_by_purpose("data_assimilation")
     
-    return recommendations.get(equation, recommendations["burgers"])
+    if equation not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    # Get equation-specific parameter recommendations
+    recommendations = {}
+    for param_id, param_info in parameters.items():
+        if isinstance(param_info, dict):
+            recommendations[param_id] = {
+                "name": param_info.get("name", param_id),
+                "description": param_info.get("description", ""),
+                "default": param_info.get("default", 0.0),
+                "range": param_info.get("range", [0.0, 1.0]),
+                "unit": param_info.get("unit", ""),
+                "category": param_info.get("category", "")
+            }
+    
+    return {
+        "equation": equation,
+        "recommendations": recommendations,
+        "purpose": "data_assimilation"
+    }
 
 @router.post("/validate-parameters")
-async def validate_parameters(request: ComprehensiveTrainingRequest):
-    """Validate comprehensive training parameters."""
-    validation_results = {
-        "valid": True,
-        "warnings": [],
-        "errors": []
-    }
+async def validate_parameters(request: Request):
+    """Validate parameters for data assimilation"""
+    try:
+        body = await request.json()
+        equation = body.get("equation", "burgers")
+        parameters = body.get("parameters", {})
+        
+        equations = config.get_equations_by_purpose("data_assimilation")
+        if equation not in equations:
+            raise HTTPException(status_code=404, detail="Equation not found")
+        
+        # Basic validation
+        validation_results = {}
+        for param_id, value in parameters.items():
+            if param_id in DATA_ASSIMILATION_PARAMETERS:
+                param_info = DATA_ASSIMILATION_PARAMETERS[param_id]
+                if isinstance(param_info, dict) and 'range' in param_info:
+                    min_val, max_val = param_info['range']
+                    if value < min_val or value > max_val:
+                        validation_results[param_id] = f"Value {value} outside range [{min_val}, {max_val}]"
+                    else:
+                        validation_results[param_id] = "Valid"
+                else:
+                    validation_results[param_id] = "Valid"
+            else:
+                validation_results[param_id] = "Unknown parameter"
+        
+        return {
+            "equation": equation,
+            "validation_results": validation_results,
+            "purpose": "data_assimilation"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Validation failed: {str(e)}")
+
+@router.get("/training-status/{eq_id}")
+async def get_training_status(eq_id: str):
+    """Get training status for data assimilation simulation"""
+    purpose_info = config.get_purpose_info("data_assimilation")
+    equations = config.get_equations_by_purpose("data_assimilation")
     
-    # Check for potential issues
-    if request.hidden_activation == "relu":
-        validation_results["warnings"].append("ReLU activation may not be smooth enough for PDEs")
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
     
-    if request.optimizer == "sgd":
-        validation_results["warnings"].append("SGD optimizer is not recommended for PINNs")
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{config.API_BASE_URL}/api/data_assimilation/{eq_id}/status",
+                timeout=10.0
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise HTTPException(status_code=response.status_code, 
+                                  detail=f"Backend error: {response.text}")
+                
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get status: {str(e)}")
+
+@router.delete("/cancel-training/{eq_id}")
+async def cancel_training(eq_id: str):
+    """Cancel ongoing training for data assimilation"""
+    purpose_info = config.get_purpose_info("data_assimilation")
+    equations = config.get_equations_by_purpose("data_assimilation")
     
-    if request.learning_rate > 0.01:
-        validation_results["warnings"].append("High learning rate may cause instability")
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
     
-    if request.n_interior_points < 500:
-        validation_results["warnings"].append("Low number of interior points may affect accuracy")
-    
-    if request.physics_weight < 0.1 or request.physics_weight > 10.0:
-        validation_results["errors"].append("Physics weight should be between 0.1 and 10.0")
-    
-    if validation_results["errors"]:
-        validation_results["valid"] = False
-    
-    return validation_results
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.delete(
+                f"{config.API_BASE_URL}/api/data_assimilation/{eq_id}/cancel",
+                timeout=10.0
+            )
+            
+            if response.status_code == 200:
+                return {"message": "Training cancelled successfully"}
+            else:
+                raise HTTPException(status_code=response.status_code, 
+                                  detail=f"Backend error: {response.text}")
+                
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to cancel training: {str(e)}")

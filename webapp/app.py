@@ -90,6 +90,7 @@ async def purpose_page(request: Request, purpose_name: str):
             "request": request,
             "purpose": purpose_info,
             "purpose_name": purpose_name,
+            "purpose_key": purpose_name,
             "equations": equations,
             "parameters": parameters,
             "config": config,
