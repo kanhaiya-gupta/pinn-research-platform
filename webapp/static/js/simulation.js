@@ -330,14 +330,15 @@ function startTraining() {
     }
     
     // Add purpose and equation type
-    trainingData.purpose = 'forward_problems';
+    trainingData.purpose = window.purposeKey;
     trainingData.equation_type = getEquationType();
     
     // Show training progress
     showTrainingProgress();
     
-    // Send training request
-    fetch('/api/simulate/forward_problems', {
+    // Send training request using purpose-based endpoint
+    const equationType = getEquationType();
+    fetch(fetch(`/purpose/${window.purposeKey}/api/simulate/${equationType}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -357,20 +358,6 @@ function startTraining() {
     });
 }
 
-function getEquationType() {
-    // Extract equation type from URL
-    const pathParts = window.location.pathname.split('/');
-    return pathParts[pathParts.length - 1];
-}
-
-function showTrainingProgress() {
-    const progressSection = document.getElementById('training-progress');
-    if (progressSection) {
-        progressSection.style.display = 'block';
-        progressSection.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
 function showTrainingSuccess(data) {
     // Update progress with success
     const progressFill = document.getElementById('progress-fill');
@@ -381,7 +368,7 @@ function showTrainingSuccess(data) {
     
     // Show success message
     setTimeout(() => {
-        window.location.href = `/purpose/forward_problems/results/${getEquationType()}`;
+        window.location.href = `/purpose/${window.purposeKey}/results/${getEquationType()}`;
     }, 1000);
 }
 
@@ -395,3 +382,18 @@ function showTrainingError(message) {
     // Show error alert
     alert('Training Error: ' + message);
 } 
+
+
+function getEquationType() {
+    // Extract equation type from URL
+    const pathParts = window.location.pathname.split('/');
+    return pathParts[pathParts.length - 1];
+}
+
+function showTrainingProgress() {
+    const progressSection = document.getElementById('training-progress');
+    if (progressSection) {
+        progressSection.style.display = 'block';
+        progressSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}

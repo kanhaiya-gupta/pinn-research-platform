@@ -311,36 +311,36 @@ async def simulate_purpose_equation(purpose_name: str, eq_id: str, request: Requ
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
 
-@app.post("/api/simulate/{eq_type}")
-async def simulate_equation(eq_type: str, request: Request):
-    """Submit training request to main.py backend (legacy route)"""
-    if eq_type not in config.SUPPORTED_EQUATIONS:
-        raise HTTPException(status_code=404, detail="Equation not found")
-    
-    try:
-        body = await request.json()
-        
-        # Map frontend parameters to backend format
-        backend_params = map_parameters_to_backend_legacy(eq_type, body)
-        
-        async with httpx.AsyncClient() as client:
-            # Call the main.py backend API using /train endpoint
-            response = await client.post(
-                f"{config.API_BASE_URL}/api/{eq_type}/train",
-                json=backend_params,
-                timeout=300.0  # 5 minutes timeout for training
-            )
-            
-            if response.status_code == 200:
-                return response.json()
-            else:
-                raise HTTPException(status_code=response.status_code, 
-                                  detail=f"Backend error: {response.text}")
-                
-    except httpx.TimeoutException:
-        raise HTTPException(status_code=408, detail="Training timeout - model may still be training")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
+# @app.post("/api/simulate/{eq_type}")
+# async def simulate_equation(eq_type: str, request: Request):
+#     """Submit training request to main.py backend (legacy route)"""
+#     if eq_type not in config.SUPPORTED_EQUATIONS:
+#         raise HTTPException(status_code=404, detail="Equation not found")
+#     
+#     try:
+#         body = await request.json()
+#         
+#         # Map frontend parameters to backend format
+#         backend_params = map_parameters_to_backend_legacy(eq_type, body)
+#         
+#         async with httpx.AsyncClient() as client:
+#             # Call the main.py backend API using /train endpoint
+#             response = await client.post(
+#                 f"{config.API_BASE_URL}/api/{eq_type}/train",
+#                 json=backend_params,
+#                 timeout=300.0  # 5 minutes timeout for training
+#             )
+#             
+#             if response.status_code == 200:
+#                 return response.json()
+#             else:
+#                 raise HTTPException(status_code=response.status_code, 
+#                                   detail=f"Backend error: {response.text}")
+#                 
+#     except httpx.TimeoutException:
+#         raise HTTPException(status_code=408, detail="Training timeout - model may still be training")
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
 
 @app.post("/api/predict/{purpose_name}/{eq_id}")
 async def predict_purpose_equation(purpose_name: str, eq_id: str, request: Request):

@@ -168,6 +168,54 @@ class PurposeLogger:
         """
         self.logger.info(f"[{self.equation.upper()}] {info}")
 
+    def log_training_start(self, params: Dict[str, Any]) -> None:
+        """Log training start with parameters.
+
+        Args:
+            params (Dict[str, Any]): Training parameters.
+        """
+        self.logger.info("=" * 60)
+        self.logger.info("PINN TRAINING STARTED")
+        self.logger.info("=" * 60)
+        self.logger.info(f"Training Parameters: {json.dumps(params, indent=2)}")
+
+    def log_training_progress(self, epoch: int, total_epochs: int, 
+                            physics_loss: float, total_loss: float) -> None:
+        """Log training progress.
+
+        Args:
+            epoch (int): Current epoch.
+            total_epochs (int): Total number of epochs.
+            physics_loss (float): Physics loss value.
+            total_loss (float): Total loss value.
+        """
+        progress = (epoch / total_epochs) * 100
+        self.logger.info(f"Epoch {epoch}/{total_epochs} ({progress:.1f}%) - "
+                        f"Physics Loss: {physics_loss:.6f}, Total Loss: {total_loss:.6f}")
+
+    def log_training_complete(self, final_loss: float, training_time: float) -> None:
+        """Log training completion.
+
+        Args:
+            final_loss (float): Final loss value.
+            training_time (float): Total training time in seconds.
+        """
+        self.logger.info("=" * 60)
+        self.logger.info("PINN TRAINING COMPLETED")
+        self.logger.info(f"Final Loss: {final_loss:.6f}")
+        self.logger.info(f"Training Time: {training_time:.2f} seconds")
+        self.logger.info("=" * 60)
+
+    def log_error(self, error: Exception, context: str = "") -> None:
+        """Log error with context.
+
+        Args:
+            error (Exception): The error that occurred.
+            context (str): Additional context about the error.
+        """
+        self.logger.error(f"ERROR in {context}: {str(error)}")
+        self.logger.error(f"Error type: {type(error).__name__}")
+
 
 # Convenience functions for quick logging setup
 def get_purpose_logger(purpose: str, equation: str) -> PurposeLogger:

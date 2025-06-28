@@ -146,14 +146,14 @@ async def forward_problems_simulate(eq_id: str, request: Request):
         
         # Add forward problems specific parameters
         body["purpose"] = "forward_problems"
-        body["equation_id"] = eq_id
+        body["equation_type"] = eq_id
         
         # Map frontend parameters to backend format
         backend_params = map_parameters_to_backend(eq_id, body)
         
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{config.API_BASE_URL}/api/forward_problems/{eq_id}/train",
+                f"{config.API_BASE_URL}/api/train",
                 json=backend_params,
                 timeout=300.0
             )
@@ -202,7 +202,7 @@ def map_parameters_to_backend(eq_id: str, frontend_params: dict) -> dict:
         "learning_rate": frontend_params.get("learning_rate", 0.001),
         "epochs": frontend_params.get("epochs", 10000),
         "purpose": "forward_problems",
-        "equation_id": eq_id
+        "equation_type": eq_id
     }
     
     # Add equation-specific parameters from the modular structure

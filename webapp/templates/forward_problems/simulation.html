@@ -560,12 +560,13 @@
 {% block scripts %}
 <script src="/static/js/simulation.js"></script>
 <script>
-    // Purpose-specific simulation configuration
-    const purposeKey = "{{ purpose_key }}";
-    const purposeName = "{{ purpose.name }}";
-    const equationType = "{{ eq_type }}";
+    // Purpose-specific simulation configuration - make it global
+    window.purposeKey = "{{ purpose_key }}";
+    window.purposeName = "{{ purpose.name }}";
+    window.equationType = "{{ eq_id }}";
     
-    // Initialize simulation with purpose context
-    initializeSimulation(purposeKey, purposeName, equationType);
+    // Log configuration for debugging
+    console.log('Simulation page loaded for:', window.purposeName, window.equationType);
+    console.log('Purpose Key:', window.purposeKey);
 </script>
 {% endblock %} 
