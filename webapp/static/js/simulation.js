@@ -338,7 +338,7 @@ function startTraining() {
     
     // Send training request using purpose-based endpoint
     const equationType = getEquationType();
-    fetch(fetch(`/purpose/${window.purposeKey}/api/simulate/${equationType}`, {
+    fetch(`/purpose/${window.purposeKey}/api/simulate/${equationType}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
