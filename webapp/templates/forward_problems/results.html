@@ -182,14 +182,14 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/js/equation-detail.js"></script>
+<script src="/static/js/results.js"></script>
 <script>
     // Purpose-specific results configuration
-    const purposeKey = "{{ purpose_key }}";
-    const purposeName = "{{ purpose.name }}";
-    const equationType = "{{ eq_type }}";
+    window.purposeKey = "{{ purpose_key }}";
+    window.purposeName = "{{ purpose.name }}";
+    window.equationType = "{{ eq_type }}";
     
     // Load results for this specific purpose and equation
-    loadResults(purposeKey, equationType);
+    loadResults(window.purposeKey, window.equationType);
 </script>
 {% endblock %} 

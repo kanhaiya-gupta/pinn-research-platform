@@ -278,27 +278,37 @@ async def results_page(request: Request, eq_type: str):
 @app.post("/api/simulate/{purpose_name}/{eq_id}")
 async def simulate_purpose_equation(purpose_name: str, eq_id: str, request: Request):
     """Submit training request to main.py backend for purpose-based equations"""
+    print(f"🔍 Frontend received training request for {purpose_name}/{eq_id}")
+    
     purpose_info = config.get_purpose_info(purpose_name)
     if not purpose_info:
+        print(f"❌ Purpose {purpose_name} not found")
         raise HTTPException(status_code=404, detail="Purpose not found")
     
     equations = config.get_equations_by_purpose(purpose_name)
     if eq_id not in equations:
+        print(f"❌ Equation {eq_id} not found in {purpose_name}")
         raise HTTPException(status_code=404, detail="Equation not found")
     
     try:
         body = await request.json()
+        print(f"📥 Frontend received parameters: {body}")
         
         # Map frontend parameters to backend format
         backend_params = map_parameters_to_backend(purpose_name, eq_id, body)
+        print(f"🔄 Mapped to backend params: {backend_params}")
         
+        print(f"🌐 Calling backend at: {config.API_BASE_URL}/api/train")
         async with httpx.AsyncClient() as client:
-            # Call the main.py backend API using /train endpoint
+            # Call the main.py backend API using /api/train endpoint
             response = await client.post(
-                f"{config.API_BASE_URL}/api/{purpose_name}/{eq_id}/train",
+                f"{config.API_BASE_URL}/api/train",
                 json=backend_params,
                 timeout=300.0  # 5 minutes timeout for training
             )
+            
+            print(f"📤 Backend response status: {response.status_code}")
+            print(f"📤 Backend response: {response.text}")
             
             if response.status_code == 200:
                 return response.json()
@@ -307,8 +317,10 @@ async def simulate_purpose_equation(purpose_name: str, eq_id: str, request: Requ
                                   detail=f"Backend error: {response.text}")
                 
     except httpx.TimeoutException:
+        print("⏰ Training timeout")
         raise HTTPException(status_code=408, detail="Training timeout - model may still be training")
     except Exception as e:
+        print(f"❌ Training failed with error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
 
 # @app.post("/api/simulate/{eq_type}")
@@ -356,9 +368,13 @@ async def predict_purpose_equation(purpose_name: str, eq_id: str, request: Reque
     try:
         body = await request.json()
         
+        # Add purpose and equation information to the request
+        body['purpose'] = purpose_name
+        body['equation_type'] = eq_id
+        
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{config.API_BASE_URL}/api/{purpose_name}/{eq_id}/predict",
+                f"{config.API_BASE_URL}/api/predict",
                 json=body,
                 timeout=30.0
             )
@@ -460,7 +476,7 @@ def map_parameters_to_backend(purpose_name: str, eq_id: str, frontend_params: di
     
     # Add purpose and equation information
     params['purpose'] = purpose_name
-    params['equation_id'] = eq_id
+    params['equation_type'] = eq_id  # Backend expects 'equation_type', not 'equation_id'
     
     # Add default training parameters if not provided
     training_params = config.get_training_parameters()

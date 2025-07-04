@@ -181,7 +181,7 @@ async def forward_problems_get_results(eq_id: str):
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                f"{config.API_BASE_URL}/api/forward_problems/{eq_id}/results",
+                f"{config.API_BASE_URL}/api/results/forward_problems/{eq_id}",
                 timeout=30.0
             )
             

@@ -51,7 +51,7 @@ class ForwardProblemsTrainer:
 
         Args:
             learning_rate (float): Learning rate for optimization.
-            optimizer_type (str): Type of optimizer ('adam', 'sgd', 'adamw').
+            optimizer_type (str): Type of optimizer ('adam', 'sgd', 'adamw', 'adam_lbfgs', 'lbfgs').
         """
         if optimizer_type.lower() == "adam":
             self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
@@ -59,6 +59,12 @@ class ForwardProblemsTrainer:
             self.optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
         elif optimizer_type.lower() == "adamw":
             self.optimizer = optim.AdamW(self.model.parameters(), lr=learning_rate)
+        elif optimizer_type.lower() == "lbfgs":
+            self.optimizer = optim.LBFGS(self.model.parameters(), lr=learning_rate, max_iter=20)
+        elif optimizer_type.lower() == "adam_lbfgs":
+            # For adam_lbfgs, we'll use Adam initially and can switch to LBFGS later
+            self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
+            self.optimizer_type = "adam_lbfgs"  # Store for potential switching
         else:
             raise ValueError(f"Unsupported optimizer type: {optimizer_type}")
         
@@ -103,25 +109,135 @@ class ForwardProblemsTrainer:
         Returns:
             Dict[str, float]: Loss values for this step.
         """
-        self.optimizer.zero_grad()
+        # Handle LBFGS optimizer which requires a closure
+        if isinstance(self.optimizer, optim.LBFGS):
+            def closure():
+                self.optimizer.zero_grad()
+                
+                # Extract data points using the correct keys from data generator
+                x_interior = train_data['x'][:, 0:1]  # First column is x
+                t_interior = train_data['x'][:, 1:2]  # Second column is t
+                x_bc = train_data['x_bc'][:, 0:1]     # First column is x
+                t_bc = train_data['x_bc'][:, 1:2]     # Second column is t
+                u_bc = train_data['u_bc']
+                x_ic = train_data['x_ic'][:, 0:1]     # First column is x
+                t_ic = train_data['x_ic'][:, 1:2]     # Second column is t
+                u_ic = train_data['u_ic']
+                
+                # Physics loss (PDE residual)
+                x_t_combined = torch.cat([x_interior, t_interior], dim=1)
+                u_interior = self.model(x_t_combined)
+                physics_residual = physics_fn(x_interior, t_interior, u_interior)
+                physics_loss = torch.mean(physics_residual**2)
+                
+                # Boundary condition loss
+                x_t_bc_combined = torch.cat([x_bc, t_bc], dim=1)
+                u_bc_pred = self.model(x_t_bc_combined)
+                boundary_loss = torch.mean((u_bc_pred - u_bc)**2)
+                
+                # Initial condition loss
+                x_t_ic_combined = torch.cat([x_ic, t_ic], dim=1)
+                u_ic_pred = self.model(x_t_ic_combined)
+                initial_loss = torch.mean((u_ic_pred - u_ic)**2)
+                
+                # Total loss with weights
+                total_loss = (weights['physics'] * physics_loss + 
+                             weights['boundary'] * boundary_loss + 
+                             weights['initial'] * initial_loss)
+                
+                # Backward pass
+                total_loss.backward()
+                return total_loss
+            
+            # LBFGS step
+            self.optimizer.step(closure)
+            
+            # For LBFGS, we need to compute losses again for logging
+            with torch.no_grad():
+                x_interior = train_data['x'][:, 0:1]
+                t_interior = train_data['x'][:, 1:2]
+                x_bc = train_data['x_bc'][:, 0:1]
+                t_bc = train_data['x_bc'][:, 1:2]
+                u_bc = train_data['u_bc']
+                x_ic = train_data['x_ic'][:, 0:1]
+                t_ic = train_data['x_ic'][:, 1:2]
+                u_ic = train_data['u_ic']
+                
+                x_t_combined = torch.cat([x_interior, t_interior], dim=1)
+                u_interior = self.model(x_t_combined)
+                physics_residual = physics_fn(x_interior, t_interior, u_interior)
+                physics_loss = torch.mean(physics_residual**2)
+                
+                x_t_bc_combined = torch.cat([x_bc, t_bc], dim=1)
+                u_bc_pred = self.model(x_t_bc_combined)
+                boundary_loss = torch.mean((u_bc_pred - u_bc)**2)
+                
+                x_t_ic_combined = torch.cat([x_ic, t_ic], dim=1)
+                u_ic_pred = self.model(x_t_ic_combined)
+                initial_loss = torch.mean((u_ic_pred - u_ic)**2)
+                
+                total_loss = (weights['physics'] * physics_loss + 
+                             weights['boundary'] * boundary_loss + 
+                             weights['initial'] * initial_loss)
+            
+            return {
+                'physics_loss': physics_loss.item(),
+                'boundary_loss': boundary_loss.item(),
+                'initial_loss': initial_loss.item(),
+                'total_loss': total_loss.item()
+            }
         
-        # Compute losses (implement specific loss computation for this purpose)
-        # This is a placeholder - implement specific logic for each purpose
-        total_loss = torch.tensor(0.0, requires_grad=True)
-        
-        # Backward pass
-        total_loss.backward()
-        self.optimizer.step()
-        
-        if self.scheduler is not None:
-            if isinstance(self.scheduler, optim.lr_scheduler.ReduceLROnPlateau):
-                self.scheduler.step(total_loss)
-            else:
-                self.scheduler.step()
-        
-        return {
-            'total_loss': total_loss.item()
-        }
+        else:
+            # Standard optimizer (Adam, SGD, etc.)
+            self.optimizer.zero_grad()
+            
+            # Extract data points using the correct keys from data generator
+            x_interior = train_data['x'][:, 0:1]  # First column is x
+            t_interior = train_data['x'][:, 1:2]  # Second column is t
+            x_bc = train_data['x_bc'][:, 0:1]     # First column is x
+            t_bc = train_data['x_bc'][:, 1:2]     # Second column is t
+            u_bc = train_data['u_bc']
+            x_ic = train_data['x_ic'][:, 0:1]     # First column is x
+            t_ic = train_data['x_ic'][:, 1:2]     # Second column is t
+            u_ic = train_data['u_ic']
+            
+            # Physics loss (PDE residual)
+            x_t_combined = torch.cat([x_interior, t_interior], dim=1)
+            u_interior = self.model(x_t_combined)
+            physics_residual = physics_fn(x_interior, t_interior, u_interior)
+            physics_loss = torch.mean(physics_residual**2)
+            
+            # Boundary condition loss
+            x_t_bc_combined = torch.cat([x_bc, t_bc], dim=1)
+            u_bc_pred = self.model(x_t_bc_combined)
+            boundary_loss = torch.mean((u_bc_pred - u_bc)**2)
+            
+            # Initial condition loss
+            x_t_ic_combined = torch.cat([x_ic, t_ic], dim=1)
+            u_ic_pred = self.model(x_t_ic_combined)
+            initial_loss = torch.mean((u_ic_pred - u_ic)**2)
+            
+            # Total loss with weights
+            total_loss = (weights['physics'] * physics_loss + 
+                         weights['boundary'] * boundary_loss + 
+                         weights['initial'] * initial_loss)
+            
+            # Backward pass
+            total_loss.backward()
+            self.optimizer.step()
+            
+            if self.scheduler is not None:
+                if isinstance(self.scheduler, optim.lr_scheduler.ReduceLROnPlateau):
+                    self.scheduler.step(total_loss)
+                else:
+                    self.scheduler.step()
+            
+            return {
+                'physics_loss': physics_loss.item(),
+                'boundary_loss': boundary_loss.item(),
+                'initial_loss': initial_loss.item(),
+                'total_loss': total_loss.item()
+            }
 
     def train(self, train_data: Dict[str, torch.Tensor], 
               physics_fn: Callable, epochs: int = 10000,
@@ -227,4 +343,4 @@ class ForwardProblemsTrainer:
         epoch = checkpoint['epoch']
         self.logger.log_equation_specific_info(f"Checkpoint loaded from epoch {epoch}")
         
-        return epoch
+        return epoch 

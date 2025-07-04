@@ -301,6 +301,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function startTraining() {
+    console.log('🚀 Starting training...');
+    console.log('Purpose Key:', window.purposeKey);
+    console.log('Equation Type:', window.equationType);
+    
     const form = document.getElementById('simulation-form');
     const formData = new FormData(form);
     
@@ -331,14 +335,17 @@ function startTraining() {
     
     // Add purpose and equation type
     trainingData.purpose = window.purposeKey;
-    trainingData.equation_type = getEquationType();
+    trainingData.equation_type = window.equationType;
     
     // Show training progress
     showTrainingProgress();
     
     // Send training request using purpose-based endpoint
-    const equationType = getEquationType();
-    fetch(`/purpose/${window.purposeKey}/api/simulate/${equationType}`, {
+    const url = `/api/simulate/${window.purposeKey}/${window.equationType}`;
+    console.log('🌐 Sending request to:', url);
+    console.log('📤 Training data:', trainingData);
+    
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -368,7 +375,7 @@ function showTrainingSuccess(data) {
     
     // Show success message
     setTimeout(() => {
-        window.location.href = `/purpose/${window.purposeKey}/results/${getEquationType()}`;
+        window.location.href = `/purpose/${window.purposeKey}/results/${window.equationType}`;
     }, 1000);
 }
 

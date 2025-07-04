@@ -26,7 +26,7 @@ class MLP(nn.Module):
             output_dim (int): Output dimension.
             hidden_dims (List[int]): List of hidden layer dimensions.
             activation (str): Activation function for hidden layers ('tanh', 'relu', 'sigmoid', 'swish').
-            output_activation (str): Activation function for output layer ('linear', 'tanh', 'sigmoid', 'softplus').
+            output_activation (str): Activation function for output layer ('linear', 'tanh', 'sigmoid').
             dropout (float): Dropout rate.
         """
         super(MLP, self).__init__()
@@ -49,6 +49,7 @@ class MLP(nn.Module):
                 layers.append(nn.Dropout(dropout))
             prev_dim = hidden_dim
         
+        # Output layer
         layers.append(nn.Linear(prev_dim, output_dim))
         
         # Add output activation if not linear
@@ -71,14 +72,10 @@ class MLP(nn.Module):
         """
         if activation.lower() == "tanh":
             return nn.Tanh()
-        elif activation.lower() == "sin":
-            return SinActivation()
         elif activation.lower() == "relu":
             return nn.ReLU()
         elif activation.lower() == "sigmoid":
             return nn.Sigmoid()
-        elif activation.lower() == "softplus":
-            return nn.Softplus()
         elif activation.lower() == "swish":
             return nn.SiLU()
         elif activation.lower() == "gelu":
@@ -325,14 +322,10 @@ class ResNetPINN(nn.Module):
         """Get activation function."""
         if activation.lower() == "tanh":
             return nn.Tanh()
-        elif activation.lower() == "sin":
-            return SinActivation()
         elif activation.lower() == "relu":
             return nn.ReLU()
         elif activation.lower() == "sigmoid":
             return nn.Sigmoid()
-        elif activation.lower() == "softplus":
-            return nn.Softplus()
         elif activation.lower() == "swish":
             return nn.SiLU()
         elif activation.lower() == "gelu":
@@ -398,14 +391,10 @@ class ResidualBlock(nn.Module):
         # Activation function
         if activation.lower() == "tanh":
             self.activation = nn.Tanh()
-        elif activation.lower() == "sin":
-            self.activation = SinActivation()
         elif activation.lower() == "relu":
             self.activation = nn.ReLU()
         elif activation.lower() == "sigmoid":
             self.activation = nn.Sigmoid()
-        elif activation.lower() == "softplus":
-            self.activation = nn.Softplus()
         elif activation.lower() == "swish":
             self.activation = nn.SiLU()
         elif activation.lower() == "gelu":
@@ -436,24 +425,6 @@ class ResidualBlock(nn.Module):
         return self.activation(out + identity)
 
 
-class SinActivation(nn.Module):
-    """Sine activation function for PINNs - useful for high-frequency problems."""
-    
-    def __init__(self):
-        super(SinActivation, self).__init__()
-    
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Forward pass with sine activation.
-        
-        Args:
-            x (torch.Tensor): Input tensor.
-            
-        Returns:
-            torch.Tensor: sin(x)
-        """
-        return torch.sin(x)
-
-
 def create_pinn_model(model_type: str = "standard", **kwargs) -> nn.Module:
     """Factory function to create PINN models.
 
@@ -464,6 +435,18 @@ def create_pinn_model(model_type: str = "standard", **kwargs) -> nn.Module:
     Returns:
         nn.Module: PINN model.
     """
+    # Handle separate hidden_activation and output_activation parameters
+    if 'hidden_activation' in kwargs and 'output_activation' in kwargs:
+        # Map to the new MLP parameters
+        kwargs['activation'] = kwargs.pop('hidden_activation')
+        kwargs['output_activation'] = kwargs.pop('output_activation')
+    elif 'hidden_activation' in kwargs:
+        kwargs['activation'] = kwargs.pop('hidden_activation')
+        kwargs['output_activation'] = 'linear'  # Default output activation
+    elif 'output_activation' in kwargs:
+        kwargs['activation'] = 'tanh'  # Default hidden activation
+        kwargs['output_activation'] = kwargs.pop('output_activation')
+    
     if model_type.lower() == "standard":
         return MLP(**kwargs)
     elif model_type.lower() == "fourier":
@@ -497,7 +480,7 @@ def get_model_summary(model: nn.Module) -> Dict[str, Any]:
         'input_dim': getattr(model, 'input_dim', 'Unknown'),
         'output_dim': getattr(model, 'output_dim', 'Unknown'),
         'hidden_dims': getattr(model, 'hidden_dims', 'Unknown'),
-        'activation': getattr(model, 'activation_name', 'Unknown')
+        'activation': getattr(model, 'activation', 'Unknown')
     }
     
     return summary 

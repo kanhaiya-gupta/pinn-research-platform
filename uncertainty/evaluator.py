@@ -115,7 +115,7 @@ class UncertaintyEvaluator:
             't_grid': t_grid
         }
         
-        self.logger.log_equation_specific_info(f"Grid evaluation completed - R²: {metrics['r2']:.4f}")
+        self.logger.log_equation_specific_info(f"Grid evaluation completed - R\u00b2: {metrics['r2']:.4f}")
         
         return results
 
