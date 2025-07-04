@@ -130,9 +130,9 @@
                     <div class="form-group">
                         <label for="epochs">Training Epochs</label>
                         <input type="number" id="epochs" name="epochs" 
-                               value="{{ default_params.epochs|default(10000) }}" 
-                               min="1000" max="100000" required>
-                        <small class="form-text">Number of full training iterations</small>
+                               value="{{ default_params.epochs|default(1000) }}" 
+                               min="100" max="10000" required>
+                        <small class="form-text">Number of full training iterations (1000 recommended for good convergence)</small>
                     </div>
                 </div>
                 
@@ -492,7 +492,11 @@
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary btn-large">
                     <i class="fas fa-play"></i>
-                    Start Forward Problem Training
+                    Start Training
+                </button>
+                <button type="button" class="btn btn-outline-primary btn-large" onclick="startTrainingWithLiveView()">
+                    <i class="fas fa-chart-line"></i>
+                    Start Training with Live View
                 </button>
                 <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
                     <i class="fas fa-undo"></i>

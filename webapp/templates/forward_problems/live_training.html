@@ -1,0 +1,697 @@
+{% extends "base.html" %}
+
+{% block title %}Live Training - {{ equation.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/live-training.css">
+{% endblock %}
+
+{% block content %}
+<div class="live-training-container">
+    <!-- Header -->
+    <div class="live-training-header">
+        <div class="breadcrumb">
+            <a href="/" class="breadcrumb-item">Dashboard</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/purpose/{{ purpose_key }}" class="breadcrumb-item">{{ purpose.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/purpose/{{ purpose_key }}/simulation/{{ equation_type }}" class="breadcrumb-item">{{ equation.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">Live Training</span>
+        </div>
+        
+        <div class="live-training-title">
+            <h1><i class="{{ equation.icon }}" style="color: {{ equation.color }};"></i> {{ equation.name }} - Live Training</h1>
+            <p class="live-training-subtitle">Real-time training progress for {{ purpose.name }}</p>
+        </div>
+    </div>
+
+            <!-- Training Status -->
+            <div class="status-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Training Status
+                </h2>
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Status</h4>
+                            <div id="training-status" class="status-badge training">Training in Progress</div>
+                        </div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Progress</h4>
+                            <div id="progress-text" class="status-value">0% Epoch 0 / 0</div>
+                            <small class="update-note">Updates every 50 epochs</small>
+                        </div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-chart-area"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Total Loss</h4>
+                            <div id="total-loss" class="status-value">1.000e+00</div>
+                        </div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Time</h4>
+                            <div id="training-time" class="status-value">00:00:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loss Details -->
+            <div class="loss-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Loss Components
+                </h2>
+                <div class="loss-grid">
+                    <div class="loss-card">
+                        <div class="loss-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <div class="loss-content">
+                            <h4>Physics Loss</h4>
+                            <div id="physics-loss" class="loss-value">1.000e+00</div>
+                        </div>
+                    </div>
+                    <div class="loss-card">
+                        <div class="loss-icon">
+                            <i class="fas fa-border-all"></i>
+                        </div>
+                        <div class="loss-content">
+                            <h4>Boundary Loss</h4>
+                            <div id="boundary-loss" class="loss-value">1.000e+00</div>
+                        </div>
+                    </div>
+                    <div class="loss-card">
+                        <div class="loss-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="loss-content">
+                            <h4>Initial Loss</h4>
+                            <div id="initial-loss" class="loss-value">1.000e+00</div>
+                        </div>
+                    </div>
+                    <div class="loss-card">
+                        <div class="loss-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div class="loss-content">
+                            <h4>Convergence Rate</h4>
+                            <div id="convergence-rate" class="loss-value">0.000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Charts -->
+            <div class="charts-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-area"></i>
+                    Live Training Visualization
+                </h2>
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i class="fas fa-chart-line"></i> Loss Evolution</h4>
+                        </div>
+                        <div class="chart-body">
+                            <div id="loss-chart" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i class="fas fa-tachometer-alt"></i> Progress Gauge</h4>
+                        </div>
+                        <div class="chart-body">
+                            <div id="progress-gauge" style="height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Controls -->
+            <div class="controls-section">
+                <h2 class="section-title">
+                    <i class="fas fa-cogs"></i>
+                    Training Controls
+                </h2>
+                <div class="controls-card">
+                    <div class="controls-content">
+                        <button id="pause-btn" class="btn btn-outline-warning btn-large" onclick="pauseTraining()">
+                            <i class="fas fa-pause"></i> Pause Training
+                        </button>
+                        <button id="resume-btn" class="btn btn-outline-success btn-large" onclick="resumeTraining()" style="display: none;">
+                            <i class="fas fa-play"></i> Resume Training
+                        </button>
+                        <button id="stop-btn" class="btn btn-outline-danger btn-large" onclick="stopTraining()">
+                            <i class="fas fa-stop"></i> Stop Training
+                        </button>
+                        <a id="view-results-btn" href="/purpose/{{ purpose_key }}/results/{{ equation_type }}" class="btn btn-outline-primary btn-large" style="display: none;">
+                            <i class="fas fa-chart-bar"></i> View Results
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- Completion Message -->
+            <div id="completion-message" class="completion-message" style="display: none;">
+                <div class="completion-content">
+                    <div class="completion-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="completion-text">
+                        <h4>Training Completed Successfully!</h4>
+                        <p>The model has finished training. You can now view the detailed results or start a new simulation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Global variables
+let trainingData = {
+    epochs: [],
+    totalLoss: [],
+    physicsLoss: [],
+    boundaryLoss: [],
+    initialLoss: []
+};
+
+let startTime = Date.now();
+let updateInterval = null;
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Live training page loaded');
+    console.log('Template variables:');
+    console.log('  purpose_key:', '{{ purpose_key }}');
+    console.log('  equation_type:', '{{ equation_type }}');
+    console.log('  eq_id:', '{{ eq_id }}');
+    initializeCharts();
+    startProgressUpdates();
+    
+    // Check if we have training data and should auto-start training
+    const trainingDataStr = sessionStorage.getItem('trainingData');
+    console.log('🔍 Checking sessionStorage for training data...');
+    console.log('🔍 Raw training data from sessionStorage:', trainingDataStr);
+    
+    // Process training data if it exists
+    if (trainingDataStr) {
+        try {
+            const trainingData = JSON.parse(trainingDataStr);
+            console.log('📋 Parsed training data:', trainingData);
+            
+            // Update epochs if it's the old value
+            if (trainingData.epochs === 10000) {
+                console.log('🔄 Updating epochs from 10000 to 1000');
+                trainingData.epochs = 1000;
+                sessionStorage.setItem('trainingData', JSON.stringify(trainingData));
+            }
+            
+            // Verify this is for the correct purpose and equation
+            if (trainingData.purpose === '{{ purpose_key }}' && trainingData.equation_type === '{{ equation_type }}') {
+                console.log('✅ Training data matches current page, starting training immediately...');
+                // Start training immediately and clear sessionStorage
+                startTrainingWithData(trainingData);
+                sessionStorage.removeItem('trainingData');
+                return; // Exit early since we started training
+            } else {
+                console.log('❌ Training data mismatch, clearing sessionStorage');
+                console.log('❌ Expected:', '{{ purpose_key }}', '{{ equation_type }}');
+                console.log('❌ Found:', trainingData.purpose, trainingData.equation_type);
+                sessionStorage.removeItem('trainingData');
+            }
+        } catch (e) {
+            console.log('❌ Error parsing sessionStorage data, clearing it');
+            sessionStorage.removeItem('trainingData');
+        }
+    }
+    
+    // If we reach here, no valid training data was found, so create default data
+    console.log('📋 No valid training data found in sessionStorage');
+    console.log('📋 Creating default training data and starting training...');
+    
+    // Create default training data for this equation
+    const defaultTrainingData = {
+        purpose: '{{ purpose_key }}',
+        equation_type: '{{ equation_type }}',
+        hidden_layers: 4,
+        neurons_per_layer: 20,
+        learning_rate: 0.001,
+        epochs: 1000,
+        hidden_activation: 'tanh',
+        output_activation: 'linear',
+        optimizer: 'adam',
+        physics_weight: 1.0,
+        boundary_weight: 1.0,
+        initial_weight: 1.0,
+        n_interior_points: 1000,
+        n_boundary_points: 200,
+        n_initial_points: 200
+    };
+    
+    console.log('📋 Default training data:', defaultTrainingData);
+    startTrainingWithData(defaultTrainingData);
+});
+
+function initializeCharts() {
+    // Loss evolution chart
+    const lossTrace = {
+        x: [],
+        y: [],
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'Total Loss',
+        line: { color: '#667eea', width: 2 },
+        marker: { size: 4 }
+    };
+    
+    const lossLayout = {
+        title: 'Training Loss Evolution',
+        xaxis: { title: 'Epoch' },
+        yaxis: { title: 'Loss', type: 'log' },
+        showlegend: true,
+        margin: { l: 50, r: 30, t: 50, b: 50 }
+    };
+    
+    const lossChartElement = document.getElementById('loss-chart');
+    if (lossChartElement) {
+        Plotly.newPlot('loss-chart', [lossTrace], lossLayout, {responsive: true});
+    }
+    
+    // Progress gauge chart
+    const gaugeData = [{
+        type: 'indicator',
+        mode: 'gauge+number+delta',
+        value: 0,
+        domain: { x: [0, 1], y: [0, 1] },
+        title: { text: 'Training Progress' },
+        delta: { reference: 100 },
+        gauge: {
+            axis: { range: [null, 100] },
+            bar: { color: '#667eea' },
+            steps: [
+                { range: [0, 25], color: '#FF6B6B' },
+                { range: [25, 50], color: '#FFE66D' },
+                { range: [50, 75], color: '#4ECDC4' },
+                { range: [75, 100], color: '#45B7D1' }
+            ],
+            threshold: {
+                line: { color: 'red', width: 4 },
+                thickness: 0.75,
+                value: 100
+            }
+        }
+    }];
+    
+    const gaugeLayout = {
+        title: 'Training Progress',
+        margin: { l: 50, r: 50, t: 50, b: 50 }
+    };
+    
+    const gaugeElement = document.getElementById('progress-gauge');
+    if (gaugeElement) {
+        Plotly.newPlot('progress-gauge', gaugeData, gaugeLayout, {responsive: true});
+    }
+}
+
+function startProgressUpdates() {
+    updateInterval = setInterval(() => {
+        fetchTrainingProgress();
+        updateTimeDisplay();
+    }, 500); // Update every 500ms since backend updates every 50 epochs
+}
+
+function updateTimeDisplay() {
+    const elapsed = Date.now() - startTime;
+    const hours = Math.floor(elapsed / 3600000);
+    const minutes = Math.floor((elapsed % 3600000) / 60000);
+    const seconds = Math.floor((elapsed % 60000) / 1000);
+    
+    document.getElementById('training-time').textContent = 
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function fetchTrainingProgress() {
+    const purposeKey = '{{ purpose_key }}';
+    const equationType = '{{ equation_type }}';
+    console.log('🔍 Fetching training progress for:', purposeKey, equationType);
+    
+    fetch(`/api/training-progress/${purposeKey}/${equationType}`)
+        .then(response => {
+            console.log('📡 Progress response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('📊 Received progress data:', data);
+            updateTrainingDisplay(data);
+            updateCharts(data);
+        })
+        .catch(error => {
+            console.error('❌ Error fetching training progress:', error);
+        });
+}
+
+function updateTrainingDisplay(data) {
+    console.log('🔄 Updating training display with data:', data);
+    
+    // Update status
+    const statusElement = document.getElementById('training-status');
+    if (statusElement) {
+        if (data.status === 'completed') {
+            statusElement.textContent = 'Completed';
+            statusElement.className = 'status-badge completed';
+            trainingCompleted();
+        } else if (data.status === 'training') {
+            statusElement.textContent = 'Training...';
+            statusElement.className = 'status-badge training';
+        }
+    }
+    
+    // Update progress text
+    const progressElement = document.getElementById('progress-text');
+    if (progressElement && data.total_epochs > 0) {
+        const progress = (data.current_epoch / data.total_epochs) * 100;
+        progressElement.textContent = `${progress.toFixed(1)}% Epoch ${data.current_epoch} / ${data.total_epochs}`;
+    }
+    
+    // Update loss values
+    const totalLossElement = document.getElementById('total-loss');
+    if (totalLossElement && data.total_loss !== undefined) {
+        totalLossElement.textContent = data.total_loss.toExponential(3);
+    }
+    
+    const physicsLossElement = document.getElementById('physics-loss');
+    if (physicsLossElement && data.physics_loss !== undefined) {
+        physicsLossElement.textContent = data.physics_loss.toExponential(3);
+    }
+    
+    const boundaryLossElement = document.getElementById('boundary-loss');
+    if (boundaryLossElement && data.boundary_loss !== undefined) {
+        boundaryLossElement.textContent = data.boundary_loss.toExponential(3);
+    }
+    
+    const initialLossElement = document.getElementById('initial-loss');
+    if (initialLossElement && data.initial_loss !== undefined) {
+        initialLossElement.textContent = data.initial_loss.toExponential(3);
+    }
+    
+    const convergenceElement = document.getElementById('convergence-rate');
+    if (convergenceElement && data.convergence_rate !== undefined) {
+        convergenceElement.textContent = data.convergence_rate.toFixed(3);
+    }
+    
+    console.log('✅ Training display updated');
+}
+
+function updateCharts(data) {
+    if (data.current_epoch !== undefined && data.total_loss !== undefined) {
+        // Add new data point
+        trainingData.epochs.push(data.current_epoch);
+        trainingData.totalLoss.push(data.total_loss);
+        
+        if (data.physics_loss !== undefined) {
+            trainingData.physicsLoss.push(data.physics_loss);
+        }
+        if (data.boundary_loss !== undefined) {
+            trainingData.boundaryLoss.push(data.boundary_loss);
+        }
+        if (data.initial_loss !== undefined) {
+            trainingData.initialLoss.push(data.initial_loss);
+        }
+        
+        // Update loss evolution chart
+        const lossTrace = {
+            x: trainingData.epochs,
+            y: trainingData.totalLoss,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Total Loss',
+            line: { color: '#667eea', width: 2 },
+            marker: { size: 4 }
+        };
+        
+        Plotly.react('loss-chart', [lossTrace]);
+        
+        // Update components chart
+        const traces = [];
+        
+        if (trainingData.physicsLoss.length > 0) {
+            traces.push({
+                x: trainingData.epochs,
+                y: trainingData.physicsLoss,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Physics Loss',
+                line: { color: '#FF6B6B', width: 2 }
+            });
+        }
+        
+        if (trainingData.boundaryLoss.length > 0) {
+            traces.push({
+                x: trainingData.epochs,
+                y: trainingData.boundaryLoss,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Boundary Loss',
+                line: { color: '#4ECDC4', width: 2 }
+            });
+        }
+        
+        if (trainingData.initialLoss.length > 0) {
+            traces.push({
+                x: trainingData.epochs,
+                y: trainingData.initialLoss,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Initial Loss',
+                line: { color: '#45B7D1', width: 2 }
+            });
+        }
+        
+        // Update progress gauge
+        const gaugeElement = document.getElementById('progress-gauge');
+        if (gaugeElement && data.total_epochs > 0) {
+            const progress = (data.current_epoch / data.total_epochs) * 100;
+            const gaugeData = [{
+                type: 'indicator',
+                mode: 'gauge+number+delta',
+                value: progress,
+                domain: { x: [0, 1], y: [0, 1] },
+                title: { text: 'Training Progress' },
+                delta: { reference: 100 },
+                gauge: {
+                    axis: { range: [null, 100] },
+                    bar: { color: '#667eea' },
+                    steps: [
+                        { range: [0, 25], color: '#FF6B6B' },
+                        { range: [25, 50], color: '#FFE66D' },
+                        { range: [50, 75], color: '#4ECDC4' },
+                        { range: [75, 100], color: '#45B7D1' }
+                    ],
+                    threshold: {
+                        line: { color: 'red', width: 4 },
+                        thickness: 0.75,
+                        value: 100
+                    }
+                }
+            }];
+            
+            Plotly.react('progress-gauge', gaugeData);
+        }
+    }
+}
+
+function trainingCompleted() {
+    clearInterval(updateInterval);
+    
+    document.getElementById('pause-btn').style.display = 'none';
+    document.getElementById('resume-btn').style.display = 'none';
+    document.getElementById('stop-btn').style.display = 'none';
+    document.getElementById('view-results-btn').style.display = 'inline-block';
+    
+    showNotification('Training completed successfully!', 'success');
+}
+
+function pauseTraining() {
+    fetch(`/api/training-control/{{ purpose_key }}/{{ equation_type }}/pause`, {method: 'POST'})
+        .then(() => {
+            document.getElementById('pause-btn').style.display = 'none';
+            document.getElementById('resume-btn').style.display = 'inline-block';
+            document.getElementById('training-status').textContent = 'Paused';
+            document.getElementById('training-status').className = 'badge bg-secondary fs-6';
+        });
+}
+
+function resumeTraining() {
+    fetch(`/api/training-control/{{ purpose_key }}/{{ equation_type }}/resume`, {method: 'POST'})
+        .then(() => {
+            document.getElementById('pause-btn').style.display = 'inline-block';
+            document.getElementById('resume-btn').style.display = 'none';
+            document.getElementById('training-status').textContent = 'Training...';
+            document.getElementById('training-status').className = 'badge bg-warning fs-6';
+        });
+}
+
+function stopTraining() {
+    if (confirm('Are you sure you want to stop training?')) {
+        fetch(`/api/training-control/{{ purpose_key }}/{{ equation_type }}/stop`, {method: 'POST'})
+            .then(() => {
+                clearInterval(updateInterval);
+                document.getElementById('training-status').textContent = 'Stopped';
+                document.getElementById('training-status').className = 'badge bg-danger fs-6';
+                document.getElementById('pause-btn').style.display = 'none';
+                document.getElementById('resume-btn').style.display = 'none';
+                document.getElementById('stop-btn').style.display = 'none';
+                document.getElementById('results-btn').style.display = 'inline-block';
+            });
+    }
+}
+
+function startTrainingWithData(trainingData) {
+    console.log('🚀 Starting training with provided data...');
+    console.log('📤 Training data:', trainingData);
+    
+    // Update UI to show training is starting
+    const pauseBtn = document.getElementById('pause-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const statusElement = document.getElementById('training-status');
+    
+    if (pauseBtn) pauseBtn.style.display = 'inline-block';
+    if (stopBtn) stopBtn.style.display = 'inline-block';
+    if (statusElement) {
+        statusElement.textContent = 'Starting Training...';
+        statusElement.className = 'status-badge training';
+    }
+    
+    // Send training request to frontend API (which proxies to backend)
+    const url = `/api/simulate/${trainingData.purpose}/${trainingData.equation_type}`;
+    console.log('🌐 Sending request to:', url);
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(trainingData)
+    })
+    .then(response => {
+        console.log('📡 Training response status:', response.status);
+        console.log('📡 Training response headers:', response.headers);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('📥 Training response data:', data);
+        if (data.status === 'success') {
+            console.log('✅ Training started successfully');
+            if (statusElement) {
+                statusElement.textContent = 'Training in Progress...';
+                statusElement.className = 'status-badge training';
+            }
+            showNotification('Training started successfully!', 'success');
+        } else {
+            console.error('❌ Training failed:', data.message);
+            showTrainingError(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('❌ Training request failed:', error);
+        console.error('❌ Error details:', error.message);
+        showTrainingError('Training failed: ' + error.message);
+    });
+}
+
+function startTraining() {
+    console.log('🚀 Starting training from live training page...');
+    
+    // Get training data from sessionStorage
+    const trainingDataStr = sessionStorage.getItem('trainingData');
+    if (!trainingDataStr) {
+        console.log('❌ No training data found in sessionStorage');
+        showNotification('No training data found. Please go back to simulation page.', 'error');
+        return;
+    }
+    
+    const trainingData = JSON.parse(trainingDataStr);
+    
+    // Update epochs to new default if it's the old value
+    if (trainingData.epochs === 10000) {
+        trainingData.epochs = 1000;
+        console.log('🔄 Updated epochs from 10000 to 1000 for better demo');
+    }
+    
+    // Use the new function to start training
+    startTrainingWithData(trainingData);
+}
+
+function showTrainingError(message) {
+    // Reset UI
+    const pauseBtn = document.getElementById('pause-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const statusElement = document.getElementById('training-status');
+    
+    if (pauseBtn) pauseBtn.style.display = 'none';
+    if (stopBtn) stopBtn.style.display = 'none';
+    if (statusElement) {
+        statusElement.textContent = 'Error';
+        statusElement.className = 'status-badge error';
+    }
+    
+    showNotification('Training Error: ' + message, 'error');
+}
+
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = `
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    `;
+    
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+</script>
+{% endblock %} 

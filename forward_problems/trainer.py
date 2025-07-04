@@ -242,7 +242,8 @@ class ForwardProblemsTrainer:
     def train(self, train_data: Dict[str, torch.Tensor], 
               physics_fn: Callable, epochs: int = 10000,
               weights: Optional[Dict[str, float]] = None,
-              save_interval: int = 1000, save_path: Optional[str] = None) -> Dict[str, list]:
+              save_interval: int = 1000, save_path: Optional[str] = None,
+              progress_callback: Optional[Callable] = None) -> Dict[str, list]:
         """Train the PINN model.
 
         Args:
@@ -280,8 +281,12 @@ class ForwardProblemsTrainer:
                 self.training_history[key].append(value)
             self.training_history['epochs'].append(epoch)
             
-            # Log progress
-            if epoch % 100 == 0:
+            # Call progress callback if provided
+            if progress_callback is not None:
+                progress_callback(epoch, losses)
+            
+            # Log progress (more frequent for live training)
+            if epoch % 50 == 0:  # Log every 50 epochs for smoother plotting
                 self.logger.log_training_progress(
                     epoch, epochs, losses.get('physics_loss', 0.0), losses['total_loss']
                 )

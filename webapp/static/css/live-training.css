@@ -1,0 +1,383 @@
+/* Live Training Page Styles */
+.live-training-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    min-height: 100vh;
+}
+
+/* Header Styles */
+.live-training-header {
+    margin-bottom: 30px;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.breadcrumb-item {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb-item:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: #666;
+    font-weight: 500;
+}
+
+.breadcrumb-separator {
+    margin: 0 8px;
+    color: #ccc;
+}
+
+.live-training-title h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.live-training-title h1 i {
+    /* Allow inline styles to override for equation icons */
+    color: unset !important;
+}
+
+.live-training-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 0;
+}
+
+/* Section Styles */
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: #007bff;
+}
+
+/* Status Section */
+.status-section {
+    margin-bottom: 30px;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.status-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.2s;
+}
+
+.status-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+.status-icon {
+    width: 50px;
+    height: 50px;
+    background: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.status-content h4 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    font-family: 'Courier New', monospace;
+}
+
+.update-note {
+    font-size: 0.75rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
+}
+
+.status-badge {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #e9ecef;
+    display: inline-block;
+}
+
+.status-badge.training {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Loss Section */
+.loss-section {
+    margin-bottom: 30px;
+}
+
+.loss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.loss-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.2s;
+}
+
+.loss-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+.loss-icon {
+    width: 50px;
+    height: 50px;
+    background: #28a745;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.loss-content h4 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.loss-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    font-family: 'Courier New', monospace;
+}
+
+/* Charts Section */
+.charts-section {
+    margin-bottom: 30px;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+}
+
+.chart-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.chart-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chart-header {
+    background: #e9ecef;
+    padding: 15px 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.chart-header h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-header i {
+    color: #007bff;
+}
+
+.chart-body {
+    padding: 20px;
+}
+
+/* Controls Section */
+.controls-section {
+    margin-bottom: 30px;
+}
+
+.controls-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.controls-content {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-large {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-large:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Completion Message */
+.completion-message {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.completion-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.completion-icon {
+    width: 50px;
+    height: 50px;
+    background: #28a745;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.completion-text h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #155724;
+    margin: 0 0 5px 0;
+}
+
+.completion-text p {
+    font-size: 1rem;
+    color: #155724;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .live-training-container {
+        padding: 15px;
+    }
+    
+    .live-training-title h1 {
+        font-size: 2rem;
+    }
+    
+    .status-grid,
+    .loss-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .controls-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-large {
+        width: 100%;
+    }
+}
+
+/* Animation for status updates */
+.status-value,
+.loss-value {
+    transition: all 0.3s ease;
+}
+
+.status-value.updated,
+.loss-value.updated {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+} 

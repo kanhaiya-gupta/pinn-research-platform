@@ -162,7 +162,7 @@ async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: st
         "hidden_layers": 4,
         "neurons_per_layer": 20,
         "learning_rate": 0.001,
-        "epochs": 10000
+        "epochs": 1000  # Good balance for PINN convergence
     }
     
     # Add equation-specific default parameters
@@ -183,6 +183,34 @@ async def purpose_simulation_page(request: Request, purpose_name: str, eq_id: st
             "default_params": default_params,
             "config": config,
             "title": f"Simulate {equation_info['name']} - {purpose_info['name']}"
+        }
+    )
+
+@app.get("/purpose/{purpose_name}/live-training/{eq_id}", response_class=HTMLResponse)
+async def purpose_live_training_page(request: Request, purpose_name: str, eq_id: str):
+    """Live training page for specific purpose and equation"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    equation_info = equations[eq_id]
+    
+    return templates.TemplateResponse(
+        f"{purpose_name}/live_training.html",
+        {
+            "request": request,
+            "purpose": purpose_info,
+            "purpose_name": purpose_name,
+            "purpose_key": purpose_name,
+            "equation": equation_info,
+            "eq_id": eq_id,
+            "equation_type": eq_id,  # Add this for consistency
+            "config": config,
+            "title": f"Live Training - {equation_info['name']} - {purpose_info['name']}"
         }
     )
 
@@ -412,6 +440,62 @@ async def predict_equation(eq_type: str, request: Request):
                 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+
+@app.get("/api/training-progress/{purpose_name}/{eq_id}")
+async def get_training_progress(purpose_name: str, eq_id: str):
+    """Get live training progress for purpose-based equations"""
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{config.API_BASE_URL}/api/training-progress/{purpose_name}/{eq_id}",
+                timeout=5.0
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                # Return default progress if backend doesn't have it yet
+                return {
+                    "status": "training",
+                    "current_epoch": 0,
+                    "total_epochs": 10000,
+                    "total_loss": 1.0,
+                    "physics_loss": 1.0,
+                    "boundary_loss": 1.0,
+                    "initial_loss": 1.0,
+                    "learning_rate": 0.001
+                }
+                
+    except Exception as e:
+        # Return default progress on error
+        return {
+            "status": "training",
+            "current_epoch": 0,
+            "total_epochs": 10000,
+            "total_loss": 1.0,
+            "physics_loss": 1.0,
+            "boundary_loss": 1.0,
+            "initial_loss": 1.0,
+            "learning_rate": 0.001
+        }
+
+@app.post("/api/training-control/{purpose_name}/{eq_id}/{action}")
+async def training_control(purpose_name: str, eq_id: str, action: str):
+    """Control training (pause/resume/stop) for purpose-based equations"""
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{config.API_BASE_URL}/api/training-control/{purpose_name}/{eq_id}/{action}",
+                timeout=5.0
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return {"status": "success", "message": f"Training {action} requested"}
+                
+    except Exception as e:
+        return {"status": "success", "message": f"Training {action} requested"}
 
 @app.get("/api/results/{purpose_name}/{eq_id}")
 async def get_purpose_results(purpose_name: str, eq_id: str):

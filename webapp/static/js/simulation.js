@@ -300,6 +300,50 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 });
 
+function startTrainingWithLiveView() {
+    console.log('🚀 Starting training with live view...');
+    
+    // Store form data in sessionStorage for the live training page
+    const form = document.getElementById('simulation-form');
+    const formData = new FormData(form);
+    
+    // Convert form data to JSON
+    const trainingData = {};
+    for (let [key, value] of formData.entries()) {
+        // Handle empty values for optional fields
+        if (value === '') {
+            if (key === 'gradient_clipping' || key === 'n_data_points') {
+                trainingData[key] = null;
+            } else {
+                trainingData[key] = undefined;
+            }
+        } else {
+            // Convert numeric values
+            if (['hidden_layers', 'neurons_per_layer', 'epochs', 'scheduler_step_size', 
+                 'early_stopping_patience', 'n_interior_points', 'n_boundary_points', 
+                 'n_initial_points', 'n_data_points'].includes(key)) {
+                trainingData[key] = parseInt(value);
+            } else if (['learning_rate', 'scheduler_gamma', 'physics_weight', 'boundary_weight', 
+                       'initial_weight', 'data_weight', 'gradient_clipping'].includes(key)) {
+                trainingData[key] = parseFloat(value);
+            } else {
+                trainingData[key] = value;
+            }
+        }
+    }
+    
+    // Add purpose and equation type
+    trainingData.purpose = window.purposeKey;
+    trainingData.equation_type = window.equationType;
+    
+    // Store training data in sessionStorage
+    sessionStorage.setItem('trainingData', JSON.stringify(trainingData));
+    
+    // Immediately redirect to live training page
+    console.log('🔄 Redirecting to live training page immediately...');
+    window.location.href = `/purpose/${window.purposeKey}/live-training/${window.equationType}`;
+}
+
 function startTraining() {
     console.log('🚀 Starting training...');
     console.log('Purpose Key:', window.purposeKey);
@@ -352,15 +396,24 @@ function startTraining() {
         },
         body: JSON.stringify(trainingData)
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('🔍 Response status:', response.status);
+        console.log('🔍 Response headers:', response.headers);
+        return response.json();
+    })
     .then(data => {
+        console.log('📥 Response data:', data);
         if (data.status === 'success') {
-            showTrainingSuccess(data);
+            console.log('✅ Training started successfully, redirecting to live training page...');
+            // Redirect to live training page instead of results
+            window.location.href = `/purpose/${window.purposeKey}/live-training/${window.equationType}`;
         } else {
+            console.error('❌ Training failed:', data.message);
             showTrainingError(data.message);
         }
     })
     .catch(error => {
+        console.error('❌ Fetch error:', error);
         showTrainingError('Training failed: ' + error.message);
     });
 }
