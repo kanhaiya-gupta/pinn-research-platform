@@ -2,6 +2,100 @@
 
 {% block title %}{{ title }}{% endblock %}
 
+{% block extra_head %}
+<style>
+    .live-training-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border: 2px solid #e9ecef;
+    }
+    
+    .live-training-content {
+        margin-top: 1rem;
+    }
+    
+    .live-metrics-table {
+        margin: 2rem 0;
+        width: 100%;
+    }
+    
+    .metrics-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 3rem;
+        margin: 0 auto;
+    }
+    
+    .metrics-table td {
+        width: 50%;
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .metric-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .metric-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric-label {
+        font-size: 0.875rem;
+        color: #6c757d;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        text-align: center;
+    }
+    
+    .live-charts-container {
+        margin: 2rem 0;
+    }
+    
+    .chart-container {
+        height: 400px;
+        margin-bottom: 1rem;
+        background: white;
+        border-radius: 8px;
+        padding: 1rem;
+        border: 1px solid #e9ecef;
+    }
+    
+    .live-controls {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    .live-controls .btn {
+        min-width: 120px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="simulation-container">
     <!-- Header -->
@@ -130,9 +224,9 @@
                     <div class="form-group">
                         <label for="epochs">Training Epochs</label>
                         <input type="number" id="epochs" name="epochs" 
-                               value="{{ default_params.epochs|default(1000) }}" 
+                               value="{{ default_params.epochs|default(500) }}" 
                                min="100" max="10000" required>
-                        <small class="form-text">Number of full training iterations (1000 recommended for good convergence)</small>
+                        <small class="form-text">Number of full training iterations (500 for testing, 1000+ for production)</small>
                     </div>
                 </div>
                 
@@ -506,6 +600,60 @@
         </form>
     </div>
 
+    <!-- Live Training Monitor -->
+    <div id="live-training-monitor" class="live-training-section" style="display: none;">
+        <h2><i class="fas fa-chart-line"></i> Live Training Monitor</h2>
+        <div class="live-training-content">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <strong>Live Training Active:</strong> Training is running in the background. Monitor progress in real-time below.
+            </div>
+            
+            <div class="live-metrics-table">
+                <table class="metrics-table">
+                    <tr>
+                        <td class="metric-card">
+                            <div class="metric-label">Total Loss</div>
+                            <div class="metric-value" id="liveTotalLoss">-</div>
+                        </td>
+                        <td class="metric-card">
+                            <div class="metric-label">Physics Loss</div>
+                            <div class="metric-value" id="livePhysicsLoss">-</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="metric-card">
+                            <div class="metric-label">Boundary Loss</div>
+                            <div class="metric-value" id="liveBoundaryLoss">-</div>
+                        </td>
+                        <td class="metric-card">
+                            <div class="metric-label">Initial Loss</div>
+                            <div class="metric-value" id="liveInitialLoss">-</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="live-charts-container">
+                <div class="chart-container">
+                    <canvas id="liveLossChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="live-controls">
+                <button type="button" class="btn btn-outline-danger" id="stopLiveTraining">
+                    <i class="fas fa-stop"></i> Stop Training
+                </button>
+                <button type="button" class="btn btn-outline-secondary" id="resetLiveTraining">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+                <button type="button" class="btn btn-success" id="viewResults" style="display: none;">
+                    <i class="fas fa-chart-bar"></i> View Results
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Training Progress -->
     <div id="training-progress" class="training-progress-section" style="display: none;">
         <h2><i class="fas fa-chart-line"></i> Training Progress</h2>
@@ -563,6 +711,7 @@
 
 {% block scripts %}
 <script src="/static/js/simulation.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Purpose-specific simulation configuration - make it global
     window.purposeKey = "{{ purpose_key }}";
@@ -572,5 +721,310 @@
     // Log configuration for debugging
     console.log('Simulation page loaded for:', window.purposeName, window.equationType);
     console.log('Purpose Key:', window.purposeKey);
+    
+    // Live Training Variables
+    let liveTrainingChart = null;
+    let isLiveTraining = false;
+    let liveTrainingInterval = null;
+    let currentEpoch = 0;
+    let totalEpochs = 0;
+    let trainingCompleted = false; // Flag to prevent multiple completion alerts
+    
+    // Initialize live training chart
+    function initializeLiveChart() {
+        const ctx = document.getElementById('liveLossChart').getContext('2d');
+        liveTrainingChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Total Loss',
+                    data: [],
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                    tension: 0.1
+                }, {
+                    label: 'Physics Loss',
+                    data: [],
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    tension: 0.1
+                }, {
+                    label: 'Boundary Loss',
+                    data: [],
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                    tension: 0.1
+                }, {
+                    label: 'Initial Loss',
+                    data: [],
+                    borderColor: 'rgb(255, 159, 64)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Live Training Progress'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                animation: {
+                    duration: 0
+                }
+            }
+        });
+    }
+    
+    // Start live training simulation
+    function startLiveTraining() {
+        if (isLiveTraining) return;
+        
+        // Get form data
+        const form = document.getElementById('simulation-form');
+        const formData = new FormData(form);
+        
+        // Convert form data to JSON
+        const trainingData = {};
+        for (let [key, value] of formData.entries()) {
+            if (value === '') {
+                if (key === 'gradient_clipping' || key === 'n_data_points') {
+                    trainingData[key] = null;
+                } else {
+                    trainingData[key] = undefined;
+                }
+            } else {
+                if (['hidden_layers', 'neurons_per_layer', 'epochs', 'batch_size'].includes(key)) {
+                    trainingData[key] = parseInt(value);
+                } else if (['learning_rate'].includes(key)) {
+                    trainingData[key] = parseFloat(value);
+                } else {
+                    trainingData[key] = value;
+                }
+            }
+        }
+        
+        // Add required fields
+        trainingData.equation_type = '{{ eq_id }}';
+        trainingData.purpose = '{{ purpose_key }}';
+        
+        // Store training data in sessionStorage
+        sessionStorage.setItem('trainingData', JSON.stringify(trainingData));
+        
+        // Initialize live training
+        isLiveTraining = true;
+        trainingCompleted = false; // Reset completion flag
+        currentEpoch = 0;
+        totalEpochs = trainingData.epochs || 1000;
+        
+        // Hide View Results button when starting new training
+        document.getElementById('viewResults').style.display = 'none';
+        
+        // Show live training monitor
+        document.getElementById('live-training-monitor').style.display = 'block';
+        
+        // Initialize chart if not already done
+        if (!liveTrainingChart) {
+            initializeLiveChart();
+        }
+        
+        // Start polling IMMEDIATELY (don't wait for training to start)
+        console.log('🚀 Starting real-time polling for backend data...');
+        liveTrainingInterval = setInterval(async () => {
+            try {
+                const response = await fetch(`/api/training-progress/{{ purpose_key }}/{{ eq_id }}`);
+                const progress = await response.json();
+                
+                console.log('Backend progress:', progress);
+                console.log('Progress status:', progress?.status);
+                console.log('Current epoch:', progress?.current_epoch);
+                console.log('Total loss:', progress?.total_loss);
+                console.log('Progress keys:', Object.keys(progress || {}));
+                console.log('Is training status?', progress?.status === 'training');
+                console.log('Has current epoch?', progress?.current_epoch !== undefined && progress?.current_epoch > 0);
+                
+                // Check if we have any progress data
+                if (progress && progress.status) {
+                    if (progress.status === 'completed') {
+                        // Backend training is complete
+                        clearInterval(liveTrainingInterval);
+                        liveTrainingInterval = null;
+                        isLiveTraining = false;
+                        
+                        console.log('🎉 Training completed! Final results:', progress);
+                        
+                        // Update with final backend values
+                        if (progress.total_loss !== undefined) {
+                            document.getElementById('liveTotalLoss').textContent = progress.total_loss.toFixed(4);
+                            document.getElementById('livePhysicsLoss').textContent = progress.physics_loss.toFixed(4);
+                            document.getElementById('liveBoundaryLoss').textContent = progress.boundary_loss.toFixed(4);
+                            document.getElementById('liveInitialLoss').textContent = progress.initial_loss.toFixed(4);
+                            
+                            // Update chart with final point if not already added
+                            const finalEpoch = progress.current_epoch || totalEpochs;
+                            const epochIndex = liveTrainingChart.data.labels.indexOf(finalEpoch);
+                            if (epochIndex === -1) {
+                                liveTrainingChart.data.labels.push(finalEpoch);
+                                liveTrainingChart.data.datasets[0].data.push(progress.total_loss);
+                                liveTrainingChart.data.datasets[1].data.push(progress.physics_loss);
+                                liveTrainingChart.data.datasets[2].data.push(progress.boundary_loss);
+                                liveTrainingChart.data.datasets[3].data.push(progress.initial_loss);
+                                liveTrainingChart.update();
+                            }
+                        }
+                        
+                        // Only show completion alert once
+                        if (!trainingCompleted) {
+                            trainingCompleted = true;
+                            alert('Live training completed successfully!');
+                            
+                            // Show View Results button
+                            document.getElementById('viewResults').style.display = 'inline-block';
+                        }
+                        return;
+                    } else if (progress.status === 'training') {
+                        // Backend training is running, update with real data
+                        if (progress.current_epoch !== undefined && progress.current_epoch > 0) {
+                            currentEpoch = progress.current_epoch;
+                            
+                            console.log(`🔄 Updating frontend with epoch ${progress.current_epoch}:`, {
+                                total_loss: progress.total_loss,
+                                physics_loss: progress.physics_loss,
+                                boundary_loss: progress.boundary_loss,
+                                initial_loss: progress.initial_loss
+                            });
+                            
+                            // Update metrics with real backend values
+                            document.getElementById('liveTotalLoss').textContent = progress.total_loss.toFixed(4);
+                            document.getElementById('livePhysicsLoss').textContent = progress.physics_loss.toFixed(4);
+                            document.getElementById('liveBoundaryLoss').textContent = progress.boundary_loss.toFixed(4);
+                            document.getElementById('liveInitialLoss').textContent = progress.initial_loss.toFixed(4);
+                            
+                            // Update chart with real data (always update for real-time feel)
+                            // Check if this epoch is new or if we should update existing
+                            const epochIndex = liveTrainingChart.data.labels.indexOf(progress.current_epoch);
+                            if (epochIndex === -1) {
+                                // New epoch, add to chart
+                                liveTrainingChart.data.labels.push(progress.current_epoch);
+                                liveTrainingChart.data.datasets[0].data.push(progress.total_loss);
+                                liveTrainingChart.data.datasets[1].data.push(progress.physics_loss);
+                                liveTrainingChart.data.datasets[2].data.push(progress.boundary_loss);
+                                liveTrainingChart.data.datasets[3].data.push(progress.initial_loss);
+                            } else {
+                                // Update existing epoch data
+                                liveTrainingChart.data.datasets[0].data[epochIndex] = progress.total_loss;
+                                liveTrainingChart.data.datasets[1].data[epochIndex] = progress.physics_loss;
+                                liveTrainingChart.data.datasets[2].data[epochIndex] = progress.boundary_loss;
+                                liveTrainingChart.data.datasets[3].data[epochIndex] = progress.initial_loss;
+                            }
+                            liveTrainingChart.update('none'); // Disable animations for real-time updates
+                        } else {
+                            // Training started but no epoch data yet
+                            document.getElementById('liveTotalLoss').textContent = 'Starting...';
+                            document.getElementById('livePhysicsLoss').textContent = 'Starting...';
+                            document.getElementById('liveBoundaryLoss').textContent = 'Starting...';
+                            document.getElementById('liveInitialLoss').textContent = 'Starting...';
+                        }
+                    } else {
+                        // Backend training not started yet, show initial state
+                        document.getElementById('liveTotalLoss').textContent = 'Waiting...';
+                        document.getElementById('livePhysicsLoss').textContent = 'Waiting...';
+                        document.getElementById('liveBoundaryLoss').textContent = 'Waiting...';
+                        document.getElementById('liveInitialLoss').textContent = 'Waiting...';
+                    }
+                } else {
+                    // No progress data available
+                    document.getElementById('liveTotalLoss').textContent = 'No data';
+                    document.getElementById('livePhysicsLoss').textContent = 'No data';
+                    document.getElementById('liveBoundaryLoss').textContent = 'No data';
+                    document.getElementById('liveInitialLoss').textContent = 'No data';
+                }
+                
+            } catch (error) {
+                console.log('Could not fetch backend progress:', error);
+                // Show loading state
+                document.getElementById('liveTotalLoss').textContent = 'Error';
+                document.getElementById('livePhysicsLoss').textContent = 'Error';
+                document.getElementById('liveBoundaryLoss').textContent = 'Error';
+                document.getElementById('liveInitialLoss').textContent = 'Error';
+            }
+        }, 200); // Poll every 200ms for more responsive real-time updates
+        
+        // Send training request to backend (non-blocking) AFTER starting polling
+        fetch('/api/simulate/{{ purpose_key }}/{{ eq_id }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(trainingData)
+        }).then(response => {
+            if (response.ok) {
+                console.log('Backend training started successfully');
+            } else {
+                console.error('Failed to start backend training');
+            }
+        });
+    }
+    
+    // Stop live training
+    function stopLiveTraining() {
+        if (!isLiveTraining) return;
+        
+        isLiveTraining = false;
+        if (liveTrainingInterval) {
+            clearInterval(liveTrainingInterval);
+            liveTrainingInterval = null;
+        }
+        
+        // Hide live training monitor
+        document.getElementById('live-training-monitor').style.display = 'none';
+        
+        console.log('Live training stopped');
+    }
+    
+    // Reset live training
+    function resetLiveTraining() {
+        stopLiveTraining();
+        
+        if (liveTrainingChart) {
+            liveTrainingChart.data.labels = [];
+            liveTrainingChart.data.datasets.forEach(dataset => dataset.data = []);
+            liveTrainingChart.update();
+        }
+        
+        // Reset metrics
+        document.getElementById('liveTotalLoss').textContent = '-';
+        document.getElementById('livePhysicsLoss').textContent = '-';
+        document.getElementById('liveBoundaryLoss').textContent = '-';
+        document.getElementById('liveInitialLoss').textContent = '-';
+        
+        currentEpoch = 0;
+        totalEpochs = 0;
+    }
+    
+    // View detailed results
+    function viewResults() {
+        // Navigate to the results page using the correct URL format
+        window.location.href = `/purpose/${window.purposeKey}/results/${window.equationType}`;
+    }
+    
+    // Event listeners for live training controls
+    document.addEventListener('DOMContentLoaded', function() {
+        // Override the existing startTrainingWithLiveView function
+        window.startTrainingWithLiveView = startLiveTraining;
+        
+        // Add event listeners for live training controls
+        document.getElementById('stopLiveTraining').addEventListener('click', stopLiveTraining);
+        document.getElementById('resetLiveTraining').addEventListener('click', resetLiveTraining);
+        document.getElementById('viewResults').addEventListener('click', viewResults);
+    });
 </script>
 {% endblock %} 

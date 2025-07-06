@@ -121,11 +121,14 @@ class LiveTrainingVisualizer {
             const response = await fetch(`/api/training-progress/${this.purpose}/${this.equationType}`);
             const progress = await response.json();
             
+            console.log('📊 Frontend received progress:', progress);
+            
             this.updateProgressDisplay(progress);
             this.updateCharts(progress);
             
             // Check if training is completed
             if (progress.status === 'completed') {
+                console.log('✅ Training completed, stopping polling');
                 this.onTrainingComplete();
             }
             
@@ -165,6 +168,8 @@ class LiveTrainingVisualizer {
         const currentEpoch = progress.current_epoch;
         const percentage = (currentEpoch / progress.total_epochs) * 100;
         
+        console.log(`🔄 Updating charts - Epoch: ${currentEpoch}, Status: ${progress.status}, Last epoch: ${this.lastEpoch}`);
+        
         // Update progress gauge
         if (this.progressGauge) {
             Plotly.update('progress-gauge', {
@@ -173,31 +178,55 @@ class LiveTrainingVisualizer {
             });
         }
         
-        // Update loss chart (only if we have new data)
+        // Update loss chart (only if we have new data or training is completed)
         if (this.lossChart && currentEpoch > 0) {
             const totalLoss = progress.total_loss;
             const physicsLoss = progress.physics_loss;
             const boundaryLoss = progress.boundary_loss;
             const initialLoss = progress.initial_loss;
             
-            // Add new data points
-            Plotly.extendTraces('loss-chart', {
-                x: [[currentEpoch], [currentEpoch], [currentEpoch], [currentEpoch]],
-                y: [[totalLoss], [physicsLoss], [boundaryLoss], [initialLoss]]
-            }, [0, 1, 2, 3]);
+            // Check if this is new data or if training is completed
+            const shouldUpdate = progress.status === 'completed' || 
+                               !this.lastEpoch || 
+                               currentEpoch > this.lastEpoch;
             
-            // Auto-scale y-axis
-            Plotly.relayout('loss-chart', {
-                'yaxis.autorange': true
-            });
+            console.log(`📈 Loss chart update - Should update: ${shouldUpdate}, Epoch: ${currentEpoch}, Losses: ${totalLoss.toFixed(6)}, ${physicsLoss.toFixed(6)}, ${boundaryLoss.toFixed(6)}, ${initialLoss.toFixed(6)}`);
+            
+            if (shouldUpdate) {
+                // Add new data points
+                Plotly.extendTraces('loss-chart', {
+                    x: [[currentEpoch], [currentEpoch], [currentEpoch], [currentEpoch]],
+                    y: [[totalLoss], [physicsLoss], [boundaryLoss], [initialLoss]]
+                }, [0, 1, 2, 3]);
+                
+                // Auto-scale y-axis
+                Plotly.relayout('loss-chart', {
+                    'yaxis.autorange': true
+                });
+                
+                // Store the last epoch we processed
+                this.lastEpoch = currentEpoch;
+                console.log(`✅ Loss chart updated for epoch ${currentEpoch}`);
+            }
         }
         
         // Update convergence chart
         if (this.convergenceChart && progress.convergence_rate !== undefined) {
-            Plotly.extendTraces('convergence-chart', {
-                x: [[currentEpoch]],
-                y: [[progress.convergence_rate]]
-            }, [0]);
+            const shouldUpdate = progress.status === 'completed' || 
+                               !this.lastConvergenceEpoch || 
+                               currentEpoch > this.lastConvergenceEpoch;
+            
+            console.log(`📊 Convergence chart update - Should update: ${shouldUpdate}, Rate: ${progress.convergence_rate}`);
+            
+            if (shouldUpdate) {
+                Plotly.extendTraces('convergence-chart', {
+                    x: [[currentEpoch]],
+                    y: [[progress.convergence_rate]]
+                }, [0]);
+                
+                this.lastConvergenceEpoch = currentEpoch;
+                console.log(`✅ Convergence chart updated for epoch ${currentEpoch}`);
+            }
         }
     }
     

@@ -339,7 +339,34 @@ function startTrainingWithLiveView() {
     // Store training data in sessionStorage
     sessionStorage.setItem('trainingData', JSON.stringify(trainingData));
     
-    // Immediately redirect to live training page
+    // Send training request using purpose-based endpoint
+    const url = `/api/simulate/${window.purposeKey}/${window.equationType}`;
+    console.log('🌐 Sending request to:', url);
+    console.log('📤 Training data:', trainingData);
+    
+    // Send the request but DON'T wait for response - redirect immediately
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(trainingData)
+    })
+    .then(response => {
+        console.log('🔍 Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('📥 Backend response:', data);
+        // Don't redirect here - we already redirected immediately
+    })
+    .catch(error => {
+        console.error('❌ Fetch error:', error);
+        // Even if there's an error, we still want to show the live training page
+        // The user can see the error and retry
+    });
+    
+    // IMMEDIATELY redirect to live training page without waiting for backend response
     console.log('🔄 Redirecting to live training page immediately...');
     window.location.href = `/purpose/${window.purposeKey}/live-training/${window.equationType}`;
 }

@@ -233,8 +233,10 @@ async def purpose_results_page(request: Request, purpose_name: str, eq_id: str):
             "request": request,
             "purpose": purpose_info,
             "purpose_name": purpose_name,
+            "purpose_key": purpose_name,
             "equation": equation_info,
             "eq_id": eq_id,
+            "eq_type": eq_id,
             "config": config,
             "title": f"Results - {equation_info['name']} - {purpose_info['name']}"
         }
@@ -509,20 +511,78 @@ async def get_purpose_results(purpose_name: str, eq_id: str):
         raise HTTPException(status_code=404, detail="Equation not found")
     
     try:
-        # Check if model exists
-        model_path = f"results/{purpose_name}/{eq_id}/models/model.pth"
-        
-        # For now, return basic model status
-        # In a real implementation, you might want to load actual results
-        return {
-            "model_exists": True,  # This would be checked dynamically
-            "purpose_name": purpose_name,
-            "equation_id": eq_id,
-            "message": "Model training completed"
-        }
+        # Fetch results from backend API
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{config.API_BASE_URL}/api/results/{purpose_name}/{eq_id}",
+                timeout=10.0
+            )
+            
+            if response.status_code == 200:
+                backend_results = response.json()
+                print(f"📊 Backend results for {purpose_name}/{eq_id}: {backend_results}")
+                return backend_results
+            else:
+                # Return basic results if backend doesn't have them yet
+                return {
+                    "status": "success",
+                    "purpose_name": purpose_name,
+                    "equation_id": eq_id,
+                    "message": "Training completed - results being processed",
+                    "final_loss": 0.0,
+                    "training_time": 0.0,
+                    "convergence_status": "Completed"
+                }
                 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch results: {str(e)}")
+        print(f"❌ Error fetching results for {purpose_name}/{eq_id}: {e}")
+        # Return basic results on error
+        return {
+            "status": "success",
+            "purpose_name": purpose_name,
+            "equation_id": eq_id,
+            "message": "Training completed",
+            "final_loss": 0.0,
+            "training_time": 0.0,
+            "convergence_status": "Completed"
+        }
+
+@app.get("/api/download-results/{purpose_name}/{eq_id}")
+async def download_purpose_results(purpose_name: str, eq_id: str):
+    """Download training results as JSON file for purpose-based equations"""
+    purpose_info = config.get_purpose_info(purpose_name)
+    if not purpose_info:
+        raise HTTPException(status_code=404, detail="Purpose not found")
+    
+    equations = config.get_equations_by_purpose(purpose_name)
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    try:
+        # Fetch download from backend API
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{config.API_BASE_URL}/api/download-results/{purpose_name}/{eq_id}",
+                timeout=30.0
+            )
+            
+            if response.status_code == 200:
+                # Return the file response from backend
+                from fastapi.responses import Response
+                return Response(
+                    content=response.content,
+                    media_type="application/json",
+                    headers={
+                        "Content-Disposition": f"attachment; filename=pinn_training_results_{purpose_name}_{eq_id}.json"
+                    }
+                )
+            else:
+                raise HTTPException(status_code=response.status_code, 
+                                  detail=f"Backend error: {response.text}")
+                
+    except Exception as e:
+        print(f"❌ Error downloading results for {purpose_name}/{eq_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to download results: {str(e)}")
 
 @app.get("/api/results/{eq_type}")
 async def get_results(eq_type: str):

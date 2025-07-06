@@ -194,6 +194,39 @@ async def forward_problems_get_results(eq_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get results: {str(e)}")
 
+@router.get("/api/download-results/{eq_id}")
+async def forward_problems_download_results(eq_id: str):
+    """Download results for forward problems simulation"""
+    purpose_info = config.get_purpose_info("forward_problems")
+    equations = config.get_equations_by_purpose("forward_problems")
+    
+    if eq_id not in equations:
+        raise HTTPException(status_code=404, detail="Equation not found")
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{config.API_BASE_URL}/api/download-results/forward_problems/{eq_id}",
+                timeout=30.0
+            )
+            
+            if response.status_code == 200:
+                # Return the file response from backend
+                from fastapi.responses import Response
+                return Response(
+                    content=response.content,
+                    media_type="application/json",
+                    headers={
+                        "Content-Disposition": f"attachment; filename=pinn_training_results_forward_problems_{eq_id}.json"
+                    }
+                )
+            else:
+                raise HTTPException(status_code=response.status_code, 
+                                  detail=f"Backend error: {response.text}")
+                
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to download results: {str(e)}")
+
 def map_parameters_to_backend(eq_id: str, frontend_params: dict) -> dict:
     """Map frontend parameters to backend format for forward problems"""
     backend_params = {

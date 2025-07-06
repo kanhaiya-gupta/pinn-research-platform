@@ -49,7 +49,7 @@
                         <div class="status-content">
                             <h4>Progress</h4>
                             <div id="progress-text" class="status-value">0% Epoch 0 / 0</div>
-                            <small class="update-note">Updates every 50 epochs</small>
+                            <small class="update-note">Updates every 25 epochs</small>
                         </div>
                     </div>
                     <div class="status-card">
@@ -255,24 +255,24 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('📋 No valid training data found in sessionStorage');
     console.log('📋 Creating default training data and starting training...');
     
-    // Create default training data for this equation
-    const defaultTrainingData = {
-        purpose: '{{ purpose_key }}',
-        equation_type: '{{ equation_type }}',
-        hidden_layers: 4,
-        neurons_per_layer: 20,
-        learning_rate: 0.001,
-        epochs: 1000,
-        hidden_activation: 'tanh',
-        output_activation: 'linear',
-        optimizer: 'adam',
-        physics_weight: 1.0,
-        boundary_weight: 1.0,
-        initial_weight: 1.0,
-        n_interior_points: 1000,
-        n_boundary_points: 200,
-        n_initial_points: 200
-    };
+            // Create default training data for this equation
+        const defaultTrainingData = {
+            purpose: '{{ purpose_key }}',
+            equation_type: '{{ equation_type }}',
+            hidden_layers: 4,
+            neurons_per_layer: 20,
+            learning_rate: 0.001,
+            epochs: 2000,  // More epochs for better visualization
+            hidden_activation: 'tanh',
+            output_activation: 'linear',
+            optimizer: 'adam',
+            physics_weight: 1.0,
+            boundary_weight: 1.0,
+            initial_weight: 1.0,
+            n_interior_points: 1000,
+            n_boundary_points: 200,
+            n_initial_points: 200
+        };
     
     console.log('📋 Default training data:', defaultTrainingData);
     startTrainingWithData(defaultTrainingData);
@@ -343,7 +343,7 @@ function startProgressUpdates() {
     updateInterval = setInterval(() => {
         fetchTrainingProgress();
         updateTimeDisplay();
-    }, 500); // Update every 500ms since backend updates every 50 epochs
+    }, 200); // Update every 200ms for more frequent progress capture
 }
 
 function updateTimeDisplay() {
@@ -368,6 +368,13 @@ function fetchTrainingProgress() {
         })
         .then(data => {
             console.log('📊 Received progress data:', data);
+            console.log('📈 Current epoch:', data.current_epoch, 'Total epochs:', data.total_epochs);
+            console.log('📉 Loss values:', {
+                total: data.total_loss,
+                physics: data.physics_loss,
+                boundary: data.boundary_loss,
+                initial: data.initial_loss
+            });
             updateTrainingDisplay(data);
             updateCharts(data);
         })

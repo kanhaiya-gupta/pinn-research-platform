@@ -11,7 +11,7 @@
             <span class="breadcrumb-separator">/</span>
             <a href="/purpose/{{ purpose_key }}" class="breadcrumb-item">{{ purpose.name }}</a>
             <span class="breadcrumb-separator">/</span>
-            <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_type }}" class="breadcrumb-item">{{ equation.name }}</a>
+            <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_id }}" class="breadcrumb-item">{{ equation.name }}</a>
             <span class="breadcrumb-separator">/</span>
             <span class="breadcrumb-item active">Results</span>
         </div>
@@ -165,13 +165,17 @@
 
     <!-- Action Buttons -->
     <div class="results-actions">
-        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_type }}" class="btn btn-primary">
+        <a href="/purpose/{{ purpose_key }}/simulation/{{ eq_id }}" class="btn btn-primary">
             <i class="fas fa-redo"></i>
             Run New Simulation
         </a>
         <button type="button" class="btn btn-outline-primary" onclick="downloadResults()">
             <i class="fas fa-download"></i>
             Download Results
+        </button>
+        <button type="button" class="btn btn-outline-warning" onclick="clearResults()">
+            <i class="fas fa-trash"></i>
+            Clear Results
         </button>
         <a href="/purpose/{{ purpose_key }}" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left"></i>
@@ -182,12 +186,13 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/static/js/results.js"></script>
 <script>
     // Purpose-specific results configuration
     window.purposeKey = "{{ purpose_key }}";
     window.purposeName = "{{ purpose.name }}";
-    window.equationType = "{{ eq_type }}";
+    window.equationType = "{{ eq_id }}";
     
     // Load results for this specific purpose and equation
     loadResults(window.purposeKey, window.equationType);

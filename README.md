@@ -11,6 +11,8 @@ A comprehensive, research-grade platform for Physics-Informed Neural Networks (P
 
 The PINN platform is a complete ecosystem for physics-informed machine learning research and applications. It provides 11 specialized modules covering all major PINN purposes, with 200+ equations, 100+ research applications, and 150+ loss function components.
 
+![PINN Platform Overview](docs/Recording+PINN.gif)
+
 ### 🏗️ Architecture
 - **Frontend**: Modern web interface with real-time interaction
 - **Backend**: FastAPI-based API with comprehensive endpoints
